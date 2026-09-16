@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from '../components/masthead/Masthead.astro';
+import Hero from '../components/hero/Hero.astro';
+import Closer from '../components/closer/Closer.astro';
+---
+
+<BaseLayout>
+	<div class="region flow">
+		<div class="wrapper">
+			<Masthead />
+		</div>
+		<Hero />
+	</div>
+	
+	<div class="region wrapper" id="content">
+		<div class="prose">
+			<h1>Astro Starter!</h1>
+			<p>This is some content here</p>
+			<button class="button">Test</button>
+			<button class="button" data-button-variant="secondary">Test</button>
+		</div>
+	</div>
+	
+	<Closer />
+</BaseLayout>

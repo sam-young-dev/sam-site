@@ -1,0 +1,13 @@
+---
+import BrandExploded from '../../assets/brand-exploded.svg?raw';
+import { siteData } from '../../data/site-data'
+---
+
+<div class="masthead__logo" aria-hidden="true">
+  <span set:html={BrandExploded}></span>
+</div>
+<div class="masthead">
+  <h1 class="masthead__heading">{ siteData.masthead.heading }</h1>
+  <p class="masthead__location">{ siteData.masthead.location }</p>
+  <p class="masthead__meta">{ siteData.masthead.meta }</p>
+</div>

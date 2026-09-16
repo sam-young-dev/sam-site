@@ -1,0 +1,21 @@
+---
+import BrandExploded from '../../assets/brand-exploded.svg?raw';
+import { siteData } from '../../data/site-data'
+---
+
+<div class="closer">
+  <div class="wrapper flow">
+    <span set:html={BrandExploded}></span>
+    {siteData.navItems.length > 0 && (
+      <nav aria-label="{{ data.navLabel }}" class="nav">
+        <ul class="cluster" role="list">
+          {siteData.navItems.map((item) => (
+            <li>
+              <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+  </div>
+</div>

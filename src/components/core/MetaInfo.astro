@@ -1,0 +1,9 @@
+---
+const { title, description, socialImage, allowRobots } = Astro.props;
+---
+
+<meta charset="UTF-8" />
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width" />
+{allowRobots === false && <meta name="robots" content="noindex, nofollow" />}
+<title>{title}</title>

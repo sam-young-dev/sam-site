@@ -1,0 +1,17 @@
+.closer {
+  background: var(--color-interactive-fill-default);
+  color: var(--color-foreground-inverse);
+  padding-block: clamp(10rem, 50vb, 20rem) var(--gutter);
+  font-weight: var(--font-bold);
+  padding-top: clamp(2rem, 50vb, 8rem);
+  padding-bottom: 2rem;
+}
+
+.closer svg[role="img"][width][height] {
+  --color-svg-fill: var(--color-foreground-inverse);
+  --color-svg-stroke: var(--color-foreground-inverse);
+  width: 100%;
+  height: auto;
+  background: unset;
+  padding: unset;
+}
