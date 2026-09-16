@@ -1,5 +1,5 @@
 export const siteData = {
-  title: "Bloom",
+  title: "Samsite",
   navItems: [
     { label: "Home", href: "/", current: true },
     { label: "About", href: "/about" },

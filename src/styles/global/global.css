@@ -5,9 +5,24 @@
   project: https://cube.fyi/css.html
 */
 
+html {
+  background: light-dark(var(--bright_white), var(--black));
+}
+
+#puddle-container {
+  position: absolute;
+  display: grid;
+  inset: 0;
+  color: light-dark(var(--black), var(--bright_white));
+  user-select: none;
+  font-family: "Fira Code", monospace;
+}
+
 body {
-  background: var(--color-background-base);
-  color: var(--color-brand-primary);
+  /* background: var(--color-background-base); */
+  background: var(--color-amber-50);
+  /* color: var(--color-brand-primary); */
+  color: var(--color-amber-800);
   font-size: var(--size-step-1);
   font-family: var(--font-base);
   line-height: var(--leading-standard);

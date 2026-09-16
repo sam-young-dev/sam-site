@@ -1,0 +1,11 @@
+.masonry {
+  --gutter: 0.4em;
+  --switcher-gap: var(--gutter);
+  --flow-space: var(--gutter);
+  --switcher-target-container-width: 28rem;
+  --wrapper-padding-inline: var(--gutter);
+}
+
+.masonry img {
+  width: 100%;
+}
