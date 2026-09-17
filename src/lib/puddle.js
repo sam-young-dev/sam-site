@@ -232,8 +232,13 @@ class Puddle {
       const xx = Number(span.dataset.xx);
       const yy = Number(span.dataset.yy);
       const node = this.data.getNode(xx, yy);
-      if (node) node.startRipple();
+      if (node) {
+        node.startRipple();
+        this.#startLoopIfIdle();
+      }
     });
+
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     this.parentNode.addEventListener("mousemove", (e) => {
       const span = e.target.closest("span");
@@ -246,12 +251,16 @@ class Puddle {
       if (now - lastTime < CONFIG.MOUSE_DELAY) return;
       this.data.mouseThrottleMap.set(key, now);
       const node = this.data.getNode(xx, yy);
-      if (node) node.startRipple();
+      if (node) {
+        node.startRipple();
+        this.#startLoopIfIdle();
+      }
     });
   }
 
   setupGrid() {
     clearInterval(this.updateLoop);
+    this.updateLoop = null;
     this.data.refresh(this.numRows, this.numCols);
 
     const fragment = document.createDocumentFragment();
@@ -273,19 +282,54 @@ class Puddle {
     }
 
     this.parentNode.appendChild(fragment);
-    this.updateLoop = setInterval(
-      () => this.data.updateElements(),
-      this.updateInterval,
-    );
+  }
+
+  destroy() {
+    window.removeEventListener("resize", this.resizeHandler);
+    clearInterval(this.updateLoop);
+    this.updateLoop = null;
+  }
+
+  #startLoopIfIdle() {
+    if (this.updateLoop) return;
+    this.updateLoop = setInterval(() => {
+      this.data.updateElements();
+      if (this.data.updateQueue.size === 0) {
+        clearInterval(this.updateLoop);
+        this.updateLoop = null;
+      }
+    }, this.updateInterval);
   }
 }
 
-if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+let activePuddle;
+
+function initPuddle() {
+  const container = document.querySelector("#puddle-container");
+  if (!container) return;
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (prefersReducedMotion) {
+    container.classList.add("puddle-container--reveal");
+    return;
+  }
+
   try {
-    const puddle = new Puddle("#puddle-container");
+    activePuddle = new Puddle("#puddle-container");
   } catch (error) {
     console.error("Failed to initialize puddle:", error);
   }
 }
+
+function destroyPuddle() {
+  activePuddle?.destroy();
+  activePuddle = undefined;
+}
+
+document.addEventListener("astro:page-load", initPuddle);
+document.addEventListener("astro:before-swap", destroyPuddle);
 
 export default Puddle;

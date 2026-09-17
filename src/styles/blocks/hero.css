@@ -69,5 +69,5 @@
 
 .hero__skip-link:hover .hero__skip-link-icon {
   transform: translateY(5%);
-  transition: transform var(--transition-bounce);
+  transition: transform var(--transition-bounce) var(--ease-bounce);
 }

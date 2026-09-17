@@ -49,14 +49,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <script>
   import ImageRipple from "../lib/image-ripple.js";
 
-  const canvas = document.querySelector<HTMLElement>("#tree-ripple");
-  const src = canvas?.dataset.src;
+  let activeRipple;
 
-  if (canvas && src) {
+  function setupRipple() {
+    const canvas = document.querySelector<HTMLElement>("#tree-ripple");
+    const src = canvas?.dataset.src;
+    if (!canvas || !src) return;
+
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    new ImageRipple("#tree-ripple", src, { reducedMotion }).init();
+    activeRipple = new ImageRipple("#tree-ripple", src, { reducedMotion });
+    activeRipple.init();
   }
+
+  function teardownRipple() {
+    activeRipple?.destroy();
+    activeRipple = undefined;
+  }
+
+  document.addEventListener("astro:page-load", setupRipple);
+  document.addEventListener("astro:before-swap", teardownRipple);
 </script>

@@ -21,6 +21,7 @@
   text-decoration: none;
   font-size: var(--size-step-00);
   font-weight: var(--font-bold);
+  transition: filter var(--transition-normal) var(--ease-out), transform var(--transition-fast) var(--ease-out);
 }
 
 .button:hover {
@@ -29,6 +30,7 @@
 
 .button:active {
   transform: scale(99%);
+  transition-duration: var(--transition-fast);
 }
 
 /* Variant exceptions */

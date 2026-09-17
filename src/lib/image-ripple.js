@@ -10,7 +10,7 @@ const CONFIG = {
   MAX_RIPPLE_STRENGTH: 100.0,
   FORCE_DAMPENING_RATIO: 0.9,
   FORCE_CUTOFF: 1,
-  MOUSE_DELAY: 40,
+  MOUSE_DELAY: 120,
   MAX_DISPLACEMENT_PX: 22,
   TILE_OVERSCAN_RATIO: 0.5,
 };
@@ -193,6 +193,7 @@ export default class ImageRipple {
 
   #setup() {
     clearInterval(this.updateLoop);
+    this.updateLoop = null;
 
     const rect = this.canvas.getBoundingClientRect();
     this.width = Math.max(1, Math.round(rect.width * this.dpr));
@@ -223,13 +224,17 @@ export default class ImageRipple {
 
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.drawImage(this.offscreen, 0, 0);
+  }
 
-    if (!this.reducedMotion) {
-      this.updateLoop = setInterval(
-        () => this.data.updateElements(),
-        this.updateInterval,
-      );
-    }
+  #startLoopIfIdle() {
+    if (this.reducedMotion || this.updateLoop) return;
+    this.updateLoop = setInterval(() => {
+      this.data.updateElements();
+      if (this.data.updateQueue.size === 0) {
+        clearInterval(this.updateLoop);
+        this.updateLoop = null;
+      }
+    }, this.updateInterval);
   }
 
   #paintSourceToOffscreen() {
@@ -299,7 +304,10 @@ export default class ImageRipple {
     this.canvas.addEventListener("click", (e) => {
       const { xx, yy } = this.#getGridCoords(e.clientX, e.clientY);
       this.data.getNode(xx, yy)?.startRipple();
+      this.#startLoopIfIdle();
     });
+
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     this.canvas.addEventListener("mousemove", (e) => {
       const { xx, yy } = this.#getGridCoords(e.clientX, e.clientY);
@@ -309,6 +317,7 @@ export default class ImageRipple {
       if (now - lastTime < CONFIG.MOUSE_DELAY) return;
       this.data.mouseThrottleMap.set(key, now);
       this.data.getNode(xx, yy)?.startRipple(CONFIG.MAX_RIPPLE_STRENGTH * 0.6);
+      this.#startLoopIfIdle();
     });
   }
 

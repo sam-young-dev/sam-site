@@ -30,7 +30,7 @@ html {
 
 #puddle-container.puddle-container--reveal span {
   background-color: light-dark(var(--background-light), var(--black));
-  transition: opacity var(--transition-fade);
+  transition: opacity var(--transition-slow) var(--ease-out);
 }
 
 #puddle-container {

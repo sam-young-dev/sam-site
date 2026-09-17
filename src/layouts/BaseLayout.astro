@@ -2,6 +2,7 @@
 import MetaInfo from '../components/core/MetaInfo.astro';
 import Header from '../components/core/SiteHeader.astro';
 import SiteFooter from '../components/core/SiteFooter.astro';
+import { ClientRouter } from 'astro:transitions';
 
 import "virtual:sugarcube.css";
 import "../styles/index.css";
@@ -22,6 +23,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       socialImage={socialImage}
       allowRobots={allowRobots}
     />
+    <ClientRouter />
   </head>
   <body>
     <Header />

@@ -13,3 +13,34 @@
   font-size: 1.8rem;
   line-height: 2.2rem;
 }
+
+.hero-about--stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: hero-about-in var(--transition-slow) var(--ease-out) forwards;
+}
+
+.hero-about--stagger > *:nth-child(1) { animation-delay: 0ms; }
+.hero-about--stagger > *:nth-child(2) { animation-delay: 60ms; }
+.hero-about--stagger > *:nth-child(3) { animation-delay: 120ms; }
+.hero-about--stagger > *:nth-child(4) { animation-delay: 180ms; }
+
+@keyframes hero-about-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-about--stagger > * {
+    transform: none;
+    animation-name: hero-about-in-reduced;
+  }
+
+  @keyframes hero-about-in-reduced {
+    to {
+      opacity: 1;
+    }
+  }
+}

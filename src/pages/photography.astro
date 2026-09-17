@@ -31,7 +31,15 @@ images.forEach((image, index) => {
       {columns.map((column) => (
         <div class="flow">
           {column.map((image) => (
-            <img src={image.src} width={image.width} height={image.height} alt="" loading="lazy" />
+            <img
+              src={image.src}
+              width={image.width}
+              height={image.height}
+              alt=""
+              loading="lazy"
+              class="masonry__image"
+              onload="this.classList.add('is-loaded')"
+            />
           ))}
         </div>
       ))}
