@@ -1,40 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import type { ImageMetadata } from "astro";
 
-const imageModules = import.meta.glob<ImageMetadata>("../assets/images/*.{jpeg,jpg,png}", {
-  eager: true,
-  import: "default",
-});
-
-const images = Object.entries(imageModules)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, image]) => image);
-
-const columns: ImageMetadata[][] = [[], [], []];
-images.forEach((image, index) => {
-  columns[index % columns.length].push(image);
-});
 ---
 
 <BaseLayout>
-  <div class="reasonable-width">
-    <div class="content region wrapper">
-      <section class="readable">
-        <h2>Howdy!</h2>
-      </section>
-    </div>
-	</div>
-
-  <div class="region">
-		<div class="masonry wrapper switcher">
-      {columns.map((column) => (
-        <div class="flow">
-          {column.map((image) => (
-            <img src={image.src} width={image.width} height={image.height} alt="" loading="lazy" />
-          ))}
-        </div>
-      ))}
-    </div>
-  </div>
+  <div id="puddle-container" aria-hidden="true"></div>
 </BaseLayout>
+
+<script>
+	import '../lib/puddle.js';
+</script>

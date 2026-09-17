@@ -20,6 +20,19 @@ html {
   content-visibility: auto;
 }
 
+#puddle-container.puddle-container--reveal {
+  color: transparent;
+  background-image: url("/images/tree-texture.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#puddle-container.puddle-container--reveal span {
+  background-color: light-dark(var(--background-light), var(--black));
+  transition: opacity var(--transition-fade);
+}
+
 #puddle-container {
   &::after {
     content: "";

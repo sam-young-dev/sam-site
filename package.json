@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@sugarcube-sh/cli": "^0.1.12",
-    "@sugarcube-sh/vite": "^0.1.13"
+    "@sugarcube-sh/vite": "^0.1.13",
+    "sharp": "^0.35.4"
   }
 }
