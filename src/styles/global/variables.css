@@ -12,7 +12,7 @@
   --wrapper-max-width: 80rem;
 
   color-scheme: light dark;
-  --black: oklch(18% 0.003 17.5);
+  --black: var(--color-stone-400);
   --bright_white: oklch(94.75% 0.04 73);
   --background-light: var(--color-amber-50);
 }

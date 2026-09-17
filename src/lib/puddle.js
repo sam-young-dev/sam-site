@@ -4,14 +4,11 @@
 const CONFIG = {
   DEFAULT_UPDATE_INTERVAL: 100,
   MIN_NODE_SIZE: 1,
-  // MIN_NODE_SIZE: 10,
-  // MAX_RIPPLE_STRENGTH: 100.0,
-  MAX_RIPPLE_STRENGTH: 100.0,
+  MAX_RIPPLE_STRENGTH: 15.0,
   FORCE_DAMPENING_RATIO: 0.85,
   FORCE_CUTOFF: 2,
-  ASCII_SHADES: [..." .,:-=+*#%@"],
-  // ASCII_SHADES: [..." sam"],
-  // ASCII_SHADES: [..." ~"],
+  ASCII_SHADES: [...".*"],
+  // ASCII_SHADES: [...".•"],
   MOUSE_DELAY: 500,
 };
 
@@ -238,7 +235,8 @@ class Puddle {
       }
     });
 
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+      return;
 
     this.parentNode.addEventListener("mousemove", (e) => {
       const span = e.target.closest("span");
