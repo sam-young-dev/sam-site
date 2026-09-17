@@ -2,6 +2,7 @@ export const siteData = {
   title: "Samsite",
   navItems: [
     { label: "Home", href: "/", current: true },
+    { label: "Photography", href: "/photography" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],

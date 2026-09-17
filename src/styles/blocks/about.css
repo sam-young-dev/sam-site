@@ -1,0 +1,15 @@
+.reasonable-width {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+.hero-about {
+  position: relative;
+  block-size: 85dvb;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.8rem;
+  line-height: 2.2rem;
+}

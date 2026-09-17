@@ -5,6 +5,7 @@
   font-size: var(--size-step-00);
   font-weight: var(--font-bold);
   padding-block-start: var(--space-md);
+  z-index: 1000;
 }
 
 .site-head .repel {

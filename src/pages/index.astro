@@ -6,55 +6,30 @@ import Closer from '../components/closer/Closer.astro';
 ---
 
 <BaseLayout>
-	<!-- <div class="region flow">
-		<div class="wrapper">
-			<Masthead />
-		</div>
-		<Hero />
-	</div> -->
-	
-	<div class="region wrapper" id="content">
-	<!-- <div class="region wrapper" id="puddle-container"> -->
-		<div class="prose">
-			<h1>SAM</h1>
+  <div id="puddle-container" aria-hidden="true"></div>
+
+  <div class="reasonable-width">
+		<div class="hero-about wrapper">
+			<h1>Sam Young</h1>
 			<p>Developer</p>
 			<p>Designer</p>
+			<p>Artist</p>
 		</div>
+
+    <div class="content region wrapper">
+      <section class="readable prose">
+        <h2>Howdy!</h2>
+        <p>I'm Sam Young; here is my digital garden that is a constant work in progress and changing over time.</p>
+        <p>Some more content here to tell you more about me as so you can know who I am!</p>
+      </section>
+    </div>
 	</div>
 
-	<!-- <div id="puddle-container"></div> -->
-
-	<div class="region"></div>
-	<div class="region"></div>
-
-	<div class="region">
-		<div class="masonry wrapper switcher">
-			<!-- Column 1 -->
-			<div class="flow">
-				<img src="https://assets.codepen.io/174183/aditya-chinchure-n0NZWbY9bZk-unsplash.jpg" alt="A snowy city street in winter, with footprints trailing across the sidewalk. Flags for the Chicago Symphony Center and an American flag hang from tall buildings, while streetlights and a snow-covered bus stop frame the scene." loading="lazy">
-				<img src="https://assets.codepen.io/174183/alice-kotlyarenko-n6TQKt2UlaM-unsplash.jpg" alt="Silhouetted figures walking through a dimly lit urban tunnel at night. The structure above is made of glass, reflecting vibrant neon lights in green, blue, and red, while a modern building looms in the background." loading="lazy">
-				<img src="https://assets.codepen.io/174183/nico-knaack-hPtasJgBm40-unsplash.jpg" alt="A transit conductor in a beige uniform and navy hat walks alongside an old-fashioned yellow tram with blue stripes. The tram doors are open, and orange 'Ausstieg' (exit) signs are visible, as overhead cables crisscross the bright blue sky." loading="lazy">
-			</div>
-
-			<!-- Column 2 -->
-			<div class="flow">
-				<img src="https://assets.codepen.io/174183/kellen-riggin-svLP2OfTFOo-unsplash.jpg" alt="A round convex security mirror mounted on a beige wall reflects a driveway with a 'Do Not Enter' sign. A surveillance camera sits above the mirror, while greenery peeks into the bottom corner of the frame." loading="lazy">
-				<img src="https://assets.codepen.io/174183/liam-drinan---dxPBQhBi0-unsplash.jpg" alt="A narrow, sunlit urban alleyway lined with modern buildings featuring large windows and string lights. People are sitting at outdoor tables, walking along benches, and enjoying the casual ambiance of the street." loading="lazy">
-				<img src="https://assets.codepen.io/174183/daniel-akselrod-RZBJ2ZSQq1c-unsplash.jpg" alt="A quiet nighttime tram station with glowing streetlights and empty train tracks running through the foreground. The scene includes modern platforms, city buildings with lit-up windows, and a distant row of traffic lights." loading="lazy">
-			</div>
-
-			<!-- Column 3 -->
-			<div class="flow">
-				<img src="https://assets.codepen.io/174183/nir-himi-jpeRAoptTGQ-unsplash.jpg" alt="A breathtaking city skyline at sunset, featuring One World Trade Center and nearby skyscrapers silhouetted against a pastel gradient sky of pink and orange. Blurred figures in the foreground provide a sense of scale and human presence." loading="lazy">
-				<img src="https://assets.codepen.io/174183/pavel-moiseev-i4YbrGPtWME-unsplash.jpg" alt="An empty underground metro station with bright lighting, bold orange-tiled columns, and sleek white ceiling panels. Parallel train tracks run into the dark distance, while signs indicate the station's name and an upcoming train." loading="lazy">
-				<img src="https://assets.codepen.io/174183/tim-meyer-ZA6oE5d0GtQ-unsplash.jpg" alt="A vintage green and white car driving across a yellow pedestrian crossing in a bustling city. People stand nearby, including an older man with a white hat and a woman in glasses, as the background features a shop with a large 'SALE' sign." loading="lazy">
-			</div>
-		</div>
-	</div>
+	
 	
 	<!-- <Closer /> -->
 </BaseLayout>
 
-<!-- <script>
+<script>
 	import '../lib/puddle.js';
-</script> -->
+</script>

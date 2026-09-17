@@ -6,22 +6,37 @@
 */
 
 html {
-  background: light-dark(var(--bright_white), var(--black));
+  background: light-dark(var(--background-light), var(--black));
 }
 
 #puddle-container {
   position: absolute;
   display: grid;
   inset: 0;
-  color: light-dark(var(--black), var(--bright_white));
+  color: light-dark(var(--black), var(--background-light));
   user-select: none;
   font-family: "Fira Code", monospace;
+  contain: layout paint style;
+  content-visibility: auto;
+}
+
+#puddle-container {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    inset-block-start: 0;
+    background: linear-gradient(
+      transparent,
+      light-dark(var(--background-light), var(--black))
+    );
+    pointer-events: none;
+  }
 }
 
 body {
   /* background: var(--color-background-base); */
-  background: var(--color-amber-50);
-  /* color: var(--color-brand-primary); */
+  background: var(--background-light);
   color: var(--color-amber-800);
   font-size: var(--size-step-1);
   font-family: var(--font-base);
