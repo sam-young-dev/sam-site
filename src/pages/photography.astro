@@ -6,7 +6,10 @@ import { getPhotos } from "../utils/photos";
 const photos = await getPhotos();
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="Photography — Sam Young"
+  description="A gallery of photography by Sam Young."
+>
   <div class="region wrapper">
     <div class="masonry-grid">
       {photos.map((photo) => (
