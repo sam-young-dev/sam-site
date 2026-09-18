@@ -36,7 +36,7 @@
 
 .site-head__brand-icon {
   display: inline-flex;
-  block-size: 1.4em;
+  block-size: 3em;
   inline-size: auto;
 }
 
@@ -48,10 +48,5 @@
 .site-head hr {
   --flow-space: var(--space-md);
   --hr-stroke: var(--stroke-width) solid var(--color-brand-primary);
-}
-
-@container site-head-brand (68vi <= width <= 50rem) {
-  .site-head__brand a {
-    color: var(--color-foreground-inverse);
-  }
+  --hr-stroke: var(--stroke-width) solid var(--color-amber-800);
 }

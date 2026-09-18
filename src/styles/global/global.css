@@ -244,17 +244,38 @@ caption {
   margin-block-start: var(--space-sm);
 }
 
+/* Underline grows left to right on hover instead of snapping in, using a
+   background gradient (not text-decoration) so it still tracks correctly
+   across wrapped lines of inline prose text. */
+a:not([class]) {
+  /* Padding (not the position calc it replaces) is what gives the
+     background room to paint below the baseline — backgrounds are
+     clipped to the border box, so a position offset with no matching
+     padding gets silently clipped away. */
+  padding-block-end: 0.15em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% var(--stroke-width);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  a:not([class]) {
+    transition: background-size var(--transition-normal) var(--ease-out);
+  }
+}
+
 a:not([class]):hover {
-  text-underline-offset: 0.2lh;
+  background-size: 100% var(--stroke-width);
 }
 
 :is(h1, h2, h3, h4) a:not([class]) {
-  text-decoration-thickness: 0.1ex;
-  text-underline-offset: 0.2ex;
+  padding-block-end: 0.2ex;
+  background-size: 0% 0.1ex;
 }
 
 :is(h1, h2, h3, h4) a:not([class]):hover {
-  text-underline-offset: 0.3ex;
+  background-size: 100% 0.1ex;
 }
 
 :focus {

@@ -7,8 +7,22 @@ export const siteData = {
     { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },
   ],
-  heroIcon: {
-    label: "View Content",
-    href: "#content",
-  },
+  personalLinks: [
+    {
+      label: "Github",
+      href: "https://github.com/sam-young-dev",
+      isExternal: true,
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/samuel-young-383044168",
+      isExternal: true,
+    },
+    {
+      label: "Bluesky",
+      href: "https://bsky.app/profile/youngsc.bsky.social",
+      isExternal: true,
+    },
+    { label: "Resume", href: "/resume", isExternal: false },
+  ],
 };

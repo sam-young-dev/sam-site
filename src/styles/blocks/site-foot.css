@@ -3,13 +3,20 @@
   color: var(--color-foreground-inverse);
   line-height: var(--leading-none);
   padding-block: var(--space-lg);
+  color: var(--color-stone-300);
+}
+
+.site-foot__columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
 }
 
 .site-foot .nav .cluster {
-  text-transform: uppercase;
+  flex-direction: column;
+  align-items: flex-start;
   letter-spacing: var(--uppercase-kerning);
   font-size: var(--size-step-0);
-  font-weight: var(--font-weight-bold);
 }
 
 .site-foot hr {
@@ -34,7 +41,7 @@
 
 .site-foot__brand-icon {
   display: inline-flex;
-  block-size: 1.4em;
+  block-size: 5em;
   inline-size: auto;
 }
 
