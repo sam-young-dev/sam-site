@@ -4,7 +4,7 @@ import sugarcube from "@sugarcube-sh/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "http://localhost:4321",
+  site: "https://young-sam.netlify.app/",
   vite: {
     plugins: [sugarcube()],
   },

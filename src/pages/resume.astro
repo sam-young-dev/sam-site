@@ -1,11 +1,149 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import DownloadIcon from "../assets/icons/resume.svg?raw";
 
+const skills = [
+  {
+    label: "Frontend",
+    items: ["React", "Angular", "Astro", "CSS/SASS", "Tailwind CSS", "Bootstrap", "HTML5"],
+  },
+  {
+    label: "Backend",
+    items: [
+      ".NET Core",
+      "ASP.NET (C#)",
+      "Dapper",
+      "Entity Framework",
+      "MS Test Unit Testing",
+      "SQL Server",
+      "Micro Frontend Architecture",
+      "Sanity",
+      "Netlify",
+      "Vercel",
+    ],
+  },
+  {
+    label: "Cloud/DevOps",
+    items: ["Azure Cloud Development", "Azure DevOps CI/CD", "Netlify", "Vercel"],
+  },
+  { label: "Design", items: ["Figma", "UI/UX Design"] },
+  { label: "AI Tools", items: ["GitHub Copilot", "Claude Code"] },
+];
+
+const projects = [
+  {
+    title: "Healthcare compliance platform",
+    duration: "2 years",
+    description:
+      "Full stack developer on an internal and external application to manage user compliance for thousands of users, with automations to reduce manual tracking. Built with Angular, ASP.NET Core, and SQL Server; used Figma for client-facing prototyping to get quick feedback and buy-in from the client. Leveraged AI-assisted development tools to increase sprint velocity. Assisted on-site for go live of the new system.",
+  },
+  {
+    title: "App program ROI calculator",
+    duration: "6 months",
+    description:
+      "Built an internal/external calculator for the APP program to help sales corroborate value and compute probable outcomes, from one codebase with two build processes. Built in React, ASP.NET Core, and Azure Cloud; internal version secured with Azure Entra ID, external version embedded on the client's site. Designed and created mockups in Figma to get feedback from client. AI-assisted development tools used wisely to help hit project timeline and budget.",
+  },
+  {
+    title: "Document management system",
+    duration: "1 year",
+    description:
+      "For a global financial client, built CRUD workflows including bulk Excel import/export using Aspose. Stack: ASP.NET, Aspose, React, HTML/CSS, SQL Server.",
+  },
+  {
+    title: "Application dashboard",
+    duration: "1 year",
+    description:
+      "For a global financial client, built centralized hub for client applications with an email template service and a unit testing framework, built on micro frontend architecture with real-time activity logs and task lists. Stack: .NET Core APIs, React, Azure Functions, SQL Server.",
+  },
+];
 ---
 
 <BaseLayout>
-  <div class="wrapper region">
-    <h1>Resume</h1>
+  <div class="wrapper region resume">
+    <header class="resume__header repel">
+      <div class="flow">
+        <h1>Sam Young</h1>
+        <p class="resume__title">Senior Software Engineer</p>
+        <p class="resume__contact">
+          <a href="tel:6157858891">615-785-8891</a> &middot;&nbsp;
+          <a href="mailto:sam.young@email.com">sam.young@email.com</a>
+        </p>
+      </div>
 
+      <a class="button" href="/resume.pdf" download="Sam-Young-Resume.pdf">
+        <span class="resume__download-icon" set:html={DownloadIcon} />
+        Download PDF
+      </a>
+    </header>
+
+    <div class="prose flow resume__body">
+      <p>
+        Full-stack engineer who designs and ships custom web applications.
+        Fluent in both design and code, translating client needs into
+        mockups that are technically feasible, developer-friendly, and
+        grounded in strong UX.
+      </p>
+
+      <section>
+        <h2>Experience</h2>
+        <p class="resume__employer">
+          <em>InfoWorks, Inc.</em> &mdash; <em>Nashville, TN</em>
+        </p>
+        <p>
+          Senior Consultant, 2024&ndash;Present &middot; Consultant II,
+          2022&ndash;2024 &middot; Consultant I, 2020&ndash;2021 &middot;
+          Technical Intern, Summer 2019
+        </p>
+      </section>
+
+      <section>
+        <h2>Technical Skills</h2>
+        <dl class="resume__skills flow">
+          {
+            skills.map((group) => (
+              <>
+                <dt>{group.label}</dt>
+                <dd>
+                  <ul class="resume__skill-list cluster not-prose" role="list">
+                    {group.items.map((item) => (
+                      <li class="resume__skill-tag">{item}</li>
+                    ))}
+                  </ul>
+                </dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section>
+        <h2>Project Experience</h2>
+        <div class="flow">
+          {
+            projects.map((project) => (
+              <p>
+                <strong>
+                  {project.title} ({project.duration}):
+                </strong>{" "}
+                {project.description}
+              </p>
+            ))
+          }
+        </div>
+      </section>
+
+      <section>
+        <h2>Certifications</h2>
+        <ul>
+          <li>Microsoft Azure Fundamentals (AZ-900)</li>
+          <li>Complete CSS (Piccalilli)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Education</h2>
+        <p>B.A. Computer Science, Minor in Graphic Design &mdash; Harding University, 2020</p>
+      </section>
+    </div>
   </div>
 </BaseLayout>

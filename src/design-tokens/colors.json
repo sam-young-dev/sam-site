@@ -4,7 +4,7 @@
 
     "brand": {
       "primary": {
-        "$value": "#3358D4"
+        "$value": "{color.amber.800}"
       },
       "dark": {
         "$value": "#171406"

@@ -1,0 +1,50 @@
+.resume__title {
+  color: var(--color-brand-primary);
+  font-style: italic;
+  font-size: var(--size-step-2);
+}
+
+.resume__contact a {
+  color: currentColor;
+}
+
+.resume__download-icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+}
+
+.resume__download-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.resume__body {
+  --flow-space: var(--space-lg);
+  border-block-start: var(--stroke);
+  padding-block-start: var(--space-lg);
+}
+
+.resume__employer {
+  --flow-space: var(--space-sm);
+}
+
+.resume__skills dt {
+  --flow-space: var(--space-md);
+}
+
+.resume__skills dd {
+  margin-inline-start: 0;
+}
+
+.resume__skill-list {
+  --cluster-gap: 0.5em;
+}
+
+.resume__skill-tag {
+  padding: 0.3em 0.9em;
+  border: var(--stroke-solid);
+  border-radius: 999px;
+  font-size: var(--size-step-0);
+  color: var(--color-brand-primary);
+}

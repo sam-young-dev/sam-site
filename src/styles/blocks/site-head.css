@@ -61,5 +61,4 @@
 .site-head hr {
   --flow-space: var(--space-md);
   --hr-stroke: var(--stroke-width) solid var(--color-brand-primary);
-  --hr-stroke: var(--stroke-width) solid var(--color-amber-800);
 }
