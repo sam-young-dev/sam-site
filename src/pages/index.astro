@@ -1,26 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Masthead from '../components/masthead/Masthead.astro';
-import Hero from '../components/hero/Hero.astro';
-import Closer from '../components/closer/Closer.astro';
+import LogoIcon from '../assets/logo-amber-large.svg?raw';
 ---
 
 <BaseLayout>
-	<div class="region flow">
-		<div class="wrapper">
-			<Masthead />
+  <div id="puddle-container"></div>
+
+  <div class="hero-content-container">
+		<div class="hero-content hero-content--stagger wrapper">
+			<h1 class="hero-content__heading">
+				<span class="hero-content__icon" set:html={LogoIcon} />
+				Sam Young
+			</h1>
+			<p>Developer</p>
+			<p>Designer</p>
+			<p>Artist</p>
 		</div>
-		<Hero />
+
+    <div class="content region wrapper">
+      <section class="readable prose">
+        <h2>Howdy!</h2>
+        <p>I'm Sam Young; here is my digital garden that is a constant work in progress and changing over time.</p>
+      </section>
+    </div>
 	</div>
-	
-	<div class="region wrapper" id="content">
-		<div class="prose">
-			<h1>Astro Starter!</h1>
-			<p>This is some content here</p>
-			<button class="button">Test</button>
-			<button class="button" data-button-variant="secondary">Test</button>
-		</div>
+
+	<div class="region wrapper">
+		<h2>Explore the site!</h2>
+		<ul>
+			<li><a href="/photography">Photography</a></li>
+			<li><a href="/art">Art</a></li>
+			<li><a href="/projects">Projects</a></li>
+		</ul>
 	</div>
-	
-	<Closer />
 </BaseLayout>
+
+<script>
+	import '../lib/puddle.js';
+</script>

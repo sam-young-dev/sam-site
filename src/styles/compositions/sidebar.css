@@ -14,9 +14,16 @@ between the sidebar and main content.
 --sidebar-size: How large the sidebar should be
 
 --sidebar-wrap-at: The minimum size of the main content area
+
+Requires a `.sidebar-layout` class on the container. The original
+every-layout pattern uses a bare `:has(> .sidebar)` selector, but an
+unscoped :has() forces the browser to re-evaluate style for every
+ancestor up to <body> on any DOM mutation anywhere on the page, since
+it can't determine which elements it might match. Scoping it to a
+known class keeps the composition cheap.
 */
 
-:has(> .sidebar) {
+.sidebar-layout:has(> .sidebar) {
     display: flex;
     flex-wrap: wrap;
     gap: var(--sidebar-gap, 1rem);
@@ -28,7 +35,7 @@ between the sidebar and main content.
     flex-grow: 1;
 }
 
-:has(> .sidebar) > :not(.sidebar) {
+.sidebar-layout:has(> .sidebar) > :not(.sidebar) {
     flex-basis: 0;
     flex-grow: 999;
     min-inline-size: var(--sidebar-wrap-at, 50%);

@@ -9,6 +9,7 @@
     },
     "sans": {
       "$value": [
+        "Cabinet Grotesk",
         "Geist",
         "Inter",
         "-apple-system",
@@ -22,6 +23,7 @@
     },
     "mono": {
       "$value": [
+        "DM Mono",
         "Geist Mono",
         "SFMono-Regular",
         "Consolas",
@@ -31,7 +33,13 @@
       ]
     },
     "serif": {
-      "$value": ["Georgia", "Cambria", "Times New Roman", "Times", "serif"]
+      "$value": [
+        "Georgia",
+        "Cambria",
+        "Times New Roman",
+        "Times",
+        "serif"
+      ]
     },
     "weight": {
       "$type": "fontWeight",

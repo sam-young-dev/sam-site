@@ -1,12 +1,43 @@
 ---
 const year = new Date().getFullYear()
+import LogoIcon from '../../assets/logo-white-large.svg?raw';
 import { siteData } from '../../data/site-data'
 ---
 
 <footer class="site-foot">
-  <div class="wrapper repel">
-    <p>&copy; {siteData.title} <span id="footer-year">{year}</span></p>
-    <p>All rights reserved.</p>
+  <div class="wrapper flow">
+    <div class="site-foot__columns">
+      <span class="site-foot__brand-icon" set:html={LogoIcon} />
+
+      {siteData.navItems.length > 0 && (
+        <nav aria-label="footer" class="nav">
+          <ul class="cluster" role="list">
+            {siteData.navItems.map((item) => (
+              <li>
+                <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
+      {siteData.personalLinks.length > 0 && (
+        <nav aria-label="footer" class="nav">
+          <ul class="cluster" role="list">
+            {siteData.personalLinks.map((item) => (
+              <li>
+                <a href={item.href} {...(item.isExternal ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+    <hr/>
+    <div class="repel">
+      <p class="site-foot__brand"><small>&copy; <span id="footer-year">{year}</span></small></p>
+      <p><small>made with ♥ from Nashville, TN</small></p>
+    </div>
   </div>
 </footer>
 

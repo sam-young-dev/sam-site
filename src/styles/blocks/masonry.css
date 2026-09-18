@@ -1,0 +1,30 @@
+.masonry {
+  --gutter: 0.4em;
+  --switcher-gap: var(--gutter);
+  --flow-space: var(--gutter);
+  --switcher-target-container-width: 28rem;
+  --wrapper-padding-inline: var(--gutter);
+}
+
+.masonry img {
+  width: 100%;
+}
+
+.masonry__image {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition-slow) var(--ease-out),
+    transform var(--transition-slow) var(--ease-out);
+}
+
+.masonry__image.is-loaded {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masonry__image {
+    transform: none;
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+}

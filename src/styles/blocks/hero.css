@@ -36,11 +36,11 @@
   grid-column: 1;
   grid-row: 2;
   z-index: 1;
-  font-weight: var(--font-medium);
+  font-weight: var(--font-weight-medium);
   font-size: var(--size-step-0);
   text-align: center;
   text-decoration: none;
-  line-height: var(--leading-fine);
+  line-height: var(--leading-heading);
   color: var(--skip-link-color);
   max-width: 12ch;
 }
@@ -69,5 +69,5 @@
 
 .hero__skip-link:hover .hero__skip-link-icon {
   transform: translateY(5%);
-  transition: transform var(--transition-bounce);
+  transition: transform var(--transition-bounce) var(--ease-bounce);
 }
