@@ -10,6 +10,36 @@
   width: 100%;
 }
 
+/* MASONRY GRID
+Uses CSS multi-column layout so images keep their natural aspect
+ratio (portrait or landscape) and stack into balanced columns
+without leaving gaps, the way a Pinterest-style grid does. */
+.masonry-grid {
+  column-count: 1;
+  column-gap: var(--grid-gap, var(--space-md-lg));
+}
+
+@media (min-width: 40rem) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 60rem) {
+  .masonry-grid {
+    column-count: 3;
+  }
+}
+
+.masonry-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--grid-gap, var(--space-md-lg));
+  border-radius: var(--radius-s);
+  break-inside: avoid;
+}
+
 .masonry__image {
   opacity: 0;
   transform: translateY(8px);

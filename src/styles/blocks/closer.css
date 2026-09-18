@@ -2,14 +2,21 @@
   position: relative;
   max-width: 100%;
   aspect-ratio: 200 / 77;
-  background-image: url("/src/assets/mountain-texture.svg");
-  background-size: 100% 100%;
-  background-position: bottom center;
-  background-repeat: no-repeat;
+  overflow: hidden;
   color: var(--color-foreground-inverse);
   font-weight: var(--font-weight-bold);
   padding-top: clamp(2rem, 50vb, 8rem);
   padding-bottom: 2rem;
+}
+
+.closer__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom center;
 }
 
 .closer::after {
@@ -17,11 +24,17 @@
   position: absolute;
   inset-block-end: 0;
   inset-inline: 0;
-  block-size: 55%;
+  block-size: 35%;
+  z-index: 1;
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--color-fill-loud) 85%
+    var(--color-amber-950) 100%
   );
   pointer-events: none;
+}
+
+.closer .wrapper {
+  position: relative;
+  z-index: 2;
 }

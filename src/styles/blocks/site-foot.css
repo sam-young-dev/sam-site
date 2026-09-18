@@ -1,9 +1,16 @@
 .site-foot {
-  background: var(--color-fill-loud);
-  color: var(--color-foreground-inverse);
+  background: var(--color-amber-950);
+  color: var(--color-amber-200);
   line-height: var(--leading-none);
   padding-block: var(--space-lg);
-  color: var(--color-stone-300);
+}
+
+.site-foot a {
+  color: var(--color-amber-50);
+}
+
+.site-foot a:hover {
+  color: var(--color-amber-300);
 }
 
 .site-foot__columns {
@@ -21,7 +28,7 @@
 
 .site-foot hr {
   --flow-space: var(--space-sm);
-  --hr-stroke: var(--stroke-width) solid var(--color-foreground-inverse);
+  --hr-stroke: var(--stroke-width) solid var(--color-amber-200);
   opacity: 0.3;
 }
 
@@ -48,4 +55,21 @@
 .site-foot__brand-icon svg {
   block-size: 100%;
   inline-size: auto;
+}
+
+.site-foot__personal-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.site-foot__link-icon {
+  display: inline-flex;
+  block-size: 1em;
+  inline-size: 1em;
+}
+
+.site-foot__link-icon svg {
+  block-size: 100%;
+  inline-size: 100%;
 }

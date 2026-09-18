@@ -30,8 +30,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Header />
     <main tabindex="-1" id="main-content">
       <slot />
+      <Closer />
     </main>
-    <Closer />
     <SiteFooter />
   </body>
 </html>
