@@ -12,7 +12,7 @@ html {
 body {
   /* background: var(--color-background-base); */
   background: var(--background-light);
-  color: var(--color-amber-800);
+  color: var(--color-brand-primary);
   font-size: var(--size-step-1);
   font-family: var(--font-body);
   line-height: var(--leading-body);

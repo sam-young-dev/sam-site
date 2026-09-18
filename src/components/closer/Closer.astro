@@ -1,3 +1,19 @@
+---
+import { Image } from "astro:assets";
+import mountainTexture from "../../assets/mountain-texture.png";
+---
+
 <div class="closer">
+  <Image
+    class="closer__backdrop"
+    src={mountainTexture}
+    widths={[640, 960, 1280, 1920, 2400]}
+    sizes="100vw"
+    format="avif"
+    quality={60}
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+  />
   <div class="wrapper flow"></div>
 </div>

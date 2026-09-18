@@ -7,13 +7,37 @@ const CONFIG = {
   // Node size as a fraction of the smaller viewport dimension. Lower = smaller,
   // more tightly packed grid items (more rows/cols); higher = fewer, larger items.
   NODE_SIZE_RATIO: 0.02,
+  // Ripple strength scales with screen size: MAX_RIPPLE_STRENGTH on large
+  // screens, up to MAX_RIPPLE_STRENGTH_SMALL_SCREEN on small/touch screens
+  // (interpolated linearly between the two breakpoints below, in px).
   MAX_RIPPLE_STRENGTH: 15.0,
+  MAX_RIPPLE_STRENGTH_SMALL_SCREEN: 45.0,
+  RIPPLE_STRENGTH_SMALL_BREAKPOINT: 400,
+  RIPPLE_STRENGTH_LARGE_BREAKPOINT: 1200,
   FORCE_DAMPENING_RATIO: 0.85,
   FORCE_CUTOFF: 2,
   ASCII_SHADES: [...".*"],
-  // ASCII_SHADES: [...".•"],
   MOUSE_DELAY: 500,
 };
+
+function computeMaxRippleStrength(lesserDimension) {
+  const {
+    MAX_RIPPLE_STRENGTH,
+    MAX_RIPPLE_STRENGTH_SMALL_SCREEN,
+    RIPPLE_STRENGTH_SMALL_BREAKPOINT,
+    RIPPLE_STRENGTH_LARGE_BREAKPOINT,
+  } = CONFIG;
+
+  const t =
+    (lesserDimension - RIPPLE_STRENGTH_SMALL_BREAKPOINT) /
+    (RIPPLE_STRENGTH_LARGE_BREAKPOINT - RIPPLE_STRENGTH_SMALL_BREAKPOINT);
+  const clampedT = Math.max(0, Math.min(1, t));
+
+  return (
+    MAX_RIPPLE_STRENGTH_SMALL_SCREEN +
+    clampedT * (MAX_RIPPLE_STRENGTH - MAX_RIPPLE_STRENGTH_SMALL_SCREEN)
+  );
+}
 
 const ASCII_THRESHOLDS = CONFIG.ASCII_SHADES.map(
   (_, index) => (index * 100.0) / (CONFIG.ASCII_SHADES.length - 1),
@@ -199,6 +223,7 @@ class Puddle {
   #initialize() {
     this.#setupDimensions();
     this.data = new PuddleData(this.numRows, this.numCols);
+    this.data.maxRippleStrength = this.maxRippleStrength;
     this.#setupDelegatedListeners();
     this.setupGrid();
   }
@@ -210,6 +235,11 @@ class Puddle {
       CONFIG.MIN_NODE_SIZE,
       lesserDimension * CONFIG.NODE_SIZE_RATIO,
     );
+    this.maxRippleStrength = computeMaxRippleStrength(lesserDimension);
+
+    if (this.data) {
+      this.data.maxRippleStrength = this.maxRippleStrength;
+    }
 
     if (clientHeight) {
       this.numRows = Math.floor(clientHeight / this.nodeSize);

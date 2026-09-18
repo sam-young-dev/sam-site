@@ -23,6 +23,8 @@
 @import "./blocks/button.css";
 @import "./blocks/masthead.css";
 @import "./blocks/masonry.css";
+@import "./blocks/photo-detail.css";
 @import "./blocks/about.css";
 @import "./blocks/puddle.css";
 @import "./blocks/home.css";
+@import "./blocks/resume.css";

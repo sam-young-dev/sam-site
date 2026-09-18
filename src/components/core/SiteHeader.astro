@@ -1,9 +1,11 @@
 ---
 import LogoIcon from '../../assets/logo-amber-large.svg?raw';
 import { siteData } from '../../data/site-data';
+
+const isHome = Astro.url.pathname === '/';
 ---
 
-<header class="site-head">
+<header class:list={['site-head', { 'site-head--home': isHome }]}>
   <div class="wrapper">
     <div class="repel site-head__inner">
       <div class="site-head__brand">

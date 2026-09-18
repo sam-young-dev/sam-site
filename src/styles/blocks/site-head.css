@@ -24,6 +24,19 @@
   z-index: var(--z-index);
 }
 
+.site-head--home nav .cluster {
+  --gutter: var(--space-s);
+  padding-inline: var(--space-s);
+  padding-block: var(--space-2xs);
+  border-radius: var(--radius-pill, 999px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: light-dark(
+    rgb(255 255 255 / 0.35),
+    rgb(0 0 0 / 0.35)
+  );
+}
+
 .site-head__brand a:not(:hover) {
   text-decoration: none;
 }
@@ -48,5 +61,4 @@
 .site-head hr {
   --flow-space: var(--space-md);
   --hr-stroke: var(--stroke-width) solid var(--color-brand-primary);
-  --hr-stroke: var(--stroke-width) solid var(--color-amber-800);
 }
