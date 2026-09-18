@@ -1,12 +1,14 @@
 #puddle-container {
   position: absolute;
-  display: grid;
   inset: 0;
   color: light-dark(var(--black), var(--background-light));
   user-select: none;
-  font-family: "Fira Code", monospace;
   contain: layout paint style;
   content-visibility: auto;
+
+  canvas {
+    display: block;
+  }
 
   &::after {
     content: "";
