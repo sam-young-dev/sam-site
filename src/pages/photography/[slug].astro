@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPhotos } from "../../utils/photos";
+import ArrowIcon from "../../assets/arrow-down.svg?raw";
+
+export async function getStaticPaths() {
+  const photos = await getPhotos();
+  return photos.map((photo, index) => ({
+    params: { slug: photo.slug },
+    props: {
+      photo,
+      prevSlug: photos[(index - 1 + photos.length) % photos.length].slug,
+      nextSlug: photos[(index + 1) % photos.length].slug,
+    },
+  }));
+}
+
+const { photo, prevSlug, nextSlug } = Astro.props;
+const { image, meta } = photo;
+
+const metaItems = [
+  { label: "Date", value: meta.date },
+  { label: "Camera", value: meta.camera },
+  { label: "Lens", value: meta.lens },
+  { label: "Focal length", value: meta.focalLength },
+  { label: "Aperture", value: meta.aperture },
+  { label: "Shutter speed", value: meta.shutterSpeed },
+  { label: "ISO", value: meta.iso },
+].filter((item) => item.value);
+---
+
+<BaseLayout title={`Photography — ${meta.camera ?? "Photo"}`}>
+  <a
+    href={`/photography/${prevSlug}/`}
+    class="photo-detail__nav photo-detail__nav--prev"
+    aria-label="View previous photo"
+  >
+    <span class="photo-detail__nav-icon" set:html={ArrowIcon} />
+  </a>
+
+  <a
+    href={`/photography/${nextSlug}/`}
+    class="photo-detail__nav photo-detail__nav--next"
+    aria-label="View next photo"
+  >
+    <span class="photo-detail__nav-icon" set:html={ArrowIcon} />
+  </a>
+
+  <div class="region wrapper">
+    <a href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
+
+    <figure class="photo-detail">
+      <Image
+        src={image}
+        widths={[800, 1400, 2000]}
+        sizes="(min-width: 48rem) 75vw, 100vw"
+        format="avif"
+        quality={80}
+        alt=""
+        class="photo-detail__image"
+      />
+      {metaItems.length > 0 && (
+        <figcaption class="photo-detail__meta">
+          <dl class="photo-detail__meta-list">
+            {metaItems.map((item) => (
+              <div class="photo-detail__meta-item">
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </figcaption>
+      )}
+    </figure>
+  </div>
+
+  <div class="region"></div>
+  <div class="region"></div>
+
+</BaseLayout>

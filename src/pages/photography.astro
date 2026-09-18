@@ -1,64 +1,31 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import type { ImageMetadata } from "astro";
+import { getPhotos } from "../utils/photos";
 
-const imageModules = import.meta.glob<ImageMetadata>("../assets/images/*.{jpeg,jpg,png}", {
-  eager: true,
-  import: "default",
-});
-
-const images = Object.entries(imageModules)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, image]) => image);
-
-const columns: ImageMetadata[][] = [[], [], []];
-images.forEach((image, index) => {
-  columns[index % columns.length].push(image);
-});
+const photos = await getPhotos();
 ---
 
 <BaseLayout>
-  <div class="reasonable-width">
-    <div class="content region wrapper">
-      <section class="readable">
-        <h2>Howdy!</h2>
-      </section>
-    </div>
-	</div>
-
   <div class="region wrapper">
     <div class="masonry-grid">
-      {images.map((image) => (
-            <img
-              src={image.src}
-              width={image.width}
-              height={image.height}
-              alt=""
-              loading="lazy"
-              class="masonry__image"
-              onload="this.classList.add('is-loaded')"
-            />
-          ))}
+      {photos.map((photo) => (
+        <a href={`/photography/${photo.slug}/`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? "the gallery"}`}>
+          <Image
+            src={photo.image}
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+            format="avif"
+            quality={70}
+            alt=""
+            loading="lazy"
+            class="masonry__image"
+            onload="this.classList.add('is-loaded')"
+          />
+        </a>
+      ))}
     </div>
   </div>
 
-  <!-- <div class="region">
-		<div class="masonry wrapper switcher">
-      {columns.map((column) => (
-        <div class="flow">
-          {column.map((image) => (
-            <img
-              src={image.src}
-              width={image.width}
-              height={image.height}
-              alt=""
-              loading="lazy"
-              class="masonry__image"
-              onload="this.classList.add('is-loaded')"
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  </div> -->
+  <div class="region"></div>
 </BaseLayout>

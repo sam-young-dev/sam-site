@@ -35,9 +35,21 @@ without leaving gaps, the way a Pinterest-style grid does. */
   display: block;
   width: 100%;
   height: auto;
-  margin-bottom: var(--grid-gap, var(--space-md-lg));
   border-radius: var(--radius-s);
+}
+
+.masonry__link {
+  display: block;
+  margin-bottom: var(--grid-gap, var(--space-md-lg));
   break-inside: avoid;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.masonry__link:hover,
+.masonry__link:focus-visible {
+  transform: scale(101%);
 }
 
 .masonry__image {
