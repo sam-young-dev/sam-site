@@ -35,7 +35,7 @@
 
 .photo-detail__nav {
   position: fixed;
-  top: 50%;
+  bottom: calc(var(--space-sm-md) + env(safe-area-inset-bottom, 0px));
   z-index: 10;
   display: flex;
   align-items: center;
@@ -43,16 +43,17 @@
   width: var(--space-lg-xl, 3rem);
   height: var(--space-lg-xl, 3rem);
   border-radius: 50%;
-  background: rgb(0 0 0 / 0.4);
-  color: #fff;
-  transform: translateY(-50%);
+  background: var(--background-light);
+  color: var(--color-amber-800);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
   transition: background var(--transition-normal) var(--ease-out),
+    filter var(--transition-normal) var(--ease-out),
     transform var(--transition-normal) var(--ease-out);
 }
 
 .photo-detail__nav:hover,
 .photo-detail__nav:focus-visible {
-  background: rgb(0 0 0 / 0.6);
+  filter: brightness(105%);
 }
 
 .photo-detail__nav--prev {
@@ -61,7 +62,7 @@
 
 .photo-detail__nav--prev:hover,
 .photo-detail__nav--prev:focus-visible {
-  transform: translateY(-50%) translateX(-2px);
+  transform: translateX(-2px);
 }
 
 .photo-detail__nav--next {
@@ -70,7 +71,7 @@
 
 .photo-detail__nav--next:hover,
 .photo-detail__nav--next:focus-visible {
-  transform: translateY(-50%) translateX(2px);
+  transform: translateX(2px);
 }
 
 .photo-detail__nav-icon {
@@ -98,7 +99,7 @@
 
 .photo-detail__meta-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: var(--space-sm-md) var(--space-lg);
   margin: 0;
 }
@@ -126,8 +127,25 @@
     grid-template-columns: minmax(0, 3fr) minmax(12rem, 1fr);
     align-items: start;
   }
+}
 
-  .photo-detail__meta-list {
-    flex-direction: column;
+/* Above this width the nav buttons clear the content column, so they can
+   float at the vertical center of the viewport instead of docking to the
+   bottom edge. */
+@media (min-width: 90rem) {
+  .photo-detail__nav {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .photo-detail__nav--prev:hover,
+  .photo-detail__nav--prev:focus-visible {
+    transform: translateY(-50%) translateX(-2px);
+  }
+
+  .photo-detail__nav--next:hover,
+  .photo-detail__nav--next:focus-visible {
+    transform: translateY(-50%) translateX(2px);
   }
 }
