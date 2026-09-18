@@ -9,6 +9,7 @@
     },
     "sans": {
       "$value": [
+        "Cabinet Grotesk",
         "Geist",
         "Inter",
         "-apple-system",
@@ -33,7 +34,6 @@
     },
     "serif": {
       "$value": [
-        "Cabinet Grotesk",
         "Georgia",
         "Cambria",
         "Times New Roman",
