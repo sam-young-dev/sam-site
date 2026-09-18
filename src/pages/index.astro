@@ -1,17 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Masthead from '../components/masthead/Masthead.astro';
-import Hero from '../components/hero/Hero.astro';
 import LogoIcon from '../assets/logo-amber-large.svg?raw';
 ---
 
 <BaseLayout>
   <div id="puddle-container"></div>
 
-  <div class="reasonable-width">
-		<div class="hero-about hero-about--stagger wrapper">
-			<h1 class="hero-about__heading">
-				<span class="hero-about__icon" set:html={LogoIcon} />
+  <div class="hero-content-container">
+		<div class="hero-content hero-content--stagger wrapper">
+			<h1 class="hero-content__heading">
+				<span class="hero-content__icon" set:html={LogoIcon} />
 				Sam Young
 			</h1>
 			<p>Developer</p>
