@@ -4,6 +4,9 @@
 const CONFIG = {
   DEFAULT_UPDATE_INTERVAL: 100,
   MIN_NODE_SIZE: 1,
+  // Node size as a fraction of the smaller viewport dimension. Lower = smaller,
+  // more tightly packed grid items (more rows/cols); higher = fewer, larger items.
+  NODE_SIZE_RATIO: 0.02,
   MAX_RIPPLE_STRENGTH: 15.0,
   FORCE_DAMPENING_RATIO: 0.85,
   FORCE_CUTOFF: 2,
@@ -203,7 +206,10 @@ class Puddle {
   #setupDimensions() {
     const { clientWidth, clientHeight } = this.parentNode;
     const lesserDimension = Math.min(clientHeight, clientWidth);
-    this.nodeSize = Math.max(CONFIG.MIN_NODE_SIZE, (lesserDimension * 3) / 100);
+    this.nodeSize = Math.max(
+      CONFIG.MIN_NODE_SIZE,
+      lesserDimension * CONFIG.NODE_SIZE_RATIO,
+    );
 
     if (clientHeight) {
       this.numRows = Math.floor(clientHeight / this.nodeSize);

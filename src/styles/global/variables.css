@@ -13,6 +13,5 @@
 
   color-scheme: light dark;
   --black: var(--color-stone-400);
-  --bright_white: oklch(94.75% 0.04 73);
   --background-light: var(--color-amber-50);
 }

@@ -5,7 +5,7 @@
   font-size: var(--size-step-00);
   font-weight: var(--font-bold);
   padding-block-start: var(--space-md);
-  z-index: 1000;
+  --z-index: 1000;
 }
 
 .site-head .repel {
@@ -17,6 +17,11 @@
   container-name: site-head-brand;
   flex-basis: clamp(25ch, 60%, 50rem);
   flex-grow: 1;
+  z-index: var(--z-index);
+}
+
+.site-head nav {
+  z-index: var(--z-index);
 }
 
 .site-head__brand a:not(:hover) {

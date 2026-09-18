@@ -1,17 +1,27 @@
 .closer {
-  background: var(--color-interactive-fill-default);
+  position: relative;
+  max-width: 100%;
+  aspect-ratio: 200 / 77;
+  background-image: url("/src/assets/mountain-texture.svg");
+  background-size: 100% 100%;
+  background-position: bottom center;
+  background-repeat: no-repeat;
   color: var(--color-foreground-inverse);
-  padding-block: clamp(10rem, 50vb, 20rem) var(--gutter);
   font-weight: var(--font-bold);
   padding-top: clamp(2rem, 50vb, 8rem);
   padding-bottom: 2rem;
 }
 
-.closer svg[role="img"][width][height] {
-  --color-svg-fill: var(--color-foreground-inverse);
-  --color-svg-stroke: var(--color-foreground-inverse);
-  width: 100%;
-  height: auto;
-  background: unset;
-  padding: unset;
+.closer::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: 55%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-fill-loud) 85%
+  );
+  pointer-events: none;
 }

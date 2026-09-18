@@ -4,9 +4,23 @@ import { siteData } from '../../data/site-data'
 ---
 
 <footer class="site-foot">
-  <div class="wrapper repel">
-    <p>&copy; {siteData.title} <span id="footer-year">{year}</span></p>
-    <p>All rights reserved.</p>
+  <div class="wrapper flow">
+    {siteData.navItems.length > 0 && (
+      <nav aria-label="footer" class="nav">
+        <ul class="cluster" role="list">
+          {siteData.navItems.map((item) => (
+            <li>
+              <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+    <hr/>
+    <div class="repel">
+      <p>&copy; {siteData.title} <span id="footer-year">{year}</span></p>
+      <p>All rights reserved.</p>
+    </div>
   </div>
 </footer>
 

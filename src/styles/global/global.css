@@ -9,31 +9,6 @@ html {
   background: light-dark(var(--background-light), var(--black));
 }
 
-#puddle-container {
-  position: absolute;
-  display: grid;
-  inset: 0;
-  color: light-dark(var(--black), var(--background-light));
-  user-select: none;
-  font-family: "Fira Code", monospace;
-  contain: layout paint style;
-  content-visibility: auto;
-}
-
-#puddle-container {
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    inset-block-start: 0;
-    background: linear-gradient(
-      transparent,
-      light-dark(var(--background-light), var(--black))
-    );
-    pointer-events: none;
-  }
-}
-
 body {
   /* background: var(--color-background-base); */
   background: var(--background-light);
@@ -48,6 +23,14 @@ body {
   display: grid;
   /* Header is auto-sized, Main takes remaining space (1fr), Footer is auto-sized */
   grid-template-rows: auto 1fr auto;
+}
+
+/* Grid items default to min-width: auto, which lets a child's intrinsic
+   size (e.g. .closer's aspect-ratio transferring a size from its
+   content-derived height) push it, and the whole page, wider than the
+   viewport. Reset it so children shrink to fit instead. */
+body > * {
+  min-width: 0;
 }
 
 :is(h1, h2, h3, h4) {
