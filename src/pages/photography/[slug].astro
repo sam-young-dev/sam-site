@@ -30,7 +30,10 @@ const metaItems = [
 ].filter((item) => item.value);
 ---
 
-<BaseLayout title={`Photography — ${meta.camera ?? "Photo"}`}>
+<BaseLayout
+  title={`Photography — ${meta.camera ?? "Photo"} — Sam Young`}
+  description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
+>
   <a
     href={`/photography/${prevSlug}/`}
     class="photo-detail__nav photo-detail__nav--prev"

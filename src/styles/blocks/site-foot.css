@@ -57,6 +57,10 @@
   inline-size: auto;
 }
 
+.site-foot__brand-icon svg path {
+  fill: var(--color-amber-200);
+}
+
 .site-foot__personal-links a {
   display: inline-flex;
   align-items: center;
