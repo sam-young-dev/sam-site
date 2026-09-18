@@ -7,7 +7,7 @@
   background-position: bottom center;
   background-repeat: no-repeat;
   color: var(--color-foreground-inverse);
-  font-weight: var(--font-bold);
+  font-weight: var(--font-weight-bold);
   padding-top: clamp(2rem, 50vb, 8rem);
   padding-bottom: 2rem;
 }

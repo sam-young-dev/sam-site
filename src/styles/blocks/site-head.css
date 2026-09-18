@@ -1,9 +1,9 @@
 .site-head {
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
-  line-height: var(--leading-flat);
-  font-size: var(--size-step-00);
-  font-weight: var(--font-bold);
+  line-height: var(--leading-none);
+  font-size: var(--size-step-0);
+  font-weight: var(--font-weight-bold);
   padding-block-start: var(--space-md);
   --z-index: 1000;
 }

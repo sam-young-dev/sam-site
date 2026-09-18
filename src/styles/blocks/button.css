@@ -9,7 +9,7 @@
   display: inline-flex;
   gap: var(--button-gutter);
   align-items: center;
-  line-height: var(--leading-flat);
+  line-height: var(--leading-none);
   position: relative;
   border: none;
   cursor: pointer;
@@ -19,8 +19,8 @@
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
   text-decoration: none;
-  font-size: var(--size-step-00);
-  font-weight: var(--font-bold);
+  font-size: var(--size-step-0);
+  font-weight: var(--font-weight-bold);
   transition: filter var(--transition-normal) var(--ease-out), transform var(--transition-fast) var(--ease-out);
 }
 

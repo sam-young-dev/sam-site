@@ -14,8 +14,8 @@ body {
   background: var(--background-light);
   color: var(--color-amber-800);
   font-size: var(--size-step-1);
-  font-family: var(--font-base);
-  line-height: var(--leading-standard);
+  font-family: var(--font-body);
+  line-height: var(--leading-body);
   font-size-adjust: from-font;
   min-height: 100dvh;
   margin: 0;
@@ -34,7 +34,7 @@ body > * {
 }
 
 :is(h1, h2, h3, h4) {
-  line-height: var(--leading-fine);
+  line-height: var(--leading-heading);
   text-wrap: balance;
 }
 
@@ -58,8 +58,8 @@ h3 {
   [class*="text-step-11"],
   [class*="text-step-12"]
 ) {
-  line-height: var(--leading-micro);
-  font-weight: var(--font-black);
+  line-height: var(--leading-none);
+  font-weight: var(--font-weight-bold);
 }
 
 :is(h4, h5, h6) {
@@ -115,7 +115,7 @@ kbd {
 
 var {
   font-style: normal;
-  font-weight: var(--font-medium);
+  font-weight: var(--font-weight-medium);
 }
 
 q {
@@ -141,7 +141,7 @@ ul ::marker {
 
 ol ::marker {
   font-size: 1em;
-  font-weight: var(--font-bold);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Lists with classes and roles will be out of standard flow, so remove the default spacing */
@@ -152,7 +152,7 @@ ol ::marker {
 }
 
 dt {
-  font-weight: var(--font-medium);
+  font-weight: var(--font-weight-medium);
 }
 
 dt + dd {
@@ -160,7 +160,7 @@ dt + dd {
 }
 
 dd + dt {
-  margin-block-start: var(--space-s);
+  margin-block-start: var(--space-sm);
 }
 
 dd {
@@ -173,7 +173,7 @@ blockquote {
 }
 
 blockquote footer {
-  margin-block-start: var(--space-s);
+  margin-block-start: var(--space-sm);
   color: var(--color-brand-primary);
   font-size: var(--size-step-0);
 }
@@ -209,17 +209,17 @@ table {
 
 th {
   text-align: left;
-  font-weight: var(--font-bold);
-  line-height: var(--leading-fine);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-heading);
 }
 
 thead th {
-  padding-block: var(--space-s);
+  padding-block: var(--space-sm);
 }
 
 td,
 th {
-  padding: var(--space-xs) var(--space-s);
+  padding: var(--space-xs) var(--space-sm);
 }
 
 th:not(:only-of-type) {
@@ -240,7 +240,7 @@ tr + tr :is(th, td) {
 
 caption {
   caption-side: bottom;
-  margin-block-start: var(--space-s);
+  margin-block-start: var(--space-sm);
 }
 
 a:not([class]):hover {
@@ -332,8 +332,8 @@ form > * + * {
 }
 
 label {
-  line-height: var(--leading-fine);
-  font-weight: var(--font-medium);
+  line-height: var(--leading-heading);
+  font-weight: var(--font-weight-medium);
 }
 
 label::after {
@@ -345,12 +345,12 @@ label::after {
 label:has(input) {
   display: flex;
   align-items: baseline;
-  gap: var(--space-s);
-  font-weight: var(--font-normal);
+  gap: var(--space-sm);
+  font-weight: var(--font-weight-normal);
 }
 
 label:has(input) + label:has(input) {
-  --flow-space: var(--space-s-m);
+  --flow-space: var(--space-sm-md);
 }
 
 /* Slightly adjusts the vertical position of the check/radio */
@@ -369,19 +369,19 @@ label input:disabled + * {
 
 fieldset {
   border: var(--stroke);
-  padding: var(--space-s);
+  padding: var(--space-sm);
 }
 
 legend {
-  font-weight: var(--font-medium);
+  font-weight: var(--font-weight-medium);
   padding-inline: var(--space-xs);
 }
 
 summary {
-  font-weight: var(--font-bold);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
 }
 
 details[open] summary {
-  margin-block-end: var(--space-s);
+  margin-block-end: var(--space-sm);
 }

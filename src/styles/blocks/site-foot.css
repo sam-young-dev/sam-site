@@ -1,15 +1,15 @@
 .site-foot {
   background: var(--color-fill-loud);
   color: var(--color-foreground-inverse);
-  line-height: var(--leading-flat);
+  line-height: var(--leading-none);
   padding-block: var(--space-lg);
 }
 
 .site-foot .nav .cluster {
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
-  font-size: var(--size-step-00);
-  font-weight: var(--font-bold);
+  font-size: var(--size-step-0);
+  font-weight: var(--font-weight-bold);
 }
 
 .site-foot hr {

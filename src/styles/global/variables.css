@@ -1,5 +1,5 @@
 :root {
-  --gutter: var(--space-m-l);
+  --gutter: var(--space-md-lg);
   --stroke-width: 1px;
   --stroke: var(--stroke-width) dashed var(--color-decorative-stroke);
   --stroke-solid: var(--stroke-width) solid var(--color-decorative-stroke);
@@ -7,7 +7,7 @@
   --radius-m: 0.75rem;
   --radius-l: 2.5rem;
   --uppercase-kerning: 0.04ch;
-  --indent-size: var(--space-xs-l);
+  --indent-size: var(--space-xs-sm);
 
   --wrapper-max-width: 80rem;
 
