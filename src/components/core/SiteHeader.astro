@@ -1,4 +1,5 @@
 ---
+import LogoIcon from '../../assets/logo-amber-large.svg?raw';
 import { siteData } from '../../data/site-data';
 ---
 
@@ -6,7 +7,8 @@ import { siteData } from '../../data/site-data';
   <div class="wrapper">
     <div class="repel site-head__inner">
       <div class="site-head__brand">
-        <a href="/">
+        <a href="/" class="site-head__brand-link">
+          <span class="site-head__brand-icon" set:html={LogoIcon} />
           { siteData.title }
         </a>
       </div>

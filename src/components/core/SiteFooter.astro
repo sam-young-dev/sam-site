@@ -1,5 +1,6 @@
 ---
 const year = new Date().getFullYear()
+import LogoIcon from '../../assets/logo-white-large.svg?raw';
 import { siteData } from '../../data/site-data'
 ---
 
@@ -18,7 +19,7 @@ import { siteData } from '../../data/site-data'
     )}
     <hr/>
     <div class="repel">
-      <p>&copy; {siteData.title} <span id="footer-year">{year}</span></p>
+      <p class="site-foot__brand">&copy; <span class="site-foot__brand-icon" set:html={LogoIcon} />{siteData.title} <span id="footer-year">{year}</span></p>
       <p>All rights reserved.</p>
     </div>
   </div>

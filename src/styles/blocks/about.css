@@ -20,6 +20,23 @@
   animation: hero-about-in var(--transition-slow) var(--ease-out) forwards;
 }
 
+.hero-about__heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hero-about__icon {
+  display: inline-flex;
+  block-size: 1em;
+  inline-size: auto;
+}
+
+.hero-about__icon svg {
+  block-size: 100%;
+  inline-size: auto;
+}
+
 .hero-about--stagger > *:nth-child(1) { animation-delay: 0ms; }
 .hero-about--stagger > *:nth-child(2) { animation-delay: 60ms; }
 .hero-about--stagger > *:nth-child(3) { animation-delay: 120ms; }

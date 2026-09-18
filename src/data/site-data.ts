@@ -3,16 +3,12 @@ export const siteData = {
   navItems: [
     { label: "Home", href: "/", current: true },
     { label: "Photography", href: "/photography" },
+    { label: "Art", href: "/art" },
+    { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
   ],
   heroIcon: {
     label: "View Content",
     href: "#content",
-  },
-  masthead: {
-    heading: "Barista Academy",
-    location: "London, UK",
-    meta: "~ Established 2024 ~",
   },
 };

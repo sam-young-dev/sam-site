@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Masthead from '../components/masthead/Masthead.astro';
 import Hero from '../components/hero/Hero.astro';
+import LogoIcon from '../assets/logo-amber-large.svg?raw';
 ---
 
 <BaseLayout>
@@ -9,7 +10,10 @@ import Hero from '../components/hero/Hero.astro';
 
   <div class="reasonable-width">
 		<div class="hero-about hero-about--stagger wrapper">
-			<h1>Sam Young</h1>
+			<h1 class="hero-about__heading">
+				<span class="hero-about__icon" set:html={LogoIcon} />
+				Sam Young
+			</h1>
 			<p>Developer</p>
 			<p>Designer</p>
 			<p>Artist</p>
@@ -27,6 +31,8 @@ import Hero from '../components/hero/Hero.astro';
 		<h2>Explore the site!</h2>
 		<ul>
 			<li><a href="/photography">Photography</a></li>
+			<li><a href="/art">Art</a></li>
+			<li><a href="/projects">Projects</a></li>
 		</ul>
 	</div>
 </BaseLayout>
