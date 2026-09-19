@@ -1,14 +1,47 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
+import { projects } from "../data/projects";
 ---
 
 <BaseLayout
   title="Projects — Sam Young"
   description="A showcase of software projects built by Sam Young."
 >
-  <div class="wrapper region">
+  <div class="wrapper region prose flow">
     <h1>Projects</h1>
-
+    <p>A few things I've built, with notes on how and why.</p>
   </div>
+
+  <div class="wrapper region">
+    <ul class="project-list not-prose">
+      {projects.map((project) => (
+        <li class="project-card">
+          <a href={`/projects/${project.slug}/`} class="project-card__link">
+            <Image
+              src={project.cover.src}
+              widths={[400, 700, 1000]}
+              sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+              format="avif"
+              quality={70}
+              alt=""
+              loading="lazy"
+              class="project-card__image"
+            />
+            <div class="project-card__body">
+              <h2 class="project-card__title">{project.title}</h2>
+              <p class="project-card__summary">{project.summary}</p>
+              <ul class="project-card__stack">
+                {project.stack.map((tech) => (
+                  <li>{tech}</li>
+                ))}
+              </ul>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="region"></div>
 </BaseLayout>

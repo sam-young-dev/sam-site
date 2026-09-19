@@ -24,6 +24,8 @@
 @import "./blocks/masthead.css";
 @import "./blocks/masonry.css";
 @import "./blocks/photo-detail.css";
+@import "./blocks/projects.css";
+@import "./blocks/project-detail.css";
 @import "./blocks/about.css";
 @import "./blocks/puddle.css";
 @import "./blocks/home.css";

@@ -1,0 +1,99 @@
+.project-detail__back {
+  display: inline-block;
+  margin-bottom: var(--space-md-lg);
+  padding-block-end: 0.15em;
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+  background-size: 0% var(--stroke-width);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project-detail__back {
+    transition: background-size var(--transition-normal) var(--ease-out);
+  }
+}
+
+.project-detail__back:hover {
+  background-size: 100% var(--stroke-width);
+}
+
+.project-detail__header {
+  max-width: 60ch;
+  margin-bottom: var(--space-xl);
+}
+
+.project-detail__summary {
+  font-size: var(--size-step-1);
+  opacity: 0.8;
+}
+
+.project-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin: var(--space-md-lg) 0;
+}
+
+.project-detail__meta-item dt {
+  font-size: var(--size-step--1);
+  text-transform: uppercase;
+  letter-spacing: var(--uppercase-kerning);
+  opacity: 0.7;
+}
+
+.project-detail__meta-item dd {
+  margin: 0.25em 0 0;
+}
+
+.project-detail__stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  padding-left: 0;
+}
+
+.project-detail__stack li {
+  font-size: var(--size-step-0);
+  padding: 0.25em 0.6em;
+  border: var(--stroke-solid);
+  border-radius: var(--radius-s);
+}
+
+.project-detail__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm-md);
+  margin-top: var(--space-md-lg);
+}
+
+.project-detail__description {
+  max-width: 70ch;
+  margin-bottom: var(--space-2xl);
+}
+
+.project-detail__gallery {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.project-detail__gallery-item {
+  margin: 0;
+}
+
+.project-detail__gallery-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-s);
+  border: var(--stroke-solid);
+}
+
+.project-detail__gallery-caption {
+  margin-top: var(--space-2xs);
+  font-size: var(--size-step--1);
+  opacity: 0.7;
+}

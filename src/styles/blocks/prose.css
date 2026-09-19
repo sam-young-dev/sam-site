@@ -20,6 +20,11 @@ CUSTOM PROPERTIES AND CONFIGURATION
   text-wrap: pretty;
 }
 
+.prose-w-sm :is(p, li, dl, figcaption, blockquote) {
+  max-width: 45ch;
+  text-wrap: pretty;
+}
+
 /* Limit the length of headings, too */
 .prose :is(h1, h2, h3, h4) {
   max-width: 35ch;
