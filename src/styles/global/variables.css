@@ -8,6 +8,7 @@
   --radius-l: 2.5rem;
   --uppercase-kerning: 0.04ch;
   --indent-size: var(--space-xs-sm);
+  --wrapper-max-width: 80rem;
   --wrapper-padding-inline: var(--space-md-lg);
 
   color-scheme: light dark;
