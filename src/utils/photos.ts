@@ -11,6 +11,7 @@ export interface PhotoMeta {
   aperture: string | null;
   shutterSpeed: string | null;
   iso: string | null;
+  location: string | null;
 }
 
 export interface Photo {
@@ -65,6 +66,13 @@ function formatIso(iso?: number) {
   return `ISO ${iso}`;
 }
 
+function formatLocation(latitude?: number, longitude?: number) {
+  if (latitude === undefined || longitude === undefined) return null;
+  const lat = `${Math.abs(latitude).toFixed(4)}° ${latitude >= 0 ? "N" : "S"}`;
+  const lon = `${Math.abs(longitude).toFixed(4)}° ${longitude >= 0 ? "E" : "W"}`;
+  return `${lat}, ${lon}`;
+}
+
 function formatDate(dateTimeOriginal?: Date) {
   if (!dateTimeOriginal) return null;
   return dateTimeOriginal.toLocaleDateString("en-US", {
@@ -101,6 +109,7 @@ async function loadPhotos(): Promise<Photo[]> {
         "FocalLengthIn35mmFormat",
         "DateTimeOriginal",
       ]).catch(() => null);
+      const gps = await exifr.gps(buffer).catch(() => null);
 
       return {
         slug: slugify(filePath),
@@ -113,6 +122,7 @@ async function loadPhotos(): Promise<Photo[]> {
           aperture: formatAperture(exif?.FNumber),
           shutterSpeed: formatShutterSpeed(exif?.ExposureTime),
           iso: formatIso(exif?.ISO),
+          location: formatLocation(gps?.latitude, gps?.longitude),
         },
       };
     })

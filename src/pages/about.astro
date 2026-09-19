@@ -1,15 +1,136 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPhotos } from "../utils/photos";
 
+const timeline = [
+  {
+    date: "Summer 2019",
+    title: "Technical Intern, InfoWorks",
+    description:
+      "My first real taste of professional software development, before I'd even finished my degree.",
+  },
+  {
+    date: "2020",
+    title: "B.A. Computer Science, Harding University",
+    description:
+      "Graduated with a minor in graphic design, which explains a lot about how I approach this work.",
+  },
+  {
+    date: "2020-2021",
+    title: "Consultant I, InfoWorks",
+    description:
+      "Joined full-time, cutting my teeth on client applications across healthcare and finance.",
+  },
+  {
+    date: "2022-2024",
+    title: "Consultant II, InfoWorks",
+    description:
+      "Took on bigger builds, including a compliance platform used by thousands of people.",
+  },
+  {
+    date: "2024-Present",
+    title: "Senior Consultant, InfoWorks",
+    description:
+      "Leading full-stack projects end to end, from architecture through client-facing UI.",
+  },
+];
+
+const currentStack = ["React", "Angular", "ASP.NET Core", "SQL Server", "Figma"];
+
+const photos = await getPhotos();
+const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photos[0];
 ---
 
 <BaseLayout
   title="About — Sam Young"
   description="Learn more about Sam Young, a Nashville-based full-stack software engineer and designer."
 >
-  <div class="wrapper region">
+  <div class="wrapper region prose flow">
     <h1>About me</h1>
 
+    <p>
+      I'm a software engineer with a background in design, based out of
+      Nashville, TN. What keeps me interested is the seam between the two -
+      translating what a project needs into something that's technically
+      feasible, developer-friendly, and grounded in strong UX.
+    </p>
+
+    <section class="flow">
+      <h2>Where I've been</h2>
+      <ol class="timeline not-prose" role="list">
+        {
+          timeline.map((item) => (
+            <li class="timeline__item">
+              <div class="timeline__marker" aria-hidden="true" />
+              <div class="timeline__content">
+                <p class="timeline__date">{item.date}</p>
+                <p class="timeline__title">{item.title}</p>
+                <p>{item.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <div class="flow">
+      <p>
+        Most of that work leans on React, Angular, ASP.NET Core, and SQL
+        Server, with Figma in the mix for client-facing prototyping. The
+        projects have ranged from that compliance platform, to an ROI
+        calculator built from one codebase with two build targets, to a
+        document management system with bulk Excel workflows for a global
+        financial client. You can see the fuller breakdown on my <a href="/resume">resume</a>.
+      </p>
+
+      <ul class="about-tags cluster not-prose" role="list">
+        {currentStack.map((tech) => <li class="about-tag">{tech}</li>)}
+      </ul>
+    </div>
+
+    <p>
+      Outside of client work, I like building things just to understand how
+      they fit together. My <a href="/projects">projects</a> page has a
+      storefront I built to learn headless commerce - Astro for the
+      front end, Sanity for content, Snipcart for cart and checkout -
+      modeled on a real ultralight backpacking brand so I could focus on the
+      stack instead of inventing a catalog from scratch.
+    </p>
+
+    <div class="sidebar-layout about-photo-layout">
+      {featuredPhoto && (
+        <a
+          href={`/photography/${featuredPhoto.slug}/`}
+          class="sidebar about-photo-link"
+          aria-label="View this photo in the gallery"
+        >
+          <Image
+            src={featuredPhoto.image}
+            widths={[320, 500, 700]}
+            sizes="(min-width: 40rem) 16rem, 100vw"
+            format="avif"
+            quality={70}
+            alt=""
+            loading="lazy"
+            class="about-photo"
+          />
+        </a>
+      )}
+      <p>
+        When I'm not writing code, I'm usually out with a camera. I keep a
+        running <a href="/photography">photography</a> gallery here, and I
+        also dabble in other visual <a href="/art">art</a>. Design,
+        photography, and code all scratch the same itch for me - paying
+        attention to composition, light, and detail, whether that's a
+        landscape or a layout.
+      </p>
+    </div>
+
+    <p>
+      I'm reachable through <a href="mailto:sam.young@email.com">email</a>, or
+      you can view or download my resume <a href="/resume">here</a>.
+    </p>
   </div>
 </BaseLayout>
 

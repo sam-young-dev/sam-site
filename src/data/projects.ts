@@ -6,6 +6,10 @@ import hyperliteProduct from "../assets/projects/hyperlite/product.png";
 import hyperliteCart from "../assets/projects/hyperlite/cart.png";
 import hyperliteLighthouse from "../assets/projects/hyperlite/lighthouse-report.png";
 
+import portfolioPuddle from "../assets/projects/portfolio-site/home-puddle.png";
+import portfolioPhotoExif from "../assets/projects/portfolio-site/photo-exif.png";
+import portfolioPhotographyIndex from "../assets/projects/portfolio-site/photography-index.png";
+
 export interface ProjectImage {
   src: ImageMetadata;
   alt: string;
@@ -44,6 +48,8 @@ export const projects: Project[] = [
       "Astro renders the storefront as fast, mostly-static HTML. Product, category, and page content live in Sanity.io as structured content, so the catalog can change without touching code. Snipcart is layered on top for cart state and checkout, which meant working within a client-side commerce widget instead of writing custom cart logic. The site is built and hosted on Netlify.",
       'The build covers a product catalog split across categories (backpacks, tents, sleep, and accessories), individual product pages with pricing and details pulled from Sanity, and a working cart and checkout flow through Snipcart (Snipcart kept in test mode, but payments will succeed with test card 4242424242424242. See <a href="https://docs.snipcart.com/v3/testing/payments" target="_blank" rel="noopener noreferrer">docs</a> for more).',
       "Every Netlify deploy preview runs a Lighthouse report and gives a build preview to check before merging into main, which turned performance into something to verify on every change rather than an afterthought. Chasing good Lighthouse scores across a client-side cart widget and image-heavy product pages was one of the bigger lessons of the project.",
+      'Product photography was the biggest single drag on those scores, so I swapped Astro\'s built-in image handling for <a href="https://unpic.pics/img/astro/" target="_blank" rel="noopener noreferrer">@unpic/astro</a>. It detects the CDN an image is served from and generates the right responsive srcset, sizes, and layout for it automatically, so product images pulled from Sanity\'s image CDN get properly optimized variants without hand-rolling breakpoints for every image on the site.',
+      'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. That matters more on a storefront than it sounds: category pages, product pages, and cart UI all need to look like the same brand, and tokens are what keep them from quietly drifting apart as the site grows.',
     ],
     cover: {
       src: hyperliteHome,
@@ -75,6 +81,45 @@ export const projects: Project[] = [
         alt: "Lighthouse report from a Netlify deploy preview showing performance, accessibility, best practices, and SEO scores.",
         caption:
           "Lighthouse report generated on a Netlify deploy preview, part of tuning the site for performance before merging to production.",
+      },
+    ],
+  },
+  {
+    slug: "portfolio-site",
+    title: "This Site",
+    summary:
+      "My own portfolio, built with Astro — a place to show photography and projects, and an excuse to sweat details like a canvas ripple animation and build-time EXIF metadata.",
+    year: "2026",
+    stack: ["Astro", "TypeScript", "exifr", "Netlify"],
+    links: {
+      live: "https://samyoung.dev/",
+      repo: "https://github.com/sam-young-dev/sam-site",
+    },
+    description: [
+      "This is the site you're on. It's an Astro build for photography, a couple of art/side projects, and a resume — mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
+      'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000–4,500+ cells, which is far more elements and style recalculations than the DOM wants to carry at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors actually changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a> writing on UI feel to tune it afterward — ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
+      "The photography section reads real EXIF data out of each JPEG at build time with exifr — camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates — and formats it for display next to the photo. That data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings.",
+      "The rest is the usual accumulation of small decisions: chasing down Lighthouse warnings across every page, re-encoding a folder of multi-megabyte camera JPEGs down to something that loads quickly without looking compressed, and a handful of passes on the header, footer, and layout to get the site feeling less like a template and more like a specific, considered place.",
+    ],
+    cover: {
+      src: portfolioPuddle,
+      alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+    },
+    gallery: [
+      {
+        src: portfolioPuddle,
+        alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+        caption: "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
+      },
+      {
+        src: portfolioPhotoExif,
+        alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
+        caption: "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
+      },
+      {
+        src: portfolioPhotographyIndex,
+        alt: "Photography index page showing a masonry grid of landscape and hiking photos.",
+        caption: "The photography index, a masonry grid over the same photo set.",
       },
     ],
   },

@@ -6,9 +6,9 @@ import ResumeIcon from "../assets/icons/resume.svg?raw";
 export const siteData = {
   title: "Samsite",
   navItems: [
+    { label: "Projects", href: "/projects" },
     { label: "Photography", href: "/photography", current: false },
     { label: "Art", href: "/art" },
-    { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },
   ],
   personalLinks: [

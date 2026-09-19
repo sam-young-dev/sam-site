@@ -1,0 +1,119 @@
+/* TIMELINE
+A vertical timeline used to visualize career/education history instead
+of a wall of prose. Each entry is a two-column grid: a marker column
+with a dot connected by a dashed line, and a content column. */
+.timeline {
+  list-style: none;
+}
+
+/* [role="list"][class] in global.css zeroes margin-block at higher
+specificity than .timeline alone, so match it here to restore the
+gap below the heading. */
+.timeline[role="list"] {
+  margin-block-start: var(--space-md);
+}
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  column-gap: var(--space-sm-md);
+}
+
+.timeline__item + .timeline__item {
+  margin-block-start: var(--space-lg);
+}
+
+.timeline__marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.timeline__marker::before {
+  content: "";
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-block-start: 0.5em;
+  border-radius: 50%;
+  background: var(--color-brand-primary);
+}
+
+.timeline__item:not(:last-child) .timeline__marker::after {
+  content: "";
+  position: absolute;
+  top: 1.3rem;
+  bottom: calc(-1 * var(--space-lg));
+  left: 50%;
+  border-inline-start: var(--stroke);
+}
+
+.timeline__date {
+  font-family: var(--font-mono);
+  font-size: var(--size-step--1);
+  text-transform: uppercase;
+  letter-spacing: var(--uppercase-kerning);
+  color: var(--color-brand-primary);
+}
+
+.timeline__title {
+  margin-block-start: 0.2em;
+  font-size: var(--size-step-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.timeline__content p:last-child {
+  margin-block-start: var(--space-2xs);
+  opacity: 0.8;
+}
+
+/* CURRENT STACK TAGS
+Small pill list, a scannable break from prose. */
+.about-tags {
+  --cluster-gap: 0.5em;
+}
+
+.about-tags[role="list"] {
+  margin-block-start: var(--space-sm-md);
+}
+
+.about-tag {
+  padding: 0.3em 0.9em;
+  border: var(--stroke-solid);
+  border-radius: 999px;
+  font-size: var(--size-step-0);
+  color: var(--color-brand-primary);
+}
+
+/* FEATURED PHOTO
+A small photography accent alongside the photography paragraph. */
+.about-photo-layout {
+  --sidebar-size: 16rem;
+  --sidebar-gap: var(--space-md-lg);
+  --align: center;
+}
+
+.about-photo-link {
+  display: block;
+  flex-grow: 0;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.about-photo-link:focus-visible {
+  transform: scale(101%);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .about-photo-link:hover {
+    transform: scale(101%);
+  }
+}
+
+.about-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-s);
+}
