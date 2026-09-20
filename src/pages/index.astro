@@ -7,44 +7,38 @@ import LogoIcon from '../assets/logo-amber-large.svg?raw';
   title="Sam Young — Developer, Designer, Artist"
   description="Sam Young's digital garden — a Nashville-based full-stack software engineer, designer, and artist."
 >
-  <div id="puddle-container"></div>
+  <div class="home">
+    <div id="puddle-container"></div>
 
-  <div class="hero-content-container">
-		<div class="hero-content hero-content--stagger wrapper">
-			<h1 class="hero-content__heading">
-				<span class="hero-content__icon" set:html={LogoIcon} />
-				Sam Young
-			</h1>
-			<p>Developer</p>
-			<p>Designer</p>
-			<p>Artist</p>
-		</div>
+    <div class="hero-content-container">
+      <div class="hero-content hero-content--stagger">
+        <h1 class="hero-content__heading">
+          <span class="hero-content__icon" set:html={LogoIcon} />
+          Sam Young
+        </h1>
+        <p>Developer</p>
+        <p>Designer</p>
+        <p>Artist</p>
+      </div>
 
-    <div class="content region wrapper">
-      <section class="prose">
+      <div class="content region prose prose-w-sm flow">
         <h2>Howdy!</h2>
-        <p>I'm Sam Young; here is my digital garden that is a constant work in progress and changing over time.</p>
-      </section>
+        <p>I'm a software engineer that also has a knack for design, currently based out of Nashville, TN. I am very interested in the intersection of where design meets code.</p>
+      </div>
     </div>
-	</div>
 
-	<div class="region wrapper">
-		<h2>Explore the site!</h2>
-		<ul>
-			<li><a href="/photography">Photography</a></li>
-			<li><a href="/art">Art</a></li>
-			<li><a href="/projects">Projects</a></li>
-		</ul>
-	</div>
+    <div class="region wrapper prose flow">
+      <h2>Explore the Site!</h2>
+      <ul class="explore-list not-prose">
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/photography">Photography</a></li>
+        <li><a href="/art">Art</a></li>
+      </ul>
+    </div>
 
-  <div class="wrapper region">
-    <h1>Get in touch</h1>
-
-    <div class="content">
-      <section class="readable prose region">
-        <h2>Say hello</h2>
-        <p>Drop me a line if you'd like to work together or just say hi.</p>
-      </section>
+    <div class="region wrapper prose prose-w-sm flow">
+      <h2>Contact</h2>
+      <p>I am reachable through <a href="mailto:sam.young@email.com">email</a>. You can also view or download my resume <a href="/resume">here</a>.</p>
     </div>
   </div>
 </BaseLayout>

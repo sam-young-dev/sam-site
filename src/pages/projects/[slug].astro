@@ -1,0 +1,97 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects } from "../../data/projects";
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout
+  title={`${project.title} — Projects — Sam Young`}
+  description={project.summary}
+>
+  <div class="wrapper region">
+    <a href="/projects/" class="project-detail__back">&larr; Back to projects</a>
+
+    <header class="project-detail__header">
+      <h1>{project.title}</h1>
+      <p class="project-detail__summary">{project.summary}</p>
+
+      <dl class="project-detail__meta">
+        <div class="project-detail__meta-item">
+          <dt>Year</dt>
+          <dd>{project.year}</dd>
+        </div>
+        <div class="project-detail__meta-item">
+          <dt>Stack</dt>
+          <dd>
+            <ul class="project-detail__stack not-prose">
+              {project.stack.map((tech) => (
+                <li>{tech}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="project-detail__links">
+        {project.links.live && (
+          <a
+            class="button"
+            href={project.links.live}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View live site
+          </a>
+        )}
+        {project.links.repo && (
+          <a
+            class="button"
+            data-button-variant="secondary"
+            href={project.links.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View source
+          </a>
+        )}
+      </div>
+    </header>
+
+    <div class="project-detail__content flow">
+      {project.content.map((block) =>
+        block.type === "text" ? (
+          <div class="prose">
+            <p set:html={block.html} />
+          </div>
+        ) : (
+          <figure class="project-detail__gallery-item">
+            <Image
+              src={block.image.src}
+              widths={[500, 900, 1400]}
+              sizes="(min-width: 48rem) 60vw, 100vw"
+              format="avif"
+              quality={80}
+              alt={block.image.alt}
+              loading="lazy"
+              class="project-detail__gallery-image"
+            />
+            {block.image.caption && (
+              <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
+            )}
+          </figure>
+        )
+      )}
+    </div>
+  </div>
+
+  <div class="region"></div>
+</BaseLayout>

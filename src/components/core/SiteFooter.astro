@@ -5,41 +5,46 @@ import { siteData } from '../../data/site-data'
 ---
 
 <footer class="site-foot">
-  <div class="wrapper flow">
-    <div class="site-foot__columns">
-      <span class="site-foot__brand-icon" set:html={LogoIcon} />
+  <div class="site-foot__mountain" aria-hidden="true">
+    <div class="site-foot__mountain-shape"></div>
+  </div>
+  <div class="site-foot__content">
+    <div class="wrapper flow">
+      <div class="site-foot__columns">
+        <span class="site-foot__brand-icon" set:html={LogoIcon} />
 
-      {siteData.navItems.length > 0 && (
-        <nav aria-label="footer" class="nav">
-          <ul class="cluster" role="list">
-            {siteData.navItems.map((item) => (
-              <li>
-                <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+        {siteData.navItems.length > 0 && (
+          <nav aria-label="footer" class="nav">
+            <ul class="cluster" role="list">
+              {siteData.navItems.map((item) => (
+                <li>
+                  <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
-      {siteData.personalLinks.length > 0 && (
-        <nav aria-label="footer" class="nav">
-          <ul class="cluster site-foot__personal-links" role="list">
-            {siteData.personalLinks.map((item) => (
-              <li>
-                <a href={item.href} {...(item.isExternal ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>
-                  <span class="site-foot__link-icon" set:html={item.icon} />
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-    </div>
-    <hr/>
-    <div class="repel">
-      <p class="site-foot__brand"><small>&copy; <span id="footer-year">{year}</span></small></p>
-      <p><small>made with ♥ from Nashville, TN</small></p>
+        {siteData.personalLinks.length > 0 && (
+          <nav aria-label="footer" class="nav">
+            <ul class="cluster site-foot__personal-links" role="list">
+              {siteData.personalLinks.map((item) => (
+                <li>
+                  <a href={item.href} {...(item.isExternal ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>
+                    <span class="site-foot__link-icon" set:html={item.icon} />
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
+      <hr/>
+      <div class="repel">
+        <p class="site-foot__brand"><small>&copy; <span id="footer-year">{year}</span></small></p>
+        <p><small>made with ♥ from Nashville, TN</small></p>
+      </div>
     </div>
   </div>
 </footer>

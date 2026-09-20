@@ -26,7 +26,7 @@ body {
 }
 
 /* Grid items default to min-width: auto, which lets a child's intrinsic
-   size (e.g. .closer's aspect-ratio transferring a size from its
+   size (e.g. an aspect-ratio box transferring a size from its
    content-derived height) push it, and the whole page, wider than the
    viewport. Reset it so children shrink to fit instead. */
 body > * {

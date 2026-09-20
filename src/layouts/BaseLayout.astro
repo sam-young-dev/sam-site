@@ -1,7 +1,6 @@
 ---
 import MetaInfo from '../components/core/MetaInfo.astro';
 import Header from '../components/core/SiteHeader.astro';
-import Closer from '../components/closer/Closer.astro';
 import SiteFooter from '../components/core/SiteFooter.astro';
 import { ClientRouter } from 'astro:transitions';
 
@@ -35,7 +34,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Header />
     <main tabindex="-1" id="main-content">
       <slot />
-      <Closer />
     </main>
     <SiteFooter />
   </body>

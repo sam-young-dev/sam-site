@@ -1,15 +1,14 @@
-import GithubIcon from '../assets/icons/github.svg?raw';
-import LinkedinIcon from '../assets/icons/linkedin.svg?raw';
-import BlueskyIcon from '../assets/icons/bluesky.svg?raw';
-import ResumeIcon from '../assets/icons/resume.svg?raw';
+import GithubIcon from "../assets/icons/github.svg?raw";
+import LinkedinIcon from "../assets/icons/linkedin.svg?raw";
+import BlueskyIcon from "../assets/icons/bluesky.svg?raw";
+import ResumeIcon from "../assets/icons/resume.svg?raw";
 
 export const siteData = {
   title: "Samsite",
   navItems: [
-    { label: "Home", href: "/", current: true },
-    { label: "Photography", href: "/photography" },
-    { label: "Art", href: "/art" },
     { label: "Projects", href: "/projects" },
+    { label: "Photography", href: "/photography", current: false },
+    { label: "Art", href: "/art" },
     { label: "About", href: "/about" },
   ],
   personalLinks: [

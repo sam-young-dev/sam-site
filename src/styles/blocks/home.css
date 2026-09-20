@@ -1,6 +1,7 @@
 .hero-content-container {
-  max-width: 80rem;
+  max-width: var(--wrapper-max-width);
   margin-inline: auto;
+  padding-inline: var(--wrapper-padding-inline);
 }
 
 .hero-content {
@@ -68,4 +69,9 @@
       opacity: 1;
     }
   }
+}
+
+.explore-list {
+  list-style: none;
+  padding-left: 0;
 }
