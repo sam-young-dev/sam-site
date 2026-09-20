@@ -70,14 +70,13 @@
   margin-top: var(--space-md-lg);
 }
 
-.project-detail__description {
+.project-detail__content {
+  --flow-space: var(--space-xl);
   max-width: 70ch;
-  margin-bottom: var(--space-2xl);
 }
 
-.project-detail__gallery {
-  display: grid;
-  gap: var(--space-lg);
+.project-detail__content .prose {
+  max-width: none;
 }
 
 .project-detail__gallery-item {

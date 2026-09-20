@@ -66,30 +66,30 @@ const { project } = Astro.props;
       </div>
     </header>
 
-    <div class="project-detail__description prose flow">
-      {project.description.map((paragraph) => (
-        <p set:html={paragraph} />
-      ))}
-    </div>
-
-    <div class="project-detail__gallery">
-      {project.gallery.map((image) => (
-        <figure class="project-detail__gallery-item">
-          <Image
-            src={image.src}
-            widths={[500, 900, 1400]}
-            sizes="(min-width: 48rem) 60vw, 100vw"
-            format="avif"
-            quality={80}
-            alt={image.alt}
-            loading="lazy"
-            class="project-detail__gallery-image"
-          />
-          {image.caption && (
-            <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
-          )}
-        </figure>
-      ))}
+    <div class="project-detail__content flow">
+      {project.content.map((block) =>
+        block.type === "text" ? (
+          <div class="prose">
+            <p set:html={block.html} />
+          </div>
+        ) : (
+          <figure class="project-detail__gallery-item">
+            <Image
+              src={block.image.src}
+              widths={[500, 900, 1400]}
+              sizes="(min-width: 48rem) 60vw, 100vw"
+              format="avif"
+              quality={80}
+              alt={block.image.alt}
+              loading="lazy"
+              class="project-detail__gallery-image"
+            />
+            {block.image.caption && (
+              <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
+            )}
+          </figure>
+        )
+      )}
     </div>
   </div>
 
