@@ -4,6 +4,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPhotos } from "../../utils/photos";
 import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
+import ExpandIcon from "../../assets/expand.svg?raw";
+import CloseIcon from "../../assets/close.svg?raw";
 
 export async function getStaticPaths() {
   const photos = await getPhotos();
@@ -88,6 +90,14 @@ const metaItems = [
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
+        <button
+          type="button"
+          id="photo-detail-expand"
+          class="photo-detail__expand"
+          aria-label="View photo full screen"
+        >
+          <span class="photo-detail__expand-icon" set:html={ExpandIcon} />
+        </button>
         {blurb && <p class="photo-detail__blurb">{blurb}</p>}
       </div>
       {(tags.length > 0 || metaItems.length > 0) && (
@@ -117,6 +127,24 @@ const metaItems = [
         </figcaption>
       )}
     </figure>
+
+    <div
+      id="photo-lightbox"
+      class="photo-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Full screen photo view"
+    >
+      <button
+        type="button"
+        id="photo-lightbox-close"
+        class="photo-lightbox__close"
+        aria-label="Close full screen view"
+      >
+        <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
+      </button>
+      <img class="photo-lightbox__image" alt={blurb || "Photograph"} />
+    </div>
   </div>
 
   <div class="region"></div>
@@ -136,5 +164,116 @@ const metaItems = [
         backLink.textContent = "← Back to collection";
       }
     }
+
+    const expandBtn = document.getElementById("photo-detail-expand");
+    const lightbox = document.getElementById("photo-lightbox");
+    const lightboxClose = document.getElementById("photo-lightbox-close");
+    const lightboxImage = lightbox?.querySelector(".photo-lightbox__image");
+    const mainImage = document.querySelector(".photo-detail__image");
+    const prevLinkEl = document.getElementById("photo-detail-prev");
+    const nextLinkEl = document.getElementById("photo-detail-next");
+    const backLinkEl = document.getElementById("photo-detail-back");
+
+    // Navigating away (e.g. via the arrow keys) while the lightbox is open skips
+    // closeLightbox's cleanup, and body persists across soft navigations, so
+    // reset the scroll lock here in case the previous page left it on.
+    document.body.style.overflow = "";
+
+    const LIGHTBOX_OPEN_KEY = "photoLightboxOpen";
+
+    function isOpen() {
+      return lightbox?.classList.contains("is-open") ?? false;
+    }
+
+    // Remembers across prev/next navigation that the lightbox was open, so
+    // moving to the next photo keeps it expanded instead of resetting.
+    function rememberLightboxOpen(open) {
+      try {
+        if (open) sessionStorage.setItem(LIGHTBOX_OPEN_KEY, "1");
+        else sessionStorage.removeItem(LIGHTBOX_OPEN_KEY);
+      } catch {}
+    }
+
+    function wantsLightboxOpen() {
+      try {
+        return sessionStorage.getItem(LIGHTBOX_OPEN_KEY) === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function openLightbox({ animate = true } = {}) {
+      if (!lightbox || !lightboxImage || !mainImage) return;
+      lightboxImage.src = mainImage.currentSrc || mainImage.src;
+      lightboxImage.srcset = mainImage.srcset || "";
+      lightboxImage.sizes = "100vw";
+      lightbox.style.display = "flex";
+      if (animate) {
+        requestAnimationFrame(() => lightbox.classList.add("is-open"));
+        lightboxClose?.focus();
+      } else {
+        lightbox.classList.add("is-open");
+      }
+      document.body.style.overflow = "hidden";
+      rememberLightboxOpen(true);
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+      expandBtn?.focus();
+      rememberLightboxOpen(false);
+      // No transition (reduced motion) means transitionend never fires to hide it.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        lightbox.style.display = "none";
+      }
+    }
+
+    // Returning to the gallery/collection ends the browsing session, so the
+    // lightbox shouldn't reappear the next time a photo page is opened.
+    backLinkEl?.addEventListener("click", () => rememberLightboxOpen(false));
+
+    if (wantsLightboxOpen()) {
+      if (mainImage?.complete) {
+        openLightbox({ animate: false });
+      } else {
+        mainImage?.addEventListener("load", () => openLightbox({ animate: false }), { once: true });
+      }
+    }
+
+    lightbox?.addEventListener("transitionend", (e) => {
+      if (e.target === lightbox && e.propertyName === "opacity" && !isOpen()) {
+        lightbox.style.display = "none";
+      }
+    });
+
+    expandBtn?.addEventListener("click", openLightbox);
+    lightboxClose?.addEventListener("click", closeLightbox);
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Astro's ClientRouter swaps page content without reloading, but `document`
+    // itself persists across navigations — re-adding this listener on every
+    // page load would stack stale handlers referencing detached elements.
+    if (window.__photoLightboxKeydown) {
+      document.removeEventListener("keydown", window.__photoLightboxKeydown);
+    }
+    window.__photoLightboxKeydown = (e) => {
+      if (!isOpen()) return;
+      if (e.key === "Escape") {
+        closeLightbox();
+      } else if (e.key === "Tab") {
+        // The close button is the only focusable control in the dialog.
+        e.preventDefault();
+        lightboxClose?.focus();
+      } else if (e.key === "ArrowLeft") {
+        prevLinkEl?.click();
+      } else if (e.key === "ArrowRight") {
+        nextLinkEl?.click();
+      }
+    };
+    document.addEventListener("keydown", window.__photoLightboxKeydown);
   </script>
 </BaseLayout>
