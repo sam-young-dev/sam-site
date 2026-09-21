@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 }
 
 const { photo, prevSlug, nextSlug } = Astro.props;
-const { image, meta } = photo;
+const { image, meta, tags, blurb } = photo;
 
 const metaItems = [
   { label: "Date", value: meta.date },
@@ -55,25 +55,37 @@ const metaItems = [
     <a href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
 
     <figure class="photo-detail">
-      <Image
-        src={image}
-        widths={[800, 1400, 2000]}
-        sizes="(min-width: 48rem) 75vw, 100vw"
-        format="avif"
-        quality={80}
-        alt=""
-        class="photo-detail__image"
-      />
-      {metaItems.length > 0 && (
+      <div class="photo-detail__media">
+        <Image
+          src={image}
+          widths={[800, 1400, 2000]}
+          sizes="(min-width: 48rem) 75vw, 100vw"
+          format="avif"
+          quality={80}
+          alt={blurb || "Photograph"}
+          class="photo-detail__image"
+        />
+        {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+      </div>
+      {(tags.length > 0 || metaItems.length > 0) && (
         <figcaption class="photo-detail__meta">
-          <dl class="photo-detail__meta-list">
-            {metaItems.map((item) => (
-              <div class="photo-detail__meta-item">
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+          {tags.length > 0 && (
+            <ul class="photo-detail__tags">
+              {tags.map((tag) => (
+                <li class="photo-detail__tag">{tag}</li>
+              ))}
+            </ul>
+          )}
+          {metaItems.length > 0 && (
+            <dl class="photo-detail__meta-list">
+              {metaItems.map((item) => (
+                <div class="photo-detail__meta-item">
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </figcaption>
       )}
     </figure>
