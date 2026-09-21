@@ -52,19 +52,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-lg-xl, 3rem);
-  height: var(--space-lg-xl, 3rem);
+  /* The fluid space scale shrinks toward its smaller step on narrow
+     viewports, which is right for gaps but leaves this tap target too
+     small on phones, so it's pinned to a fixed minimum below the tablet
+     breakpoint instead of following --space-lg-xl there. */
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 50%;
   background: var(--background-light);
   color: var(--color-brand-primary);
   box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
-  transition: background var(--transition-normal) var(--ease-out),
+  transition:
+    background var(--transition-normal) var(--ease-out),
     filter var(--transition-normal) var(--ease-out);
+}
+
+@media (min-width: 48rem) {
+  .photo-detail__nav {
+    width: var(--space-lg-xl, 3rem);
+    height: var(--space-lg-xl, 3rem);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .photo-detail__nav {
-    transition: background var(--transition-normal) var(--ease-out),
+    transition:
+      background var(--transition-normal) var(--ease-out),
       filter var(--transition-normal) var(--ease-out),
       transform var(--transition-normal) var(--ease-out);
   }
@@ -97,8 +110,15 @@
 
 .photo-detail__nav-icon {
   display: flex;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+@media (min-width: 48rem) {
+  .photo-detail__nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
 .photo-detail__nav-icon svg {

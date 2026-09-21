@@ -37,8 +37,8 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  block-size: 0.15em;
-  inset-block-end: -0.1em;
+  block-size: 0.08em;
+  inset-block-end: -0em;
   background-color: var(--color-brand-primary);
   border-radius: var(--radius-pill, 999px);
 }

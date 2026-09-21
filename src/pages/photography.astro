@@ -10,7 +10,10 @@ const photos = await getPhotos();
   title="Photography — Sam Young"
   description="A gallery of photography by Sam Young."
 >
-  <div class="region wrapper">
+  <div class="region wrapper flow">
+    <h1>Photography</h1>
+    <p>Some photos that I really like from trips over the years.</p>
+    
     <div class="masonry-grid">
       {photos.map((photo) => (
         <a href={`/photography/${photo.slug}/`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? "the gallery"}`}>

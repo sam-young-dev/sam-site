@@ -1,15 +1,3 @@
-.masonry {
-  --gutter: 0.4em;
-  --switcher-gap: var(--gutter);
-  --flow-space: var(--gutter);
-  --switcher-target-container-width: 28rem;
-  --wrapper-padding-inline: var(--gutter);
-}
-
-.masonry img {
-  width: 100%;
-}
-
 /* MASONRY GRID
 Uses CSS multi-column layout so images keep their natural aspect
 ratio (portrait or landscape) and stack into balanced columns
@@ -35,14 +23,12 @@ without leaving gaps, the way a Pinterest-style grid does. */
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-s);
 }
 
 .masonry__link {
   display: block;
   margin-bottom: var(--grid-gap, var(--space-md-lg));
   break-inside: avoid;
-  border-radius: var(--radius-s);
   overflow: hidden;
   transition: transform var(--transition-normal) var(--ease-out);
 }
@@ -60,7 +46,8 @@ without leaving gaps, the way a Pinterest-style grid does. */
 .masonry__image {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity var(--transition-slow) var(--ease-out),
+  transition:
+    opacity var(--transition-slow) var(--ease-out),
     transform var(--transition-slow) var(--ease-out);
 }
 

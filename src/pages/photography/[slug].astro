@@ -20,6 +20,7 @@ const { photo, prevSlug, nextSlug } = Astro.props;
 const { image, meta, tags, blurb } = photo;
 
 const metaItems = [
+  { label: "Location", value: meta.location },
   { label: "Date", value: meta.date },
   { label: "Camera", value: meta.camera },
   { label: "Lens", value: meta.lens },
@@ -27,7 +28,6 @@ const metaItems = [
   { label: "Aperture", value: meta.aperture },
   { label: "Shutter speed", value: meta.shutterSpeed },
   { label: "ISO", value: meta.iso },
-  { label: "Location", value: meta.location },
 ].filter((item) => item.value);
 ---
 
