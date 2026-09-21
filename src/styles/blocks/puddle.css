@@ -1,7 +1,8 @@
 #puddle-container {
   position: absolute;
   inset: 0;
-  color: light-dark(var(--black), var(--background-light));
+  /* color: light-dark(var(--black), var(--background-light)); */
+  color: light-dark(var(--color-stone-400), var(--background-light));
   user-select: none;
   contain: layout paint style;
   content-visibility: auto;
@@ -17,7 +18,7 @@
     inset-block-start: 0;
     background: linear-gradient(
       transparent,
-      light-dark(var(--background-light), var(--black))
+      light-dark(var(--background-light), var(--color-stone-400))
     );
     pointer-events: none;
   }
