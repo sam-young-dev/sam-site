@@ -1,6 +1,7 @@
 .button {
   --button-bg: var(--color-interactive-fill-default);
   --button-text: var(--color-interactive-text-default);
+  --button-border-color: transparent;
   --button-x-padding: 0.75em;
   --button-y-padding: 0.5em;
   --button-gutter: 0.5ch;
@@ -11,7 +12,7 @@
   align-items: center;
   line-height: var(--leading-none);
   position: relative;
-  border: none;
+  border: var(--stroke-width) solid var(--button-border-color);
   cursor: pointer;
   background: var(--button-bg);
   color: var(--button-text);
@@ -39,4 +40,17 @@
   --button-text: var(--color-on-loud);
   --focus-color: var(--color-brand-dark);
   --corner-secondary-color: var(--color-brand-primary);
+}
+
+.button[data-button-variant="brand"] {
+  --button-bg: var(--color-brand-primary);
+  --button-text: var(--color-brand-light);
+  --focus-color: var(--color-brand-dark);
+}
+
+.button[data-button-variant="border"] {
+  --button-bg: transparent;
+  --button-text: var(--color-brand-primary);
+  --button-border-color: var(--color-brand-primary);
+  --focus-color: var(--color-brand-dark);
 }

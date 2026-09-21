@@ -3,6 +3,9 @@ import LogoIcon from '../../assets/logo-amber-large.svg?raw';
 import { siteData } from '../../data/site-data';
 
 const isHome = Astro.url.pathname === '/';
+
+const isCurrent = (href: string) =>
+  Astro.url.pathname === href || Astro.url.pathname.startsWith(`${href}/`);
 ---
 
 <header class:list={['site-head', { 'site-head--home': isHome }]}>
@@ -11,18 +14,18 @@ const isHome = Astro.url.pathname === '/';
       <div class="site-head__brand">
         <a href="/" class="site-head__brand-link">
           <span class="site-head__brand-icon" set:html={LogoIcon} />
+          <span class="visually-hidden">{siteData.title} home</span>
         </a>
       </div>
       <nav aria-label="primary" class="nav">
         <ul class="cluster" role="list">
           {siteData.navItems.map((item) => (
           <li>
-            <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+            <a href={item.href} {...(isCurrent(item.href) ? {'aria-current': 'page'} : {})}>{item.label}</a>
           </li>
         ))}
         </ul>
       </nav>
     </div>
-    <!-- <hr/> -->
   </div>
 </header>

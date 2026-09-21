@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { Photo } from "../../utils/photos";
+
+interface Props {
+  photos: Photo[];
+  fallbackLabel?: string;
+  collectionSlug?: string;
+}
+
+const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
+---
+
+<div class="masonry-grid">
+  {photos.map((photo) => (
+    <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? fallbackLabel}`}>
+      <Image
+        src={photo.image}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+        format="avif"
+        quality={70}
+        alt={photo.blurb || "Photograph"}
+        loading="lazy"
+        class="masonry__image"
+        onload="this.classList.add('is-loaded')"
+        transition:name={`photo-${photo.slug}`}
+      />
+    </a>
+  ))}
+</div>

@@ -2,24 +2,47 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPhotos } from "../../utils/photos";
+import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
+import ExpandIcon from "../../assets/expand.svg?raw";
+import CloseIcon from "../../assets/close.svg?raw";
 
 export async function getStaticPaths() {
   const photos = await getPhotos();
-  return photos.map((photo, index) => ({
-    params: { slug: photo.slug },
-    props: {
-      photo,
-      prevSlug: photos[(index - 1 + photos.length) % photos.length].slug,
-      nextSlug: photos[(index + 1) % photos.length].slug,
-    },
-  }));
+  const collections = await getCollections();
+
+  return photos.map((photo, index) => {
+    // Maps a collection slug the photo belongs to -> that collection's own
+    // prev/next photo, so browsing stays inside the collection it was opened from.
+    const collectionNav: Record<string, { prevSlug: string; nextSlug: string }> = {};
+
+    for (const collection of collections) {
+      const photoIndex = collection.photos.findIndex((p) => p.slug === photo.slug);
+      if (photoIndex === -1) continue;
+      const { photos: collectionPhotos, slug: collectionSlug } = collection;
+      collectionNav[collectionSlug] = {
+        prevSlug: collectionPhotos[(photoIndex - 1 + collectionPhotos.length) % collectionPhotos.length].slug,
+        nextSlug: collectionPhotos[(photoIndex + 1) % collectionPhotos.length].slug,
+      };
+    }
+
+    return {
+      params: { slug: photo.slug },
+      props: {
+        photo,
+        prevSlug: photos[(index - 1 + photos.length) % photos.length].slug,
+        nextSlug: photos[(index + 1) % photos.length].slug,
+        collectionNav,
+      },
+    };
+  });
 }
 
-const { photo, prevSlug, nextSlug } = Astro.props;
-const { image, meta } = photo;
+const { photo, prevSlug, nextSlug, collectionNav } = Astro.props;
+const { image, meta, tags, blurb } = photo;
 
 const metaItems = [
+  { label: "Location", value: meta.location },
   { label: "Date", value: meta.date },
   { label: "Camera", value: meta.camera },
   { label: "Lens", value: meta.lens },
@@ -27,7 +50,6 @@ const metaItems = [
   { label: "Aperture", value: meta.aperture },
   { label: "Shutter speed", value: meta.shutterSpeed },
   { label: "ISO", value: meta.iso },
-  { label: "Location", value: meta.location },
 ].filter((item) => item.value);
 ---
 
@@ -36,6 +58,7 @@ const metaItems = [
   description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
 >
   <a
+    id="photo-detail-prev"
     href={`/photography/${prevSlug}/`}
     class="photo-detail__nav photo-detail__nav--prev"
     aria-label="View previous photo"
@@ -44,6 +67,7 @@ const metaItems = [
   </a>
 
   <a
+    id="photo-detail-next"
     href={`/photography/${nextSlug}/`}
     class="photo-detail__nav photo-detail__nav--next"
     aria-label="View next photo"
@@ -52,34 +76,249 @@ const metaItems = [
   </a>
 
   <div class="region wrapper">
-    <a href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
+    <a id="photo-detail-back" href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
 
     <figure class="photo-detail">
-      <Image
-        src={image}
-        widths={[800, 1400, 2000]}
-        sizes="(min-width: 48rem) 75vw, 100vw"
-        format="avif"
-        quality={80}
-        alt=""
-        class="photo-detail__image"
-      />
-      {metaItems.length > 0 && (
+      <div class="photo-detail__media">
+        <Image
+          src={image}
+          widths={[650, 800, 1400, 2000]}
+          sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
+          format="avif"
+          quality={80}
+          alt={blurb || "Photograph"}
+          class="photo-detail__image"
+          transition:name={`photo-${photo.slug}`}
+        />
+        <button
+          type="button"
+          id="photo-detail-expand"
+          class="photo-detail__expand"
+          aria-label="View photo full screen"
+        >
+          <span class="photo-detail__expand-icon" set:html={ExpandIcon} />
+        </button>
+        {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+      </div>
+      {(tags.length > 0 || metaItems.length > 0) && (
         <figcaption class="photo-detail__meta">
-          <dl class="photo-detail__meta-list">
-            {metaItems.map((item) => (
-              <div class="photo-detail__meta-item">
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+          {tags.length > 0 && (
+            <div class="photo-detail__tags-group">
+              <p class="photo-detail__tags-label">{tags.length > 1 ? "Collections" : "Collection"}</p>
+              <ul class="photo-detail__tags">
+                {tags.map((tag) => (
+                  <li>
+                    <a href={`/collections/${slugifyTag(tag)}/`} class="photo-detail__tag">{tag}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {metaItems.length > 0 && (
+            <dl class="photo-detail__meta-list">
+              {metaItems.map((item) => (
+                <div class="photo-detail__meta-item">
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </figcaption>
       )}
     </figure>
+
+    <div
+      id="photo-lightbox"
+      class="photo-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Full screen photo view"
+      transition:persist
+    >
+      <button
+        type="button"
+        id="photo-lightbox-close"
+        class="photo-lightbox__close"
+        aria-label="Close full screen view"
+      >
+        <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
+      </button>
+      <img class="photo-lightbox__image" alt={blurb || "Photograph"} />
+    </div>
   </div>
 
   <div class="region"></div>
   <div class="region"></div>
 
+  <script define:vars={{ collectionNav }}>
+    const from = new URLSearchParams(window.location.search).get("from");
+    const nav = from ? collectionNav[from] : null;
+    if (nav) {
+      const prevLink = document.getElementById("photo-detail-prev");
+      const nextLink = document.getElementById("photo-detail-next");
+      const backLink = document.getElementById("photo-detail-back");
+      if (prevLink) prevLink.href = `/photography/${nav.prevSlug}/?from=${from}`;
+      if (nextLink) nextLink.href = `/photography/${nav.nextSlug}/?from=${from}`;
+      if (backLink) {
+        backLink.href = `/collections/${from}/`;
+        backLink.textContent = "← Back to collection";
+      }
+    }
+
+    const expandBtn = document.getElementById("photo-detail-expand");
+    const lightbox = document.getElementById("photo-lightbox");
+    const lightboxClose = document.getElementById("photo-lightbox-close");
+    const lightboxImage = lightbox?.querySelector(".photo-lightbox__image");
+    const mainImage = document.querySelector(".photo-detail__image");
+    const prevLinkEl = document.getElementById("photo-detail-prev");
+    const nextLinkEl = document.getElementById("photo-detail-next");
+    const backLinkEl = document.getElementById("photo-detail-back");
+
+    // Navigating away (e.g. via the arrow keys) while the lightbox is open skips
+    // closeLightbox's cleanup, and body persists across soft navigations, so
+    // reset the scroll lock here in case the previous page left it on.
+    document.body.style.overflow = "";
+
+    const LIGHTBOX_OPEN_KEY = "photoLightboxOpen";
+
+    function isOpen() {
+      return lightbox?.classList.contains("is-open") ?? false;
+    }
+
+    // Remembers across prev/next navigation that the lightbox was open, so
+    // moving to the next photo keeps it expanded instead of resetting.
+    function rememberLightboxOpen(open) {
+      try {
+        if (open) sessionStorage.setItem(LIGHTBOX_OPEN_KEY, "1");
+        else sessionStorage.removeItem(LIGHTBOX_OPEN_KEY);
+      } catch {}
+    }
+
+    function wantsLightboxOpen() {
+      try {
+        return sessionStorage.getItem(LIGHTBOX_OPEN_KEY) === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function syncLightboxImage() {
+      if (!lightboxImage || !mainImage) return;
+      lightboxImage.src = mainImage.currentSrc || mainImage.src;
+      lightboxImage.srcset = mainImage.srcset || "";
+      lightboxImage.sizes = "100vw";
+      // The lightbox node persists across prev/next navigation, so its alt
+      // text won't otherwise follow along to the new photo.
+      lightboxImage.alt = mainImage.alt;
+    }
+
+    function openLightbox({ animate = true } = {}) {
+      if (!lightbox || !lightboxImage || !mainImage) return;
+      syncLightboxImage();
+      lightbox.style.display = "flex";
+      if (animate) {
+        requestAnimationFrame(() => lightbox.classList.add("is-open"));
+        lightboxClose?.focus();
+      } else {
+        lightbox.classList.add("is-open");
+      }
+      document.body.style.overflow = "hidden";
+      rememberLightboxOpen(true);
+    }
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+      expandBtn?.focus();
+      rememberLightboxOpen(false);
+      // No transition (reduced motion) means transitionend never fires to hide it.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        lightbox.style.display = "none";
+      }
+    }
+
+    // Returning to the gallery/collection ends the browsing session, so the
+    // lightbox shouldn't reappear the next time a photo page is opened.
+    backLinkEl?.addEventListener("click", () => rememberLightboxOpen(false));
+
+    // `#photo-lightbox` has transition:persist, so navigating to the prev/next
+    // photo while it's open keeps this same DOM node on screen the whole time
+    // instead of closing and recreating it — swap the image in place rather
+    // than replaying the open animation, which used to flash the smaller
+    // inline image underneath between photos.
+    if (isOpen()) {
+      document.body.style.overflow = "hidden";
+      if (mainImage?.complete) {
+        syncLightboxImage();
+      } else {
+        mainImage?.addEventListener("load", syncLightboxImage, { once: true });
+      }
+    } else if (wantsLightboxOpen()) {
+      if (mainImage?.complete) {
+        openLightbox({ animate: false });
+      } else {
+        mainImage?.addEventListener("load", () => openLightbox({ animate: false }), { once: true });
+      }
+    }
+
+    expandBtn?.addEventListener("click", openLightbox);
+
+    // `lightbox` and `lightboxClose` live inside the persisted lightbox node,
+    // so on a soft navigation they're the same elements as before rather than
+    // fresh ones — swap out the previous run's handlers instead of stacking
+    // new ones on top (their closures also close over this run's mainImage
+    // etc., so simply skipping the rebind would leave them pointing at stale,
+    // now-detached elements from an earlier photo).
+    if (lightbox) {
+      if (lightbox._transitionendHandler) {
+        lightbox.removeEventListener("transitionend", lightbox._transitionendHandler);
+      }
+      lightbox._transitionendHandler = (e) => {
+        if (e.target === lightbox && e.propertyName === "opacity" && !isOpen()) {
+          lightbox.style.display = "none";
+        }
+      };
+      lightbox.addEventListener("transitionend", lightbox._transitionendHandler);
+
+      if (lightbox._backdropClickHandler) {
+        lightbox.removeEventListener("click", lightbox._backdropClickHandler);
+      }
+      lightbox._backdropClickHandler = (e) => {
+        if (e.target === lightbox) closeLightbox();
+      };
+      lightbox.addEventListener("click", lightbox._backdropClickHandler);
+    }
+
+    if (lightboxClose) {
+      if (lightboxClose._clickHandler) {
+        lightboxClose.removeEventListener("click", lightboxClose._clickHandler);
+      }
+      lightboxClose._clickHandler = closeLightbox;
+      lightboxClose.addEventListener("click", lightboxClose._clickHandler);
+    }
+
+    // Astro's ClientRouter swaps page content without reloading, but `document`
+    // itself persists across navigations — re-adding this listener on every
+    // page load would stack stale handlers referencing detached elements.
+    if (window.__photoLightboxKeydown) {
+      document.removeEventListener("keydown", window.__photoLightboxKeydown);
+    }
+    window.__photoLightboxKeydown = (e) => {
+      if (!isOpen()) return;
+      if (e.key === "Escape") {
+        closeLightbox();
+      } else if (e.key === "Tab") {
+        // The close button is the only focusable control in the dialog.
+        e.preventDefault();
+        lightboxClose?.focus();
+      } else if (e.key === "ArrowLeft") {
+        prevLinkEl?.click();
+      } else if (e.key === "ArrowRight") {
+        nextLinkEl?.click();
+      }
+    };
+    document.addEventListener("keydown", window.__photoLightboxKeydown);
+  </script>
 </BaseLayout>

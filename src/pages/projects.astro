@@ -8,9 +8,9 @@ import { projects } from "../data/projects";
   title="Projects — Sam Young"
   description="A showcase of software projects built by Sam Young."
 >
-  <div class="wrapper region prose flow">
+  <div class="wrapper region prose prose-w-sm flow">
     <h1>Projects</h1>
-    <p>A few things I've built, with notes on how and why.</p>
+    <p>A few things I've built, with details on technology used and why certain decisions were made.</p>
   </div>
 
   <div class="wrapper region">
@@ -27,6 +27,7 @@ import { projects } from "../data/projects";
               alt=""
               loading="lazy"
               class="project-card__image"
+              onload="this.classList.add('is-loaded')"
             />
             <div class="project-card__body">
               <h2 class="project-card__title">{project.title}</h2>

@@ -26,6 +26,13 @@
   gap: var(--space-md-lg);
 }
 
+.photo-detail__media {
+  position: relative;
+  display: grid;
+  gap: var(--space-sm-md);
+  align-content: start;
+}
+
 .photo-detail__image {
   display: block;
   width: 100%;
@@ -33,26 +40,170 @@
   border-radius: var(--radius-s);
 }
 
-.photo-detail__nav {
-  position: fixed;
-  bottom: calc(var(--space-sm-md) + env(safe-area-inset-bottom, 0px));
-  z-index: 10;
+.photo-detail__expand {
+  position: absolute;
+  top: var(--space-sm-md);
+  right: var(--space-sm-md);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-lg-xl, 3rem);
-  height: var(--space-lg-xl, 3rem);
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   background: var(--background-light);
   color: var(--color-brand-primary);
   box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
-  transition: background var(--transition-normal) var(--ease-out),
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .photo-detail__expand {
+    transition: filter var(--transition-normal) var(--ease-out);
+  }
+}
+
+.photo-detail__expand:hover,
+.photo-detail__expand:focus-visible {
+  filter: brightness(105%);
+}
+
+.photo-detail__expand-icon {
+  display: flex;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.photo-detail__expand-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  /* Above .site-head (z-index: 1000) so the overlay isn't tucked under the fixed header. */
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md-lg);
+  background: rgb(0 0 0 / 0.92);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .photo-lightbox {
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+}
+
+.photo-lightbox.is-open {
+  opacity: 1;
+}
+
+.photo-lightbox__image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-s);
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .photo-lightbox__image {
+    transition:
+      opacity var(--transition-slow) var(--ease-out),
+      transform var(--transition-slow) var(--ease-out);
+  }
+}
+
+.photo-lightbox.is-open .photo-lightbox__image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.photo-lightbox__close {
+  position: fixed;
+  top: var(--space-sm-md);
+  right: var(--space-sm-md);
+  z-index: 1002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--background-light);
+  color: var(--color-brand-primary);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .photo-lightbox__close {
+    transition: filter var(--transition-normal) var(--ease-out);
+  }
+}
+
+.photo-lightbox__close:hover,
+.photo-lightbox__close:focus-visible {
+  filter: brightness(105%);
+}
+
+.photo-lightbox__close-icon {
+  display: flex;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.photo-lightbox__close-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-detail__blurb {
+  margin: 0;
+  font-size: var(--size-step-0);
+  line-height: var(--leading-body);
+}
+
+.photo-detail__nav {
+  position: fixed;
+  bottom: calc(var(--space-sm-md) + env(safe-area-inset-bottom, 0px));
+  /* Higher than .photo-lightbox so prev/next stays usable over the full screen view. */
+  z-index: 1010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* The fluid space scale shrinks toward its smaller step on narrow
+     viewports, which is right for gaps but leaves this tap target too
+     small on phones, so it's pinned to a fixed minimum below the tablet
+     breakpoint instead of following --space-lg-xl there. */
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: var(--background-light);
+  color: var(--color-brand-primary);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+  transition:
+    background var(--transition-normal) var(--ease-out),
     filter var(--transition-normal) var(--ease-out);
+}
+
+@media (min-width: 48rem) {
+  .photo-detail__nav {
+    width: var(--space-lg-xl, 3rem);
+    height: var(--space-lg-xl, 3rem);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .photo-detail__nav {
-    transition: background var(--transition-normal) var(--ease-out),
+    transition:
+      background var(--transition-normal) var(--ease-out),
       filter var(--transition-normal) var(--ease-out),
       transform var(--transition-normal) var(--ease-out);
   }
@@ -85,8 +236,15 @@
 
 .photo-detail__nav-icon {
   display: flex;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+@media (min-width: 48rem) {
+  .photo-detail__nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
 .photo-detail__nav-icon svg {
@@ -103,7 +261,55 @@
 }
 
 .photo-detail__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md-lg);
   color: inherit;
+}
+
+.photo-detail__tags-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.photo-detail__tags-label {
+  margin: 0;
+  font-size: var(--size-step--1);
+  text-transform: uppercase;
+  letter-spacing: var(--uppercase-kerning);
+  opacity: 0.7;
+}
+
+.photo-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs-sm, 0.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-detail__tag {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: var(--size-step--1);
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-detail__tag {
+    transition: opacity var(--transition-normal) var(--ease-out);
+  }
+}
+
+.photo-detail__tag:hover,
+.photo-detail__tag:focus-visible {
+  opacity: 1;
 }
 
 .photo-detail__meta-list {

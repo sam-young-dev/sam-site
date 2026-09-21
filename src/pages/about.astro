@@ -4,18 +4,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPhotos } from "../utils/photos";
 
 const timeline = [
-  {
-    date: "Summer 2019",
-    title: "Technical Intern, InfoWorks",
-    description:
-      "My first real taste of professional software development, before I'd even finished my degree.",
-  },
-  {
-    date: "2020",
-    title: "B.A. Computer Science, Harding University",
-    description:
-      "Graduated with a minor in graphic design, which explains a lot about how I approach this work.",
-  },
+  // {
+  //   date: "Summer 2019",
+  //   title: "Technical Intern, InfoWorks",
+  //   description:
+  //     "My first real taste of professional software development, before I'd even finished my degree.",
+  // },
+  // {
+  //   date: "2020",
+  //   title: "B.A. Computer Science, Harding University",
+  //   description:
+  //     "Graduated with a minor in graphic design, which explains a lot about how I approach this work.",
+  // },
   {
     date: "2020-2021",
     title: "Consultant I, InfoWorks",
@@ -107,8 +107,8 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
         >
           <Image
             src={featuredPhoto.image}
-            widths={[320, 500, 700]}
-            sizes="(min-width: 40rem) 16rem, 100vw"
+            widths={[320, 520, 700]}
+            sizes="16rem"
             format="avif"
             quality={70}
             alt=""
@@ -129,7 +129,7 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
 
     <p>
       I'm reachable through <a href="mailto:sam.young@email.com">email</a>, or
-      you can view or download my resume <a href="/resume">here</a>.
+      you can view or download my <a href="/resume">resume</a>.
     </p>
   </div>
 </BaseLayout>

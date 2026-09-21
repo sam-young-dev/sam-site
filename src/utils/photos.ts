@@ -2,6 +2,7 @@ import type { ImageMetadata } from "astro";
 import path from "node:path";
 import fs from "node:fs/promises";
 import exifr from "exifr";
+import { photoData } from "../data/photos";
 
 export interface PhotoMeta {
   date: string | null;
@@ -18,6 +19,8 @@ export interface Photo {
   slug: string;
   image: ImageMetadata;
   meta: PhotoMeta;
+  tags: string[];
+  blurb: string;
 }
 
 const imageModules = import.meta.glob<ImageMetadata>("../assets/images/*.{jpeg,jpg,png}", {
@@ -110,9 +113,11 @@ async function loadPhotos(): Promise<Photo[]> {
         "DateTimeOriginal",
       ]).catch(() => null);
       const gps = await exifr.gps(buffer).catch(() => null);
+      const slug = slugify(filePath);
+      const authored = photoData[slug];
 
       return {
-        slug: slugify(filePath),
+        slug,
         image,
         meta: {
           date: formatDate(exif?.DateTimeOriginal),
@@ -122,8 +127,10 @@ async function loadPhotos(): Promise<Photo[]> {
           aperture: formatAperture(exif?.FNumber),
           shutterSpeed: formatShutterSpeed(exif?.ExposureTime),
           iso: formatIso(exif?.ISO),
-          location: formatLocation(gps?.latitude, gps?.longitude),
+          location: authored?.location ?? formatLocation(gps?.latitude, gps?.longitude),
         },
+        tags: authored?.tags ?? [],
+        blurb: authored?.blurb ?? "",
       };
     })
   );

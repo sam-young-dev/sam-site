@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PhotoGrid from "../../components/photography/PhotoGrid.astro";
+import { getCollections } from "../../utils/collections";
+
+export async function getStaticPaths() {
+  const collections = await getCollections();
+  return collections.map((collection) => ({
+    params: { slug: collection.slug },
+    props: { collection },
+  }));
+}
+
+const { collection } = Astro.props;
+const { tag, description, count, photos } = collection;
+---
+
+<BaseLayout
+  title={`${tag} — Collections — Sam Young`}
+  description={description ?? `Photos from ${tag}, part of Sam Young's photography gallery.`}
+>
+  <div class="wrapper region">
+    <a href="/collections/" class="collection-detail__back">&larr; Back to collections</a>
+
+    <header class="collection-detail__header prose prose-w-sm">
+      <h1>{tag}</h1>
+      {description && <p class="collection-detail__description">{description}</p>}
+      <p class="collection-detail__count">{count} {count === 1 ? "photo" : "photos"}</p>
+    </header>
+
+    <PhotoGrid photos={photos} fallbackLabel="this collection" collectionSlug={collection.slug} />
+  </div>
+
+  <div class="region"></div>
+</BaseLayout>

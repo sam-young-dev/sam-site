@@ -25,6 +25,8 @@
 @import "./blocks/photo-detail.css";
 @import "./blocks/projects.css";
 @import "./blocks/project-detail.css";
+@import "./blocks/collections.css";
+@import "./blocks/collection-detail.css";
 @import "./blocks/about.css";
 @import "./blocks/puddle.css";
 @import "./blocks/home.css";
