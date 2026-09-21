@@ -38,19 +38,19 @@
 .button[data-button-variant="secondary"] {
   --button-bg: var(--color-fill-loud);
   --button-text: var(--color-on-loud);
-  --focus-color: var(--color-brand-dark);
+  --focus-color: var(--text-ink);
   --corner-secondary-color: var(--color-brand-primary);
 }
 
 .button[data-button-variant="brand"] {
   --button-bg: var(--color-brand-primary);
   --button-text: var(--color-brand-light);
-  --focus-color: var(--color-brand-dark);
+  --focus-color: var(--text-ink);
 }
 
 .button[data-button-variant="border"] {
   --button-bg: transparent;
-  --button-text: var(--color-brand-primary);
-  --button-border-color: var(--color-brand-primary);
-  --focus-color: var(--color-brand-dark);
+  --button-text: var(--text-ink);
+  --button-border-color: var(--text-ink);
+  --focus-color: var(--text-ink);
 }

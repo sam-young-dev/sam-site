@@ -203,11 +203,30 @@ const metaItems = [
       }
     }
 
+    // The detail image's `srcset` is sized against its own (smaller) `sizes`
+    // attribute, so its `currentSrc` is a lower-res candidate than the
+    // lightbox needs at full screen. Picking the largest candidate directly —
+    // rather than assigning `src`/`srcset`/`sizes` and letting the browser
+    // re-run its own selection against `sizes="100vw"` — avoids a second,
+    // asynchronous swap that flashed the smaller image before the full-size
+    // one loaded in.
+    function getLargestCandidate(imgEl) {
+      const srcset = imgEl.srcset;
+      if (!srcset) return imgEl.currentSrc || imgEl.src;
+      let best = { url: imgEl.currentSrc || imgEl.src, width: 0 };
+      for (const entry of srcset.split(",")) {
+        const [url, descriptor] = entry.trim().split(/\s+/);
+        const width = descriptor ? parseInt(descriptor, 10) : 0;
+        if (width > best.width) best = { url, width };
+      }
+      return best.url;
+    }
+
     function syncLightboxImage() {
       if (!lightboxImage || !mainImage) return;
-      lightboxImage.src = mainImage.currentSrc || mainImage.src;
-      lightboxImage.srcset = mainImage.srcset || "";
-      lightboxImage.sizes = "100vw";
+      lightboxImage.removeAttribute("srcset");
+      lightboxImage.removeAttribute("sizes");
+      lightboxImage.src = getLargestCandidate(mainImage);
       // The lightbox node persists across prev/next navigation, so its alt
       // text won't otherwise follow along to the new photo.
       lightboxImage.alt = mainImage.alt;

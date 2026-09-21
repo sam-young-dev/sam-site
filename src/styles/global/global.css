@@ -10,9 +10,8 @@ html {
 }
 
 body {
-  /* background: var(--color-background-base); */
-  background: var(--background-light);
-  color: var(--color-brand-primary);
+  background: light-dark(var(--background-light), var(--black));
+  color: var(--text-ink);
   font-size: var(--size-step-1);
   font-family: var(--font-body);
   line-height: var(--leading-body);
@@ -175,7 +174,7 @@ blockquote {
 
 blockquote footer {
   margin-block-start: var(--space-sm);
-  color: var(--color-brand-primary);
+  color: var(--text-ink);
   font-size: var(--size-step-0);
 }
 
@@ -344,7 +343,7 @@ form > * + * {
   border-radius: var(--radius-s);
   border: var(--stroke-solid);
   background: var(--color-fill-loud);
-  color: var(--color-foreground-inverse);
+  color: var(--color-on-loud);
   width: 100%;
 
   &::placeholder {

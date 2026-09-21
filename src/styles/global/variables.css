@@ -11,9 +11,27 @@
   --wrapper-max-width: 80rem;
   --wrapper-padding-inline: var(--space-md-lg);
 
-  color-scheme: light dark;
-  --black: var(--color-stone-400);
+  color-scheme: light;
+  --black: var(--color-stone-900);
   --background-light: var(--color-amber-50);
+
+  /* --color-brand-primary has no dark-mode counterpart in the design
+     tokens (it's meant to be a fixed brand swatch for things like button
+     fills), but it's also used all over as the page's "ink" color for
+     text sitting directly on the page background — which does need to
+     invert for contrast once that background goes dark. */
+  --text-ink: light-dark(var(--color-brand-primary), var(--color-amber-200));
+}
+
+/* Forces color-scheme (and therefore every light-dark() value) to follow
+   the toggle's explicit choice instead of just the OS/browser preference,
+   once JS has set data-mode. See ThemeToggle.astro. */
+:root[data-mode="light"] {
+  color-scheme: light;
+}
+
+:root[data-mode="dark"] {
+  color-scheme: dark;
 }
 
 @media (min-width: 100rem) {
