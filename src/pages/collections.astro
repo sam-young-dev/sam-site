@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollections } from "../utils/collections";
+
+const collections = await getCollections();
+---
+
+<BaseLayout
+  title="Collections — Sam Young"
+  description="Photography from Sam Young, grouped by trip and place."
+>
+  <div class="wrapper region prose prose-w-sm flow">
+    <h1>Collections</h1>
+    <p>Photos grouped by trip and place. Pick one to see the full set.</p>
+  </div>
+
+  <div class="wrapper region">
+    <ul class="collection-list not-prose">
+      {collections.map((collection) => (
+        <li class="collection-card">
+          <a href={`/collections/${collection.slug}/`} class="collection-card__link">
+            <Image
+              src={collection.cover.image}
+              widths={[400, 700, 1000]}
+              sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+              format="avif"
+              quality={70}
+              alt=""
+              loading="lazy"
+              class="collection-card__image"
+            />
+            <div class="collection-card__body">
+              <h2 class="collection-card__title">{collection.tag}</h2>
+              <p class="collection-card__count">
+                {collection.count} {collection.count === 1 ? "photo" : "photos"}
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="region"></div>
+</BaseLayout>

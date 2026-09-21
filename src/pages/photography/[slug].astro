@@ -2,21 +2,41 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPhotos } from "../../utils/photos";
+import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
 
 export async function getStaticPaths() {
   const photos = await getPhotos();
-  return photos.map((photo, index) => ({
-    params: { slug: photo.slug },
-    props: {
-      photo,
-      prevSlug: photos[(index - 1 + photos.length) % photos.length].slug,
-      nextSlug: photos[(index + 1) % photos.length].slug,
-    },
-  }));
+  const collections = await getCollections();
+
+  return photos.map((photo, index) => {
+    // Maps a collection slug the photo belongs to -> that collection's own
+    // prev/next photo, so browsing stays inside the collection it was opened from.
+    const collectionNav: Record<string, { prevSlug: string; nextSlug: string }> = {};
+
+    for (const collection of collections) {
+      const photoIndex = collection.photos.findIndex((p) => p.slug === photo.slug);
+      if (photoIndex === -1) continue;
+      const { photos: collectionPhotos, slug: collectionSlug } = collection;
+      collectionNav[collectionSlug] = {
+        prevSlug: collectionPhotos[(photoIndex - 1 + collectionPhotos.length) % collectionPhotos.length].slug,
+        nextSlug: collectionPhotos[(photoIndex + 1) % collectionPhotos.length].slug,
+      };
+    }
+
+    return {
+      params: { slug: photo.slug },
+      props: {
+        photo,
+        prevSlug: photos[(index - 1 + photos.length) % photos.length].slug,
+        nextSlug: photos[(index + 1) % photos.length].slug,
+        collectionNav,
+      },
+    };
+  });
 }
 
-const { photo, prevSlug, nextSlug } = Astro.props;
+const { photo, prevSlug, nextSlug, collectionNav } = Astro.props;
 const { image, meta, tags, blurb } = photo;
 
 const metaItems = [
@@ -36,6 +56,7 @@ const metaItems = [
   description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
 >
   <a
+    id="photo-detail-prev"
     href={`/photography/${prevSlug}/`}
     class="photo-detail__nav photo-detail__nav--prev"
     aria-label="View previous photo"
@@ -44,6 +65,7 @@ const metaItems = [
   </a>
 
   <a
+    id="photo-detail-next"
     href={`/photography/${nextSlug}/`}
     class="photo-detail__nav photo-detail__nav--next"
     aria-label="View next photo"
@@ -52,7 +74,7 @@ const metaItems = [
   </a>
 
   <div class="region wrapper">
-    <a href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
+    <a id="photo-detail-back" href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
 
     <figure class="photo-detail">
       <div class="photo-detail__media">
@@ -70,11 +92,16 @@ const metaItems = [
       {(tags.length > 0 || metaItems.length > 0) && (
         <figcaption class="photo-detail__meta">
           {tags.length > 0 && (
-            <ul class="photo-detail__tags">
-              {tags.map((tag) => (
-                <li class="photo-detail__tag">{tag}</li>
-              ))}
-            </ul>
+            <div class="photo-detail__tags-group">
+              <p class="photo-detail__tags-label">{tags.length > 1 ? "Collections" : "Collection"}</p>
+              <ul class="photo-detail__tags">
+                {tags.map((tag) => (
+                  <li>
+                    <a href={`/collections/${slugifyTag(tag)}/`} class="photo-detail__tag">{tag}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {metaItems.length > 0 && (
             <dl class="photo-detail__meta-list">
@@ -94,4 +121,19 @@ const metaItems = [
   <div class="region"></div>
   <div class="region"></div>
 
+  <script define:vars={{ collectionNav }}>
+    const from = new URLSearchParams(window.location.search).get("from");
+    const nav = from ? collectionNav[from] : null;
+    if (nav) {
+      const prevLink = document.getElementById("photo-detail-prev");
+      const nextLink = document.getElementById("photo-detail-next");
+      const backLink = document.getElementById("photo-detail-back");
+      if (prevLink) prevLink.href = `/photography/${nav.prevSlug}/?from=${from}`;
+      if (nextLink) nextLink.href = `/photography/${nav.nextSlug}/?from=${from}`;
+      if (backLink) {
+        backLink.href = `/collections/${from}/`;
+        backLink.textContent = "← Back to collection";
+      }
+    }
+  </script>
 </BaseLayout>

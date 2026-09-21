@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PhotoGrid from "../components/photography/PhotoGrid.astro";
 import { getPhotos } from "../utils/photos";
 
 const photos = await getPhotos();
@@ -13,24 +13,9 @@ const photos = await getPhotos();
   <div class="region wrapper flow">
     <h1>Photography</h1>
     <p>Some photos that I really like from trips over the years.</p>
-    
-    <div class="masonry-grid">
-      {photos.map((photo) => (
-        <a href={`/photography/${photo.slug}/`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? "the gallery"}`}>
-          <Image
-            src={photo.image}
-            widths={[480, 800, 1200]}
-            sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
-            format="avif"
-            quality={70}
-            alt={photo.blurb || "Photograph"}
-            loading="lazy"
-            class="masonry__image"
-            onload="this.classList.add('is-loaded')"
-          />
-        </a>
-      ))}
-    </div>
+    <a href="/collections/" class="button" data-button-variant="border">Browse by collection</a>
+
+    <PhotoGrid photos={photos} fallbackLabel="the gallery" />
   </div>
 
   <div class="region"></div>
