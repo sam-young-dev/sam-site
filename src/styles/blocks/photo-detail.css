@@ -173,7 +173,6 @@
 .photo-detail__nav {
   position: fixed;
   bottom: calc(var(--space-sm-md) + env(safe-area-inset-bottom, 0px));
-  /* Higher than .photo-lightbox so prev/next stays usable over the full screen view. */
   z-index: 1010;
   display: flex;
   align-items: center;
@@ -212,6 +211,10 @@
 .photo-detail__nav:hover,
 .photo-detail__nav:focus-visible {
   filter: brightness(105%);
+}
+
+.photo-detail__nav.is-hidden {
+  display: none;
 }
 
 .photo-detail__nav--prev {

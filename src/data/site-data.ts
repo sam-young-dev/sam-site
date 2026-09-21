@@ -8,7 +8,6 @@ export const siteData = {
   navItems: [
     { label: "Projects", href: "/projects" },
     { label: "Photography", href: "/photography" },
-    { label: "Art", href: "/art" },
     { label: "About", href: "/about" },
   ],
   personalLinks: [

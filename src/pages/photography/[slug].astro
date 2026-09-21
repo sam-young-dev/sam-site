@@ -232,6 +232,13 @@ const metaItems = [
       lightboxImage.alt = mainImage.alt;
     }
 
+    // The nav buttons float above the lightbox (z-index) so they'd otherwise
+    // sit on top of the full-screen image; hide them for the duration.
+    function setNavVisible(visible) {
+      prevLinkEl?.classList.toggle("is-hidden", !visible);
+      nextLinkEl?.classList.toggle("is-hidden", !visible);
+    }
+
     function openLightbox({ animate = true } = {}) {
       if (!lightbox || !lightboxImage || !mainImage) return;
       syncLightboxImage();
@@ -244,6 +251,7 @@ const metaItems = [
       }
       document.body.style.overflow = "hidden";
       rememberLightboxOpen(true);
+      setNavVisible(false);
     }
 
     function closeLightbox() {
@@ -252,6 +260,7 @@ const metaItems = [
       document.body.style.overflow = "";
       expandBtn?.focus();
       rememberLightboxOpen(false);
+      setNavVisible(true);
       // No transition (reduced motion) means transitionend never fires to hide it.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         lightbox.style.display = "none";
@@ -269,6 +278,7 @@ const metaItems = [
     // inline image underneath between photos.
     if (isOpen()) {
       document.body.style.overflow = "hidden";
+      setNavVisible(false);
       if (mainImage?.complete) {
         syncLightboxImage();
       } else {
@@ -325,14 +335,24 @@ const metaItems = [
       document.removeEventListener("keydown", window.__photoLightboxKeydown);
     }
     window.__photoLightboxKeydown = (e) => {
-      if (!isOpen()) return;
-      if (e.key === "Escape") {
-        closeLightbox();
-      } else if (e.key === "Tab") {
-        // The close button is the only focusable control in the dialog.
-        e.preventDefault();
-        lightboxClose?.focus();
-      } else if (e.key === "ArrowLeft") {
+      if (isOpen()) {
+        if (e.key === "Escape") {
+          closeLightbox();
+        } else if (e.key === "Tab") {
+          // The close button is the only focusable control in the dialog.
+          e.preventDefault();
+          lightboxClose?.focus();
+        }
+        return;
+      }
+
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+      // Don't hijack arrow keys while the user is typing/interacting elsewhere.
+      const targetTag = e.target?.tagName;
+      if (targetTag === "INPUT" || targetTag === "TEXTAREA" || e.target?.isContentEditable) return;
+
+      if (e.key === "ArrowLeft") {
         prevLinkEl?.click();
       } else if (e.key === "ArrowRight") {
         nextLinkEl?.click();
