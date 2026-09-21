@@ -86,6 +86,7 @@ const metaItems = [
           quality={80}
           alt={blurb || "Photograph"}
           class="photo-detail__image"
+          transition:name={`photo-${photo.slug}`}
         />
         {blurb && <p class="photo-detail__blurb">{blurb}</p>}
       </div>

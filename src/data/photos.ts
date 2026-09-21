@@ -157,7 +157,7 @@ export const photoData: Record<string, PhotoData> = {
     tags: ["Acadia National Park"],
     location: "Jordan Pond, Acadia National Park, ME",
     blurb:
-      "Even though it is named Jordan Pond, it is actually a lake that is so clean it is used for the drinking supply in the local area.",
+      "Even though it is named Jordan Pond, it is actually a lake and is so clean it is used for the drinking supply in the local area. It covers 187 acres and reaches a maximum depth of 150 feet.",
   },
   // DSCF9301.jpeg
   dscf9301: {

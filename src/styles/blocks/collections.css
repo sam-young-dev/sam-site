@@ -32,6 +32,23 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-s);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--transition-slow) var(--ease-out),
+    transform var(--transition-slow) var(--ease-out);
+}
+
+.collection-card__image.is-loaded {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-card__image {
+    transform: none;
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
 }
 
 .collection-card__body {

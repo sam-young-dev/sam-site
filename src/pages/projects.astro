@@ -27,6 +27,7 @@ import { projects } from "../data/projects";
               alt=""
               loading="lazy"
               class="project-card__image"
+              onload="this.classList.add('is-loaded')"
             />
             <div class="project-card__body">
               <h2 class="project-card__title">{project.title}</h2>

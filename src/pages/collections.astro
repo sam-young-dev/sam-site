@@ -29,6 +29,7 @@ const collections = await getCollections();
               alt=""
               loading="lazy"
               class="collection-card__image"
+              onload="this.classList.add('is-loaded')"
             />
             <div class="collection-card__body">
               <h2 class="collection-card__title">{collection.tag}</h2>
