@@ -24,6 +24,25 @@
   z-index: var(--z-index);
 }
 
+.site-head nav a {
+  position: relative;
+  text-decoration: none;
+}
+
+.site-head nav a[aria-current="page"] {
+  color: var(--color-brand-primary);
+}
+
+.site-head nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 0.15em;
+  inset-block-end: -0.1em;
+  background-color: var(--color-brand-primary);
+  border-radius: var(--radius-pill, 999px);
+}
+
 .site-head--home nav .cluster {
   --gutter: var(--space-s);
   padding-inline: var(--space-s);
@@ -31,10 +50,7 @@
   border-radius: var(--radius-pill, 999px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background-color: light-dark(
-    rgb(255 255 255 / 0.35),
-    rgb(0 0 0 / 0.35)
-  );
+  background-color: var(--background-light);
 }
 
 .site-head__brand a:not(:hover) {

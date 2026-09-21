@@ -7,7 +7,7 @@ export const siteData = {
   title: "Samsite",
   navItems: [
     { label: "Projects", href: "/projects" },
-    { label: "Photography", href: "/photography", current: false },
+    { label: "Photography", href: "/photography" },
     { label: "Art", href: "/art" },
     { label: "About", href: "/about" },
   ],

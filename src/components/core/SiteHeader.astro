@@ -3,6 +3,9 @@ import LogoIcon from '../../assets/logo-amber-large.svg?raw';
 import { siteData } from '../../data/site-data';
 
 const isHome = Astro.url.pathname === '/';
+
+const isCurrent = (href: string) =>
+  Astro.url.pathname === href || Astro.url.pathname.startsWith(`${href}/`);
 ---
 
 <header class:list={['site-head', { 'site-head--home': isHome }]}>
@@ -17,12 +20,11 @@ const isHome = Astro.url.pathname === '/';
         <ul class="cluster" role="list">
           {siteData.navItems.map((item) => (
           <li>
-            <a href={item.href} {...(item.current ? {'aria-current': 'page'} : {})}>{item.label}</a>
+            <a href={item.href} {...(isCurrent(item.href) ? {'aria-current': 'page'} : {})}>{item.label}</a>
           </li>
         ))}
         </ul>
       </nav>
     </div>
-    <!-- <hr/> -->
   </div>
 </header>
