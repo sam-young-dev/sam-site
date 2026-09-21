@@ -1,46 +1,48 @@
-# Astro Starter Kit: Basics
+# Sam Young — Personal Site
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cfaa4515-eb0a-4bee-bd48-1520f17ea868/deploy-status)](https://app.netlify.com/projects/young-sam/deploys)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Personal portfolio site for Sam Young, built with [Astro](https://astro.build). Showcases software projects, photography, and art, with a resume and about page. Live at [young-sam.netlify.app](https://young-sam.netlify.app/).
 
-## 🚀 Project Structure
+## Features
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Projects** — case studies for personal and professional work
+- **Photography** — a photo grid with per-image detail pages, EXIF metadata (via [exifr](https://github.com/MikeKovarik/exifr)), a lightbox, and curated collections
+- **Art**, **About**, and **Resume** pages
+- Image processing/optimization via [sharp](https://sharp.pixelplumbing.com/) and [Sugarcube](https://github.com/sugarcube-sh)
+- Custom design token system (colors, typography, spacing, motion, etc.) under [src/design-tokens/](src/design-tokens/)
+- CSS architecture following [CUBE CSS](https://cube.fyi/) (compositions, blocks, utilities) under [src/styles/](src/styles/)
+
+## Project Structure
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
+├── src/
+│   ├── assets/            # images, icons, fonts, logos
+│   ├── components/        # Astro components (core, hero, masthead, photography)
+│   ├── data/               # site data, photos, collections, projects
+│   ├── design-tokens/      # design system tokens (JSON)
+│   ├── layouts/            # BaseLayout.astro
+│   ├── lib/                 # client-side helpers (image ripple, puddle effect)
+│   ├── pages/               # routes: index, about, art, resume, projects/, photography/, collections/
+│   ├── styles/              # CUBE CSS (compositions, blocks, utilities, global)
+│   └── utils/                # collections/photos helpers
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
+## Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+| Command         | Action                                           |
+| :--------------- | :----------------------------------------------- |
+| `pnpm install`    | Installs dependencies                            |
+| `pnpm dev`        | Starts local dev server at `localhost:4321`      |
+| `pnpm build`      | Build your production site to `./dist/`          |
+| `pnpm preview`    | Preview your build locally, before deploying     |
+| `pnpm astro ...`  | Run CLI commands like `astro add`, `astro check` |
 
-## 👀 Want to learn more?
+## Deployment
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Deployed and hosted on [Netlify](https://www.netlify.com/), with automatic deploys from this repo.

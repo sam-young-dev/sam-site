@@ -82,8 +82,8 @@ const metaItems = [
       <div class="photo-detail__media">
         <Image
           src={image}
-          widths={[800, 1400, 2000]}
-          sizes="(min-width: 48rem) 75vw, 100vw"
+          widths={[650, 800, 1400, 2000]}
+          sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
           format="avif"
           quality={80}
           alt={blurb || "Photograph"}
@@ -134,6 +134,7 @@ const metaItems = [
       role="dialog"
       aria-modal="true"
       aria-label="Full screen photo view"
+      transition:persist
     >
       <button
         type="button"
@@ -202,11 +203,19 @@ const metaItems = [
       }
     }
 
-    function openLightbox({ animate = true } = {}) {
-      if (!lightbox || !lightboxImage || !mainImage) return;
+    function syncLightboxImage() {
+      if (!lightboxImage || !mainImage) return;
       lightboxImage.src = mainImage.currentSrc || mainImage.src;
       lightboxImage.srcset = mainImage.srcset || "";
       lightboxImage.sizes = "100vw";
+      // The lightbox node persists across prev/next navigation, so its alt
+      // text won't otherwise follow along to the new photo.
+      lightboxImage.alt = mainImage.alt;
+    }
+
+    function openLightbox({ animate = true } = {}) {
+      if (!lightbox || !lightboxImage || !mainImage) return;
+      syncLightboxImage();
       lightbox.style.display = "flex";
       if (animate) {
         requestAnimationFrame(() => lightbox.classList.add("is-open"));
@@ -234,7 +243,19 @@ const metaItems = [
     // lightbox shouldn't reappear the next time a photo page is opened.
     backLinkEl?.addEventListener("click", () => rememberLightboxOpen(false));
 
-    if (wantsLightboxOpen()) {
+    // `#photo-lightbox` has transition:persist, so navigating to the prev/next
+    // photo while it's open keeps this same DOM node on screen the whole time
+    // instead of closing and recreating it — swap the image in place rather
+    // than replaying the open animation, which used to flash the smaller
+    // inline image underneath between photos.
+    if (isOpen()) {
+      document.body.style.overflow = "hidden";
+      if (mainImage?.complete) {
+        syncLightboxImage();
+      } else {
+        mainImage?.addEventListener("load", syncLightboxImage, { once: true });
+      }
+    } else if (wantsLightboxOpen()) {
       if (mainImage?.complete) {
         openLightbox({ animate: false });
       } else {
@@ -242,17 +263,41 @@ const metaItems = [
       }
     }
 
-    lightbox?.addEventListener("transitionend", (e) => {
-      if (e.target === lightbox && e.propertyName === "opacity" && !isOpen()) {
-        lightbox.style.display = "none";
-      }
-    });
-
     expandBtn?.addEventListener("click", openLightbox);
-    lightboxClose?.addEventListener("click", closeLightbox);
-    lightbox?.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
+
+    // `lightbox` and `lightboxClose` live inside the persisted lightbox node,
+    // so on a soft navigation they're the same elements as before rather than
+    // fresh ones — swap out the previous run's handlers instead of stacking
+    // new ones on top (their closures also close over this run's mainImage
+    // etc., so simply skipping the rebind would leave them pointing at stale,
+    // now-detached elements from an earlier photo).
+    if (lightbox) {
+      if (lightbox._transitionendHandler) {
+        lightbox.removeEventListener("transitionend", lightbox._transitionendHandler);
+      }
+      lightbox._transitionendHandler = (e) => {
+        if (e.target === lightbox && e.propertyName === "opacity" && !isOpen()) {
+          lightbox.style.display = "none";
+        }
+      };
+      lightbox.addEventListener("transitionend", lightbox._transitionendHandler);
+
+      if (lightbox._backdropClickHandler) {
+        lightbox.removeEventListener("click", lightbox._backdropClickHandler);
+      }
+      lightbox._backdropClickHandler = (e) => {
+        if (e.target === lightbox) closeLightbox();
+      };
+      lightbox.addEventListener("click", lightbox._backdropClickHandler);
+    }
+
+    if (lightboxClose) {
+      if (lightboxClose._clickHandler) {
+        lightboxClose.removeEventListener("click", lightboxClose._clickHandler);
+      }
+      lightboxClose._clickHandler = closeLightbox;
+      lightboxClose.addEventListener("click", lightboxClose._clickHandler);
+    }
 
     // Astro's ClientRouter swaps page content without reloading, but `document`
     // itself persists across navigations — re-adding this listener on every

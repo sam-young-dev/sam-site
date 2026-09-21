@@ -17,7 +17,6 @@
 
 .hero-content--stagger > * {
   opacity: 0;
-  transform: translateY(12px);
   animation: hero-content-in var(--transition-slow) var(--ease-out) forwards;
 }
 
@@ -54,20 +53,13 @@
 @keyframes hero-content-in {
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-content--stagger > * {
-    transform: none;
-    animation-name: hero-content-in-reduced;
-  }
-
-  @keyframes hero-content-in-reduced {
-    to {
-      opacity: 1;
-    }
+    animation: none;
+    opacity: 1;
   }
 }
 
