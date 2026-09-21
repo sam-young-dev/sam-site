@@ -66,4 +66,16 @@
 .explore-list {
   list-style: none;
   padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs, 0.25rem);
+}
+
+.explore-list a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 48px;
+  min-inline-size: 48px;
+  padding-inline: var(--space-sm);
+  margin-inline-start: calc(-1 * var(--space-sm));
 }
