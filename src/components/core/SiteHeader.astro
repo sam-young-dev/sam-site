@@ -1,5 +1,5 @@
 ---
-import LogoIcon from '../../assets/logo-amber-large.svg?raw';
+import LogoIconLight from '../../assets/logo-amber-large.svg?raw';
 import { siteData } from '../../data/site-data';
 
 const isHome = Astro.url.pathname === '/';
@@ -13,19 +13,21 @@ const isCurrent = (href: string) =>
     <div class="repel site-head__inner">
       <div class="site-head__brand">
         <a href="/" class="site-head__brand-link">
-          <span class="site-head__brand-icon" set:html={LogoIcon} />
+          <span class="site-head__brand-icon" set:html={LogoIconLight} />
           <span class="visually-hidden">{siteData.title} home</span>
         </a>
       </div>
-      <nav aria-label="primary" class="nav">
-        <ul class="cluster" role="list">
-          {siteData.navItems.map((item) => (
-          <li>
-            <a href={item.href} {...(isCurrent(item.href) ? {'aria-current': 'page'} : {})}>{item.label}</a>
-          </li>
-        ))}
-        </ul>
-      </nav>
+      <div class="cluster site-head__end">
+        <nav aria-label="primary" class="nav">
+          <ul class="cluster" role="list">
+            {siteData.navItems.map((item) => (
+            <li>
+              <a href={item.href} {...(isCurrent(item.href) ? {'aria-current': 'page'} : {})}>{item.label}</a>
+            </li>
+          ))}
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </header>

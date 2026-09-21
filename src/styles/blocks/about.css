@@ -35,7 +35,7 @@ gap below the heading. */
   height: 0.65rem;
   margin-block-start: 0.5em;
   border-radius: 50%;
-  background: var(--color-brand-primary);
+  background: var(--text-ink);
 }
 
 .timeline__item:not(:last-child) .timeline__marker::after {
@@ -52,7 +52,7 @@ gap below the heading. */
   font-size: var(--size-step--1);
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
-  color: var(--color-brand-primary);
+  color: var(--text-ink);
 }
 
 .timeline__title {
@@ -81,7 +81,7 @@ Small pill list, a scannable break from prose. */
   border: var(--stroke-solid);
   border-radius: 999px;
   font-size: var(--size-step-0);
-  color: var(--color-brand-primary);
+  color: var(--text-ink);
 }
 
 /* FEATURED PHOTO

@@ -19,10 +19,10 @@
 } */
 
 .masthead__logo {
-  --color-svg-fill: var(--color-brand-primary);
-  --color-svg-stroke: var(--color-brand-primary);
+  --color-svg-fill: var(--text-ink);
+  --color-svg-stroke: var(--text-ink);
 
-  color: var(--color-brand-primary);
+  color: var(--text-ink);
   padding-block: clamp(10rem, 50vb, 20rem) var(--gutter);
   font-weight: var(--font-weight-bold);
   padding-bottom: 2rem;

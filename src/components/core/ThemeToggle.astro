@@ -1,0 +1,79 @@
+---
+import SunIcon from '../../assets/icons/sun.svg?raw';
+import MoonIcon from '../../assets/icons/moon.svg?raw';
+---
+
+<button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme">
+  <span class="theme-toggle__icon theme-toggle__icon--sun" set:html={SunIcon} />
+  <span class="theme-toggle__icon theme-toggle__icon--moon" set:html={MoonIcon} />
+</button>
+
+<script>
+  const STORAGE_KEY = "theme";
+  const button = document.getElementById("theme-toggle");
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-mode", theme);
+    if (button) {
+      button.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      button.setAttribute("aria-pressed", String(theme === "dark"));
+    }
+  }
+
+  // The inline script in BaseLayout's <head> already set data-mode before
+  // paint (from localStorage or the OS preference) — just sync this
+  // button's own label/state to match, since its SSR markup can't know it.
+  applyTheme(document.documentElement.getAttribute("data-mode") === "dark" ? "dark" : "light");
+
+  button?.addEventListener("click", () => {
+    const next = document.documentElement.getAttribute("data-mode") === "dark" ? "light" : "dark";
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch {}
+    applyTheme(next);
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    padding: 0;
+    border: var(--stroke-solid);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-ink);
+    cursor: pointer;
+  }
+
+  .theme-toggle__icon {
+    display: none;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .theme-toggle__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  :root[data-mode="dark"] .theme-toggle__icon--sun,
+  :root:not([data-mode="dark"]) .theme-toggle__icon--moon {
+    display: flex;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .theme-toggle {
+      transition: filter var(--transition-normal) var(--ease-out);
+    }
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    filter: brightness(105%);
+  }
+</style>
