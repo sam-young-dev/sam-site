@@ -157,3 +157,12 @@ CUSTOM PROPERTIES AND CONFIGURATION
   opacity: 0.7;
   background-size: 0% var(--stroke-width);
 }
+
+/* End mark / dingbat, placed after the final line of a piece of writing */
+.end-mark {
+  --flow-space: var(--space-xl, 2.5rem);
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-size: var(--size-step-3);
+  opacity: 0.8;
+}

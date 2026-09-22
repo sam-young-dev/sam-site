@@ -11,7 +11,7 @@ interface Props {
 const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
 ---
 
-<div class="masonry-grid">
+<div class="masonry-grid" style={`--photo-count: ${photos.length};`}>
   {photos.map((photo) => (
     <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? fallbackLabel}`}>
       <Image
