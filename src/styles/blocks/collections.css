@@ -15,6 +15,10 @@
   transition: transform var(--transition-normal) var(--ease-out);
 }
 
+.collection-card__link:is(a) {
+  text-decoration: none;
+}
+
 .collection-card__link:focus-visible {
   transform: scale(101%);
 }
