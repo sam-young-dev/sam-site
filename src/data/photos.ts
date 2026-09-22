@@ -28,7 +28,14 @@ export const photoData: Record<string, PhotoData> = {
     tags: ["PCT"],
     location: "San Bernardino National Forest, CA",
     blurb:
-      "Sunrise about to hit the valley along the desert section of the PCT.",
+      "Sunrise about to hit the valley along the Southern California section of the PCT.",
+  },
+  // dscf7260.jpeg
+  dscf7260: {
+    tags: ["PCT"],
+    location: "Inyo National Forest, CA",
+    blurb:
+      "Sierra Nevada mountain range along the Central California section of the PCT.",
   },
   // DSCF7914.jpeg
   dscf7914: {

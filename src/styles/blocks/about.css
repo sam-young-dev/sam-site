@@ -95,7 +95,6 @@ A small photography accent alongside the photography paragraph. */
 .about-photo-link {
   display: block;
   flex-grow: 0;
-  border-radius: var(--radius-s);
   overflow: hidden;
   transition: transform var(--transition-normal) var(--ease-out);
 }
@@ -115,5 +114,4 @@ A small photography accent alongside the photography paragraph. */
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: var(--radius-s);
 }

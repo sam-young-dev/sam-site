@@ -37,7 +37,6 @@
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-s);
 }
 
 .photo-detail__expand {
@@ -108,7 +107,6 @@
   width: auto;
   height: auto;
   object-fit: contain;
-  border-radius: var(--radius-s);
   opacity: 0;
   transform: scale(0.96);
 }

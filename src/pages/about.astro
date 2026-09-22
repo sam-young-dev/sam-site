@@ -4,42 +4,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPhotos } from "../utils/photos";
 
 const timeline = [
-  // {
-  //   date: "Summer 2019",
-  //   title: "Technical Intern, InfoWorks",
-  //   description:
-  //     "My first real taste of professional software development, before I'd even finished my degree.",
-  // },
-  // {
-  //   date: "2020",
-  //   title: "B.A. Computer Science, Harding University",
-  //   description:
-  //     "Graduated with a minor in graphic design, which explains a lot about how I approach this work.",
-  // },
   {
     date: "2020-2021",
     title: "Consultant I, InfoWorks",
-    description:
-      "Joined full-time, cutting my teeth on client applications across healthcare and finance.",
   },
   {
     date: "2022-2024",
     title: "Consultant II, InfoWorks",
-    description:
-      "Took on bigger builds, including a compliance platform used by thousands of people.",
   },
   {
     date: "2024-Present",
     title: "Senior Consultant, InfoWorks",
-    description:
-      "Leading full-stack projects end to end, from architecture through client-facing UI.",
   },
 ];
 
-const currentStack = ["React", "Angular", "ASP.NET Core", "SQL Server", "Figma"];
-
 const photos = await getPhotos();
 const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photos[0];
+const featuredPhoto2 = photos.find((photo) => photo.slug === "dscf9704") ?? photos[0];
+const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? photos[0];
 ---
 
 <BaseLayout
@@ -50,9 +32,8 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
     <h1>About me</h1>
 
     <p>
-      I'm a software engineer with a background in design, based out of
-      Nashville, TN. What keeps me interested is the seam between the two. I
-      like translating what a project needs into something that's
+      I'm a full stack software engineer with a background in design, based out of
+      Nashville, TN. I like translating what a project needs into something that's
       technically feasible, developer-friendly, and grounded in strong UX.
     </p>
 
@@ -66,7 +47,6 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
               <div class="timeline__content">
                 <p class="timeline__date">{item.date}</p>
                 <p class="timeline__title">{item.title}</p>
-                <p>{item.description}</p>
               </div>
             </li>
           ))
@@ -77,16 +57,11 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
     <div class="flow">
       <p>
         Most of that work leans on React, Angular, ASP.NET Core, and SQL
-        Server, with Figma in the mix for client-facing prototyping. The
-        projects have ranged from that compliance platform, to an ROI
-        calculator built from one codebase with two build targets, to a
-        document management system with bulk Excel workflows for a global
+        Server, with Figma in the mix for client-facing prototyping. I have worked on
+        projects ranging from a healthcare compliance platform, to an ROI
+        calculator, to a document management system with bulk Excel workflows for a global
         financial client. You can see the fuller breakdown on my <a href="/resume">resume</a>.
       </p>
-
-      <ul class="about-tags cluster not-prose" role="list">
-        {currentStack.map((tech) => <li class="about-tag">{tech}</li>)}
-      </ul>
     </div>
 
     <p>
@@ -98,33 +73,66 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
       the stack instead of inventing a catalog from scratch.
     </p>
 
-    <div class="sidebar-layout about-photo-layout">
+    <div class="switcher">
       {featuredPhoto && (
         <a
           href={`/photography/${featuredPhoto.slug}/`}
-          class="sidebar about-photo-link"
+          class=""
           aria-label="View this photo in the gallery"
         >
           <Image
             src={featuredPhoto.image}
-            widths={[320, 520, 700]}
-            sizes="16rem"
+            widths={[650, 800, 1400, 2000]}
+            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
             format="avif"
-            quality={70}
-            alt=""
+            quality={80}
+            alt="View of a snowy mountain through the trees."
             loading="lazy"
             class="about-photo"
           />
         </a>
       )}
-      <p>
-        When I'm not writing code, I'm usually out with a camera. I keep a
-        running <a href="/photography">photography</a> gallery here. Design,
-        photography, and code all scratch the same itch for me: paying
-        attention to composition, light, and detail, whether that's a
-        landscape or a layout.
-      </p>
+      {featuredPhoto2 && (
+        <a
+          href={`/photography/${featuredPhoto2.slug}/`}
+          class=""
+          aria-label="View this photo in the gallery"
+        >
+          <Image
+            src={featuredPhoto2.image}
+            widths={[650, 800, 1400, 2000]}
+            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
+            format="avif"
+            quality={80}
+            alt="View of a snowy mountain through the trees."
+            loading="lazy"
+            class="about-photo"
+          />
+        </a>
+      )}
+      {featuredPhoto3 && (
+        <a
+          href={`/photography/${featuredPhoto3.slug}/`}
+          class=""
+          aria-label="View this photo in the gallery"
+        >
+          <Image
+            src={featuredPhoto3.image}
+            widths={[650, 800, 1400, 2000]}
+            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
+            format="avif"
+            quality={80}
+            alt="View of a snowy mountain through the trees."
+            loading="lazy"
+            class="about-photo"
+          />
+        </a>
+      )}
     </div>
+    <p>
+      When I'm not writing code, I am often outside with a camera. I keep a
+      running <a href="/photography">photography</a> gallery here.
+    </p>
 
     <p>
       I'm reachable through <a href="mailto:sam.young@email.com">email</a>, or
@@ -132,7 +140,3 @@ const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photo
     </p>
   </div>
 </BaseLayout>
-
-<script>
-	import '../lib/puddle.js';
-</script>
