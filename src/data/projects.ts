@@ -8,7 +8,9 @@ import hyperliteLighthouse from "../assets/projects/hyperlite/lighthouse-report.
 
 import portfolioPuddle from "../assets/projects/portfolio-site/home-puddle.png";
 import portfolioPhotoExif from "../assets/projects/portfolio-site/photo-exif.png";
+import portfolioPhotoCollectionIndex from "../assets/projects/portfolio-site/photography-collections.png";
 import portfolioPhotographyIndex from "../assets/projects/portfolio-site/photography-index.png";
+import portfolioFooter from "../assets/projects/portfolio-site/footer.png";
 
 export interface ProjectImage {
   src: ImageMetadata;
@@ -85,7 +87,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: 'On top of that sits a working cart and checkout flow through Snipcart (Snipcart kept in test mode, but payments will succeed with test card 4242424242424242. See <a href="https://docs.snipcart.com/v3/testing/payments" target="_blank" rel="noopener noreferrer">docs</a> for more).',
+        html: 'On top of that sits a working cart and checkout flow through Snipcart (Snipcart is kept in test mode since nothing is actually being sold, but payments will succeed with test card 4242424242424242. See <a href="https://docs.snipcart.com/v3/testing/payments" target="_blank" rel="noopener noreferrer">docs</a> for more).',
       },
       {
         type: "image",
@@ -114,7 +116,11 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. That matters more on a storefront than it sounds. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
+        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters more and more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
+      },
+      {
+        type: "text",
+        html: "Overall, I learned a lot about how to set up a basic ecommerce store, some of the tradeoffs that need to be made based on the site goals, and more about performance updates across the board. My time was definitely well spent on this project.",
       },
     ],
     cover: {
@@ -136,30 +142,40 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "This is the site you're on. It's an Astro build for photography, a couple of art/side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
+        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
       },
       {
         type: "image",
         image: {
           src: portfolioPuddle,
           alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
-          caption: "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
+          caption:
+            "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
         },
       },
       {
         type: "text",
-        html: 'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000 to 4,500 or more cells, more elements and style recalculations than a browser can update at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel to tune it afterward: ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
+        html: 'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000 to 4,500 or more cells, more elements and style recalculations than a browser can update at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it afterward: ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
       },
       {
         type: "text",
-        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings.",
+        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Along with this locations, descriptions, and tags were added to each photo to provide more detail and to allow for showing images by collection.",
       },
       {
         type: "image",
         image: {
           src: portfolioPhotoExif,
           alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
-          caption: "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
+          caption:
+            "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
+        },
+      },
+      {
+        type: "image",
+        image: {
+          src: portfolioPhotoCollectionIndex,
+          alt: "Photo collections page showing photo collections grouped by user tags.",
+          caption: "Collection view of photos grouped by tags.",
         },
       },
       {
@@ -171,8 +187,25 @@ export const projects: Project[] = [
         image: {
           src: portfolioPhotographyIndex,
           alt: "Photography index page showing a masonry grid of landscape and hiking photos.",
-          caption: "The photography index, a masonry grid over the same photo set.",
+          caption:
+            "The photography index, a masonry grid over the same photo set.",
         },
+      },
+      {
+        type: "text",
+        html: "The footer also is a place with a nice touch. One of my photos with a mountain in it had the background removed and was converted into an svg shape to be used for the footer. The result is subtle, calculated, and fits into the site as a whole really well.",
+      },
+      {
+        type: "image",
+        image: {
+          src: portfolioFooter,
+          alt: "Footer mountain svg shape.",
+          caption: "The footer mountain svg shape.",
+        },
+      },
+      {
+        type: "text",
+        html: "I learned a lot about animations, writing code for good performance, and I had a blast making this site go from sketches and ideas to a reality. There are some improvements that can be made for sure, but it is in a great spot as I see it right now.",
       },
     ],
     cover: {

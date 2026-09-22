@@ -151,7 +151,7 @@ const metaItems = [
   <div class="region"></div>
   <div class="region"></div>
 
-  <script define:vars={{ collectionNav }}>
+  <script define:vars={{ collectionNav }} data-astro-rerun>
     const from = new URLSearchParams(window.location.search).get("from");
     const nav = from ? collectionNav[from] : null;
     if (nav) {

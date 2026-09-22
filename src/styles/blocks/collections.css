@@ -11,9 +11,12 @@
   height: 100%;
   color: inherit;
   text-decoration: none;
-  border-radius: var(--radius-s);
   overflow: hidden;
   transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.collection-card__link:is(a) {
+  text-decoration: none;
 }
 
 .collection-card__link:focus-visible {
@@ -31,7 +34,6 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: var(--radius-s);
   opacity: 0;
   transition: opacity var(--transition-slow) var(--ease-out);
 }

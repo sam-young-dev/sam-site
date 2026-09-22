@@ -60,7 +60,6 @@
   font-size: var(--size-step-0);
   padding: 0.25em 0.6em;
   border: var(--stroke-solid);
-  border-radius: var(--radius-s);
 }
 
 .project-detail__links {
@@ -80,14 +79,14 @@
 }
 
 .project-detail__gallery-item {
-  margin: 0;
+  margin-inline: 0;
+  margin-block-end: 0;
 }
 
 .project-detail__gallery-image {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-s);
   border: var(--stroke-solid);
 }
 

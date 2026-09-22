@@ -9,13 +9,13 @@ without leaving gaps, the way a Pinterest-style grid does. */
 
 @media (min-width: 40rem) {
   .masonry-grid {
-    column-count: 2;
+    column-count: min(2, var(--photo-count, 2));
   }
 }
 
 @media (min-width: 60rem) {
   .masonry-grid {
-    column-count: 3;
+    column-count: min(3, var(--photo-count, 3));
   }
 }
 
