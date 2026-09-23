@@ -193,21 +193,20 @@ export const projects: Project[] = [
         html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Along with this locations, descriptions, and tags were manually added to each photo to provide more detail and to allow for grouping images by collection.",
       },
       {
-        type: "image",
-        image: {
-          src: portfolioPhotoExif,
-          alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
-          caption:
-            "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
-        },
-      },
-      {
-        type: "image",
-        image: {
-          src: portfolioPhotoCollectionIndex,
-          alt: "Photo collections page showing photo collections grouped by user tags.",
-          caption: "Collection view of photos grouped by tags.",
-        },
+        type: "gallery",
+        images: [
+          {
+            src: portfolioPhotoExif,
+            alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
+            caption:
+              "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
+          },
+          {
+            src: portfolioPhotoCollectionIndex,
+            alt: "Photo collections page showing photo collections grouped by user tags.",
+            caption: "Collection view of photos grouped by tags.",
+          },
+        ],
       },
       { type: "heading", text: "The small details" },
       {
