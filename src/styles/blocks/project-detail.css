@@ -22,7 +22,7 @@
 
 .project-detail__header {
   max-width: 60ch;
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
 }
 
 .project-detail__summary {
@@ -48,6 +48,18 @@
   margin: 0.25em 0 0;
 }
 
+.project-detail__meta-item--full {
+  flex-basis: 100%;
+}
+
+.project-detail__responsibilities {
+  padding-inline-start: var(--space-md);
+}
+
+.project-detail__responsibilities li + li {
+  margin-block-start: var(--space-3xs);
+}
+
 .project-detail__stack {
   list-style: none;
   display: flex;
@@ -70,7 +82,7 @@
 }
 
 .project-detail__content {
-  --flow-space: var(--space-xl);
+  --flow-space: var(--space-md);
 }
 
 .project-detail__content > * {
@@ -84,6 +96,17 @@
 
 .project-detail__content .prose {
   max-width: 70ch;
+  --flow-space: var(--space-sm);
+}
+
+/* Section headings: extra room above to mark a new section, tight below to bind to their text */
+.project-detail__content > .project-detail__heading {
+  --flow-space: var(--space-2xl);
+  max-width: 35ch;
+}
+
+.project-detail__content > .project-detail__heading + * {
+  --flow-space: var(--space-sm-md);
 }
 
 .project-detail__gallery-item {

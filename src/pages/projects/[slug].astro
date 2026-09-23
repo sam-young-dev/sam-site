@@ -39,6 +39,16 @@ const { project } = Astro.props;
             </ul>
           </dd>
         </div>
+        <div class="project-detail__meta-item project-detail__meta-item--full">
+          <dt>My role</dt>
+          <dd>
+            <ul class="project-detail__responsibilities">
+              {project.responsibilities.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
       </dl>
 
       <div class="project-detail__links">
@@ -78,7 +88,9 @@ const { project } = Astro.props;
 
     <div class="project-detail__content flow">
       {project.content.map((block) =>
-        block.type === "text" ? (
+        block.type === "heading" ? (
+          <h2 class="project-detail__heading">{block.text}</h2>
+        ) : block.type === "text" ? (
           <div class="prose">
             <p set:html={block.html} />
           </div>
