@@ -12,6 +12,15 @@ import portfolioPhotoCollectionIndex from "../assets/projects/portfolio-site/pho
 import portfolioPhotographyIndex from "../assets/projects/portfolio-site/photography-index.png";
 import portfolioFooter from "../assets/projects/portfolio-site/footer.png";
 
+import roiStart from "../assets/projects/roi-app/start.png";
+import roiForm from "../assets/projects/roi-app/form.png";
+import roiSummaryExpand from "../assets/projects/roi-app/roi-summary-expand.png";
+import roiEncounters from "../assets/projects/roi-app/encounters.png";
+import roiRetention from "../assets/projects/roi-app/retention.png";
+import roiFormMockup from "../assets/projects/roi-app/form-mockup.png";
+import roiSummaryExpandMockup from "../assets/projects/roi-app/roi-summary-expand-mockup.png";
+import roiRetentionMockup from "../assets/projects/roi-app/retention-mockup.png";
+
 export interface ProjectImage {
   src: ImageMetadata;
   alt: string;
@@ -20,7 +29,8 @@ export interface ProjectImage {
 
 export type ProjectContentBlock =
   | { type: "text"; html: string }
-  | { type: "image"; image: ProjectImage };
+  | { type: "image"; image: ProjectImage }
+  | { type: "gallery"; images: ProjectImage[]; caption?: string };
 
 export interface Project {
   slug: string;
@@ -211,6 +221,123 @@ export const projects: Project[] = [
     cover: {
       src: portfolioPuddle,
       alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+    },
+  },
+  {
+    slug: "roi-calculator",
+    title: "APP Program ROI Calculator",
+    summary:
+      "A sales tool for an APP education company that projects the return on enrolling a health system's NPs and PAs in its transition-to-practice program, based on benchmark data from past cohorts.",
+    year: "2025",
+    stack: ["React", "ASP.NET Core", "Azure", "Entra ID", "Figma"],
+    links: {},
+    content: [
+      {
+        type: "text",
+        html: "The client, an APP education company, runs a transition-to-practice program for Advanced Practice Providers (APPs), meaning Nurse Practitioners (NPs) and Physician Associates (PAs). The program helps new APPs get productive and confident in practice sooner. The pitch to health systems is that trained APPs see more patients and stay longer. This calculator puts numbers on that pitch. A prospective client enters a few details about their APP workforce, and the app projects the ROI they could expect in the first year.",
+      },
+      {
+        type: "text",
+        html: "Before writing any code, I designed the calculator in Figma and walked the client through the mockups. Changing a design is much cheaper than changing a build, so this is where we agreed on which numbers to feature, how much of the math to show, and how to be upfront that the results are illustrative, not guaranteed, while still making a clear case. Once the client signed off on the designs, I built the app from them.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: roiSummaryExpandMockup,
+            alt: "Figma mockup of the results summary with a 6.24 ROI headline and an expanded Show me the math section breaking down productivity, incremental revenue, program cost, and ROI.",
+          },
+          {
+            src: roiRetentionMockup,
+            alt: "Figma mockup of the retention tab showing annual retention savings per provider, a bar chart of status quo versus projected retention, and participant testimonials.",
+          },
+        ],
+        caption: "Figma mockups used to get client sign-off before development.",
+      },
+      {
+        type: "image",
+        image: {
+          src: roiStart,
+          alt: "ROI calculator empty state with an inputs panel for client information and calculation fields, and a placeholder asking the user to enter inputs and calculate.",
+          caption: "The starting state: a short set of inputs and nothing else.",
+        },
+      },
+      {
+        type: "text",
+        html: "The inputs are kept to the few numbers a practice manager would know offhand: how many APPs they have, average years of experience, average monthly encounters per APP, and current retention rate. Those numbers are matched against longitudinal data from a benchmark cohort of APPs who have already completed the program. The calculator finds comparable providers in the benchmark set, places the client's encounter volume in a quartile, and projects expected encounters with a 95% confidence range.",
+      },
+      {
+        type: "image",
+        image: {
+          src: roiForm,
+          alt: "Filled-in calculator showing a 5.63:1 ROI headline, a download full report button, and an About the Program section with disclaimers.",
+          caption: "Results lead with a single headline ROI number.",
+        },
+      },
+      {
+        type: "text",
+        html: "It works as a sales tool in two ways. The sales team uses an internal version during conversations with health systems, and an external version is embedded on the client's site so interested prospects can try their own numbers before they ever talk to anyone. Both come from one React codebase with two build processes. The internal build is secured with Azure Entra ID, and the external build is packaged to embed in their marketing site. An ASP.NET Core API on Azure handles the benchmark data and the calculations.",
+      },
+      {
+        type: "text",
+        html: "A headline ROI figure is only persuasive if people believe it, so the results show their work. The ROI quick report expands to show every step: projected encounters per APP, incremental revenue across the whole team, retention savings, total annual return, program cost, and the final ratio. Each line shows the inputs that produced it, so anyone reading it can follow the math.",
+      },
+      {
+        type: "image",
+        image: {
+          src: roiSummaryExpand,
+          alt: "Expanded ROI quick report listing projected encounters, monthly incremental revenue, annual retention savings, total annual return, program cost, and the resulting 5.63 ROI.",
+          caption: "The quick report walks through each step of the ROI math.",
+        },
+      },
+      {
+        type: "text",
+        html: "The two drivers of the ROI each get their own tab. Encounters shows the projected lift in patient volume and what it means in monthly and annual revenue, alongside the benchmark match details and a chart of current versus projected encounters.",
+      },
+      {
+        type: "image",
+        image: {
+          src: roiEncounters,
+          alt: "Encounters tab showing a 10.1% increase in encounters, projected monthly and annual incremental revenue, a benchmark comparison table, and a bar chart of current versus projected encounters.",
+          caption: "Encounters: projected productivity gain, backed by benchmark matches.",
+        },
+      },
+      {
+        type: "text",
+        html: "Retention compares the client's current turnover cost to the projected cost at the program's retention rate. Replacing an APP is expensive, so even a few points of retention add up to real savings. Participant testimonials sit underneath, putting a human voice next to the numbers.",
+      },
+      {
+        type: "image",
+        image: {
+          src: roiRetention,
+          alt: "Retention tab showing annual retention savings, the program's retention rate, a bar chart of current versus projected retention cost, and participant testimonials.",
+          caption: "Retention: turnover cost now versus projected with the program.",
+        },
+      },
+      {
+        type: "text",
+        html: "The build stayed close to the approved designs, with a few changes along the way. The mockups had a wRVU tab alongside encounters. The benchmark data supported both, but after talking it through with the client, we dropped wRVUs and focused on encounters, since that's the metric their business model is built around. The specialty input came out too, because the benchmark data covered one main specialty and there was nothing to choose between. The single client name field grew into a lead capture section with name, business email, and organization, so when prospects use the calculator on the company's website, the client knows who's interested.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: roiFormMockup,
+            alt: "Figma mockup with a single Client Name field, Provider Specialty and wRVU inputs, and four result tabs including wRVU Results.",
+            caption: "Figma mockup",
+          },
+          {
+            src: roiForm,
+            alt: "Final build with a Client Information lead capture section, a fixed specialty, and three result tabs: ROI Summary, Encounters, and Retention.",
+            caption: "Final build",
+          },
+        ],
+        caption: "The approved mockup next to the shipped app.",
+      },
+    ],
+    cover: {
+      src: roiForm,
+      alt: "Filled-in calculator showing a 5.63:1 ROI headline, a download full report button, and an About the Program section with disclaimers.",
     },
   },
 ];

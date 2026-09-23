@@ -177,10 +177,7 @@ class PuddleData {
 class Puddle {
   constructor(
     queryElement,
-    {
-      updateInterval = CONFIG.DEFAULT_UPDATE_INTERVAL,
-      interactive = true,
-    } = {},
+    { updateInterval = CONFIG.DEFAULT_UPDATE_INTERVAL } = {},
   ) {
     this.parentNode = document.querySelector(queryElement);
     if (!this.parentNode) {
@@ -188,7 +185,6 @@ class Puddle {
     }
 
     this.updateInterval = updateInterval;
-    this.interactive = interactive;
     this.nodeSize = CONFIG.MIN_NODE_SIZE;
 
     this.canvas = document.createElement("canvas");
@@ -214,9 +210,7 @@ class Puddle {
     this.#setupDimensions();
     this.data = new PuddleData(this.numRows, this.numCols);
     this.data.maxRippleStrength = this.maxRippleStrength;
-    if (this.interactive) {
-      this.#setupDelegatedListeners();
-    }
+    this.#setupDelegatedListeners();
     this.setupGrid();
   }
 
@@ -273,8 +267,13 @@ class Puddle {
       this.#startLoopIfIdle();
     });
 
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
-      return;
+    const canHover = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (!canHover || prefersReducedMotion) return;
 
     this.canvas.addEventListener("mousemove", (e) => {
       const { xx, yy } = this.#cellFromEvent(e);
@@ -379,14 +378,8 @@ function initPuddle() {
   const container = document.querySelector("#puddle-container");
   if (!container) return;
 
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-
   try {
-    activePuddle = new Puddle("#puddle-container", {
-      interactive: !prefersReducedMotion,
-    });
+    activePuddle = new Puddle("#puddle-container");
   } catch (error) {
     console.error("Failed to initialize puddle:", error);
   }

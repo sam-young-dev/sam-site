@@ -71,16 +71,39 @@
 
 .project-detail__content {
   --flow-space: var(--space-xl);
+}
+
+.project-detail__content > * {
   max-width: 70ch;
 }
 
-.project-detail__content .prose {
+/* Galleries break out of the text column to the full wrapper width */
+.project-detail__content > .project-detail__gallery {
   max-width: none;
+}
+
+.project-detail__content .prose {
+  max-width: 70ch;
 }
 
 .project-detail__gallery-item {
   margin-inline: 0;
   margin-block-end: 0;
+}
+
+.project-detail__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--space-sm-md);
+}
+
+/* With an odd number of images, the first one spans the full row */
+.project-detail__gallery-cell:first-child:nth-last-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.project-detail__gallery-cell {
+  margin: 0;
 }
 
 .project-detail__gallery-image {
