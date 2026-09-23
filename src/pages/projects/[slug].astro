@@ -39,6 +39,16 @@ const { project } = Astro.props;
             </ul>
           </dd>
         </div>
+        <div class="project-detail__meta-item project-detail__meta-item--full">
+          <dt>My role</dt>
+          <dd>
+            <ul class="project-detail__responsibilities">
+              {project.responsibilities.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
       </dl>
 
       <div class="project-detail__links">
@@ -78,10 +88,37 @@ const { project } = Astro.props;
 
     <div class="project-detail__content flow">
       {project.content.map((block) =>
-        block.type === "text" ? (
+        block.type === "heading" ? (
+          <h2 class="project-detail__heading">{block.text}</h2>
+        ) : block.type === "text" ? (
           <div class="prose">
             <p set:html={block.html} />
           </div>
+        ) : block.type === "gallery" ? (
+          <figure class="project-detail__gallery-item project-detail__gallery">
+            <div class="project-detail__gallery-grid">
+              {block.images.map((image) => (
+                <figure class="project-detail__gallery-cell">
+                  <Image
+                    src={image.src}
+                    widths={[500, 900, 1400]}
+                    sizes="(min-width: 80rem) 39rem, (min-width: 48rem) 50vw, 100vw"
+                    format="avif"
+                    quality={80}
+                    alt={image.alt}
+                    loading="lazy"
+                    class="project-detail__gallery-image"
+                  />
+                  {image.caption && (
+                    <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+            {block.caption && (
+              <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
+            )}
+          </figure>
         ) : (
           <figure class="project-detail__gallery-item">
             <Image
