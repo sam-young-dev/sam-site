@@ -439,6 +439,7 @@ export const projects: Project[] = [
       "Full stack development of the admin app and the employee portal",
       "UI design in Figma and client design reviews",
       "A configuration system that lets clinic staff run programs and dashboards without a developer",
+      "Two years of AI-assisted development with GitHub Copilot, which sped up sprints",
       "On-site support for go-live of the new system",
     ],
     links: {},
@@ -560,10 +561,15 @@ export const projects: Project[] = [
           caption: "Portal: health measurements at a glance, with a trend chart.",
         },
       },
+      { type: "heading", text: "Building with AI assistance" },
+      {
+        type: "text",
+        html: "The client approved GitHub Copilot for this project, and I used it throughout the two years of development. It sped up the work enough that we regularly finished sprint work early and pulled more into the sprint. Over that time I built up a lot of hands-on experience with AI-assisted development: where it saves the most time, how to review what it produces, and where my own judgment still has to lead.",
+      },
       { type: "heading", text: "Go-live" },
       {
         type: "text",
-        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system. I used GitHub Copilot throughout development to speed up sprints.",
+        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system.",
       },
     ],
     cover: {
