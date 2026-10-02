@@ -21,6 +21,17 @@ import roiFormMockup from "../assets/projects/roi-app/form-mockup.png";
 import roiSummaryExpandMockup from "../assets/projects/roi-app/roi-summary-expand-mockup.png";
 import roiRetentionMockup from "../assets/projects/roi-app/retention-mockup.png";
 
+import clinicPortalHome from "../assets/projects/healthcare-clinic-app/portal-home.png";
+import clinicPortalGftg from "../assets/projects/healthcare-clinic-app/portal-gftg.png";
+import clinicPortalWal from "../assets/projects/healthcare-clinic-app/portal-wal.png";
+import clinicPortalWalModal from "../assets/projects/healthcare-clinic-app/portal-wal-modal.png";
+import clinicPortalWalModal2 from "../assets/projects/healthcare-clinic-app/portal-wal-modal-2.png";
+import clinicPortalKyn from "../assets/projects/healthcare-clinic-app/portal-kyn.png";
+import clinicAdminGftgConfig from "../assets/projects/healthcare-clinic-app/admin-gftg-config.png";
+import clinicAdminPortalConfig from "../assets/projects/healthcare-clinic-app/admin-portal-config.png";
+import clinicAdminDashboardConfig from "../assets/projects/healthcare-clinic-app/admin-portal-dashboard-config.png";
+// admin-services.png is intentionally not imported yet; it is held back for now.
+
 export interface ProjectImage {
   src: ImageMetadata;
   alt: string;
@@ -31,7 +42,8 @@ export type ProjectContentBlock =
   | { type: "heading"; text: string }
   | { type: "text"; html: string }
   | { type: "image"; image: ProjectImage }
-  | { type: "gallery"; images: ProjectImage[]; caption?: string };
+  | { type: "gallery"; images: ProjectImage[]; caption?: string }
+  | { type: "placeholder"; label: string; caption?: string };
 
 export interface Project {
   slug: string;
@@ -408,6 +420,155 @@ export const projects: Project[] = [
     cover: {
       src: roiForm,
       alt: "Filled-in calculator showing a 5.63:1 ROI headline, a download full report button, and an About the Program section with disclaimers.",
+    },
+  },
+  {
+    slug: "wellness-incentive-platform",
+    title: "Wellness Incentive Platform",
+    summary:
+      "An admin app and employee portal for a healthcare employer, built so the clinic team can configure the dashboard and a yearly wellness incentive program themselves, with no developer in the loop.",
+    year: "2024–2026",
+    stack: [
+      "Angular",
+      "ASP.NET Core",
+      "SQL Server",
+      "Figma",
+      "GitHub Copilot",
+    ],
+    responsibilities: [
+      "Full stack development of the admin app and the employee portal",
+      "UI design in Figma and client design reviews",
+      "A configuration system that lets clinic staff run programs and dashboards without a developer",
+      "On-site support for go-live of the new system",
+    ],
+    links: {},
+    content: [
+      {
+        type: "text",
+        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and what they can earn. Automations take over much of the manual tracking the clinic team used to do by hand.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalHome,
+          alt: "Employee portal home page with a welcome banner, a rotating announcement, and three sections of cards covering wellness, occupational health, and work/life support.",
+          caption: "The employee portal home page.",
+        },
+      },
+      { type: "heading", text: "Designing before building" },
+      {
+        type: "text",
+        html: "I designed both halves in Figma before writing code and used the prototypes to get quick feedback and buy-in from the client. Changing a design is much cheaper than changing a build.",
+      },
+      {
+        type: "placeholder",
+        label: "Figma mockups coming soon",
+        caption: "Figma designs for the admin app and the portal.",
+      },
+      { type: "heading", text: "A dashboard the clinic team controls" },
+      {
+        type: "text",
+        html: "Every card on the portal dashboard is configured in the admin app. The clinic team chooses which cards exist, which section each belongs to, the order they appear in, and whether each is active. When priorities change during the year, they change the dashboard themselves.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicAdminDashboardConfig,
+          alt: "Admin modal listing dashboard cards with their section, sort order, and active status, each with an edit button.",
+          caption: "Admin: every dashboard card, its section, order, and status.",
+        },
+      },
+      {
+        type: "text",
+        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
+      },
+      { type: "heading", text: "A yearly incentive program, set up without a developer" },
+      {
+        type: "text",
+        html: "The biggest piece of the admin app is the configuration for an annual wellness incentive program. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicAdminGftgConfig,
+          alt: "Admin form for editing a yearly program configuration, with tabs for details, reward levels, and history, and rich text editors for the content shown to employees.",
+          caption: "Admin: a yearly program configuration with rich text editors for portal content.",
+        },
+      },
+      {
+        type: "text",
+        html: "Starting a new year does not mean starting over. The clinic team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalGftg,
+          alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
+          caption: "Portal: the same configuration, as employees see it.",
+        },
+      },
+      { type: "heading", text: "The employee side" },
+      {
+        type: "text",
+        html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalWal,
+          alt: "Employee portal page listing wellness actions as cards, with a count of how many are completed out of how many are required.",
+          caption: "Portal: the wellness action log.",
+        },
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: clinicPortalWalModal,
+            alt: "Modal explaining three ways to complete a wellness action, with the dates it counts for.",
+          },
+          {
+            src: clinicPortalWalModal2,
+            alt: "Modal with a short quiz made of checkboxes and radio buttons, with cancel and submit buttons.",
+          },
+        ],
+        caption: "Each action explains how to earn it, and some include a short quiz.",
+      },
+      { type: "heading", text: "Content stays editable" },
+      {
+        type: "text",
+        html: "The same idea runs through the rest of the portal. Page content is managed in the admin app too, with an edit and a history view for each page, so the clinic team can update the words on the portal without waiting for a release.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicAdminPortalConfig,
+          alt: "Admin table of portal pages with a description for each and buttons to edit the content or view its history.",
+          caption: "Admin: portal page content, with edit and history for each page.",
+        },
+      },
+      { type: "heading", text: "What else the portal does" },
+      {
+        type: "text",
+        html: "The portal is more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalKyn,
+          alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
+          caption: "Portal: health measurements at a glance, with a trend chart.",
+        },
+      },
+      { type: "heading", text: "Go-live" },
+      {
+        type: "text",
+        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system. I used GitHub Copilot throughout development to speed up sprints.",
+      },
+    ],
+    cover: {
+      src: clinicPortalHome,
+      alt: "Employee portal home page with a welcome banner and three sections of cards.",
     },
   },
 ];

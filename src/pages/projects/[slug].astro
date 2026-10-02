@@ -119,6 +119,15 @@ const { project } = Astro.props;
               <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
             )}
           </figure>
+        ) : block.type === "placeholder" ? (
+          <figure class="project-detail__gallery-item">
+            <div class="project-detail__placeholder" role="img" aria-label={block.label}>
+              <span>{block.label}</span>
+            </div>
+            {block.caption && (
+              <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
+            )}
+          </figure>
         ) : (
           <figure class="project-detail__gallery-item">
             <Image
