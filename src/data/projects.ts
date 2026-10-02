@@ -423,10 +423,10 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "wellness-incentive-platform",
-    title: "Wellness Incentive Platform",
+    slug: "healthcare-compliance-platform",
+    title: "Healthcare Compliance Platform",
     summary:
-      "An admin app and employee portal for a healthcare employer, built so the clinic team can configure the dashboard and a yearly wellness incentive program themselves, with no developer in the loop.",
+      "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the clinic team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
     year: "2024–2026",
     stack: [
       "Angular",
@@ -452,7 +452,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and what they can earn. Automations take over much of the manual tracking the clinic team used to do by hand.",
+        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations take over much of the manual tracking the clinic team used to do by hand. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
       },
       {
         type: "image",
@@ -489,10 +489,10 @@ export const projects: Project[] = [
         type: "text",
         html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
       },
-      { type: "heading", text: "A yearly incentive program, set up without a developer" },
+      { type: "heading", text: "Deep dive: the wellness incentive program" },
       {
         type: "text",
-        html: "The biggest piece of the admin app is the configuration for an annual wellness incentive program. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
+        html: "The wellness incentive program is the largest module in the admin app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
       },
       {
         type: "image",
@@ -514,7 +514,7 @@ export const projects: Project[] = [
           caption: "Portal: the same configuration, as employees see it.",
         },
       },
-      { type: "heading", text: "The employee side" },
+      { type: "heading", text: "The incentive program, from the employee side" },
       {
         type: "text",
         html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
@@ -557,7 +557,7 @@ export const projects: Project[] = [
       { type: "heading", text: "What else the portal does" },
       {
         type: "text",
-        html: "The portal is more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
+        html: "The portal covers much more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
       },
       {
         type: "image",
