@@ -432,6 +432,10 @@ export const projects: Project[] = [
       "Angular",
       "ASP.NET Core",
       "SQL Server",
+      "Dapper",
+      "PrimeNG",
+      "Azure AD",
+      "Azure Pipelines",
       "Figma",
       "GitHub Copilot",
     ],
@@ -439,6 +443,8 @@ export const projects: Project[] = [
       "Full stack development of the admin app and the employee portal",
       "UI design in Figma and client design reviews",
       "A configuration system that lets clinic staff run programs and dashboards without a developer",
+      "Single sign-on, role-based permissions, and audit logging across the admin app, portal, and APIs",
+      "A shared Angular component library and reusable bulk-import workflow used across both apps",
       "Two years of AI-assisted development with GitHub Copilot, which sped up sprints",
       "On-site support for go-live of the new system",
     ],
@@ -560,6 +566,49 @@ export const projects: Project[] = [
           alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
           caption: "Portal: health measurements at a glance, with a trend chart.",
         },
+      },
+      { type: "heading", text: "Security and access control" },
+      {
+        type: "text",
+        html: "This is a healthcare system, so access control is built into the platform instead of added on top. Staff and employees sign in through the organization's existing Microsoft single sign-on, with no separate passwords to manage. Scheduled jobs that call the API use their own authentication scheme, separate from the one people use.",
+      },
+      {
+        type: "text",
+        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
+      },
+      {
+        type: "text",
+        html: "Two smaller safeguards matter in a healthcare setting. The apps sign people out after a period of inactivity, and every change made in the admin app is written to the audit log in the same database transaction as the change itself, so a record can never change without leaving a trace.",
+      },
+      { type: "heading", text: "Architecture" },
+      {
+        type: "text",
+        html: "The system is two Angular applications and two ASP.NET Core APIs, one pair for the internal admin app and one pair for the employee portal. Both APIs sit on the same layers underneath: domain services, then data access with Dapper and hand-written SQL, then shared utilities. Both Angular apps install the same shared component library. Reusing libraries instead of copying code meant a fix or a new feature in one place showed up in both apps.",
+      },
+      {
+        type: "text",
+        html: "The front end is current Angular with standalone components and functional route guards. The shared library is a small design system built on PrimeNG: a data table with lazy loading, filters and sort that persist during a session, CSV export, and row reordering, along with form controls, breadcrumbs, and audit history components. Shared services handle toast messages and HTTP calls, so errors look and behave the same everywhere.",
+      },
+      { type: "heading", text: "Engineering decisions" },
+      {
+        type: "text",
+        html: "Bulk work was a recurring need. The admin app has about ten file-driven workflows, such as importing users, adding roles, and loading service or reward records. Instead of ten one-off screens, they share one pattern: upload a file, validate it, preview the result, then submit. New imports reuse the same flow.",
+      },
+      {
+        type: "text",
+        html: "Audit writes taught me to match the strategy to the size of the job. Small sets of audit events go in as batched inserts, and once a write passes a threshold of 100 rows it switches to a bulk copy, which is much faster for large imports.",
+      },
+      {
+        type: "text",
+        html: "One production bug was hard to see. Validation failures return a 400 on purpose, but a malformed request body also returns a 400, and those were being lost among the expected ones. A small piece of middleware now tells them apart, so accidental 400s are logged as real errors. Validation also separates hard errors from warnings, which a user can acknowledge and continue past.",
+      },
+      {
+        type: "text",
+        html: "Deploys needed care too. The app checks a version file as people move between pages and reloads itself when a new build is live, so nobody keeps running stale code. The API logs startup failures through a bootstrap logger, so a bad configuration is recorded even if the app never finishes starting.",
+      },
+      {
+        type: "text",
+        html: "The API has two layers of tests. Fast unit tests mock the data layer at the controller boundary, and a separate suite runs against a real database. The pipeline leaves the slower suite out of the quick run, so every commit gets fast feedback.",
       },
       { type: "heading", text: "Building with AI assistance" },
       {
