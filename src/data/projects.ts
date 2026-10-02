@@ -21,15 +21,15 @@ import roiFormMockup from "../assets/projects/roi-app/form-mockup.png";
 import roiSummaryExpandMockup from "../assets/projects/roi-app/roi-summary-expand-mockup.png";
 import roiRetentionMockup from "../assets/projects/roi-app/retention-mockup.png";
 
-import clinicPortalHome from "../assets/projects/healthcare-clinic-app/portal-home.png";
-import clinicPortalGftg from "../assets/projects/healthcare-clinic-app/portal-gftg.png";
-import clinicPortalWal from "../assets/projects/healthcare-clinic-app/portal-wal.png";
-import clinicPortalWalModal from "../assets/projects/healthcare-clinic-app/portal-wal-modal.png";
-import clinicPortalWalModal2 from "../assets/projects/healthcare-clinic-app/portal-wal-modal-2.png";
-import clinicPortalKyn from "../assets/projects/healthcare-clinic-app/portal-kyn.png";
-import clinicAdminGftgConfig from "../assets/projects/healthcare-clinic-app/admin-gftg-config.png";
-import clinicAdminPortalConfig from "../assets/projects/healthcare-clinic-app/admin-portal-config.png";
-import clinicAdminDashboardConfig from "../assets/projects/healthcare-clinic-app/admin-portal-dashboard-config.png";
+import clinicPortalHome from "../assets/projects/healthcare-compliance-app/portal-home.png";
+import clinicPortalGftg from "../assets/projects/healthcare-compliance-app/portal-gftg.png";
+import clinicPortalWal from "../assets/projects/healthcare-compliance-app/portal-wal.png";
+import clinicPortalWalModal from "../assets/projects/healthcare-compliance-app/portal-wal-modal.png";
+import clinicPortalWalModal2 from "../assets/projects/healthcare-compliance-app/portal-wal-modal-2.png";
+import clinicPortalKyn from "../assets/projects/healthcare-compliance-app/portal-kyn.png";
+import clinicAdminGftgConfig from "../assets/projects/healthcare-compliance-app/admin-gftg-config.png";
+import clinicAdminPortalConfig from "../assets/projects/healthcare-compliance-app/admin-portal-config.png";
+import clinicAdminDashboardConfig from "../assets/projects/healthcare-compliance-app/admin-portal-dashboard-config.png";
 // admin-services.png is intentionally not imported yet; it is held back for now.
 
 export interface ProjectImage {
