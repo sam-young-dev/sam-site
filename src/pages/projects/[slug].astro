@@ -101,10 +101,10 @@ const { project } = Astro.props;
                 <figure class="project-detail__gallery-cell">
                   <Image
                     src={image.src}
-                    widths={[500, 900, 1400]}
-                    sizes="(min-width: 80rem) 39rem, (min-width: 48rem) 50vw, 100vw"
+                    widths={[500, 900, 1400, 2000]}
+                    sizes="(min-width: 48rem) 80vw, 100vw"
                     format="avif"
-                    quality={80}
+                    quality={85}
                     alt={image.alt}
                     loading="lazy"
                     class="project-detail__gallery-image"
@@ -119,14 +119,23 @@ const { project } = Astro.props;
               <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
             )}
           </figure>
+        ) : block.type === "placeholder" ? (
+          <figure class="project-detail__gallery-item">
+            <div class="project-detail__placeholder" role="img" aria-label={block.label}>
+              <span>{block.label}</span>
+            </div>
+            {block.caption && (
+              <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
+            )}
+          </figure>
         ) : (
           <figure class="project-detail__gallery-item">
             <Image
               src={block.image.src}
-              widths={[500, 900, 1400]}
-              sizes="(min-width: 48rem) 60vw, 100vw"
+              widths={[500, 900, 1400, 2000]}
+              sizes="(min-width: 48rem) 44rem, 100vw"
               format="avif"
-              quality={80}
+              quality={85}
               alt={block.image.alt}
               loading="lazy"
               class="project-detail__gallery-image"
