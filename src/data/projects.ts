@@ -26,6 +26,8 @@ import clinicPortalGftg from "../assets/projects/healthcare-compliance-app/porta
 import clinicPortalWal from "../assets/projects/healthcare-compliance-app/portal-wal.png";
 import clinicPortalWalModal from "../assets/projects/healthcare-compliance-app/portal-wal-modal.png";
 import clinicPortalWalModal2 from "../assets/projects/healthcare-compliance-app/portal-wal-modal-2.png";
+import clinicDashboardMockup from "../assets/projects/healthcare-compliance-app/dashboard-mockup.png";
+import clinicPortalMockup from "../assets/projects/healthcare-compliance-app/portal-mockup.png";
 import clinicPortalKyn from "../assets/projects/healthcare-compliance-app/portal-kyn.png";
 import clinicAdminGftgConfig from "../assets/projects/healthcare-compliance-app/admin-gftg-config.png";
 import clinicAdminPortalConfig from "../assets/projects/healthcare-compliance-app/admin-portal-config.png";
@@ -62,200 +64,218 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "ecommerce-store",
-    title: "Ecommerce Store",
+    slug: "healthcare-compliance-platform",
+    title: "Healthcare Compliance Platform",
     summary:
-      "A hiking-gear ecommerce storefront built to learn headless commerce with Astro, Sanity, and Snipcart.",
-    year: "2026",
-    stack: ["Astro", "Sanity.io", "Snipcart", "Netlify"],
-    responsibilities: [
-      "Solo build, from front end to CMS and deployment",
-      "Product and category content modeling in Sanity",
-      "Cart and checkout integration with Snipcart",
-      "Performance tuning, image optimization, and design tokens",
+      "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the clinic team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
+    year: "2024–2026",
+    stack: [
+      "Angular",
+      "ASP.NET Core",
+      "SQL Server",
+      "Dapper",
+      "PrimeNG",
+      "Azure AD",
+      "Azure Pipelines",
+      "Figma",
+      "GitHub Copilot",
     ],
-    links: {
-      live: "https://hyperlite.netlify.app/",
-      repo: "https://github.com/sam-young-dev/hyperlite-ecommerce",
-    },
+    responsibilities: [
+      "Full stack development of the admin app and the employee portal",
+      "UI design in Figma and client design reviews",
+      "A configuration system that lets clinic staff run programs and dashboards without a developer",
+      "Single sign-on, role-based permissions, and audit logging across the admin app, portal, and APIs",
+      "A shared Angular component library and reusable bulk-import workflow used across both apps",
+      "Two years of AI-assisted development with GitHub Copilot, which sped up sprints",
+      "On-site support for go-live of the new system",
+    ],
+    links: {},
     content: [
       {
         type: "text",
-        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn't to design a store from scratch, it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
+        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations take over much of the manual tracking the clinic team used to do by hand. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
       },
       {
         type: "image",
         image: {
-          src: hyperliteHome,
-          alt: "Hyperlite Mountain Gear homepage with a full-width photo collage hero and category navigation.",
-          caption: "Homepage hero and category navigation.",
+          src: clinicPortalHome,
+          alt: "Employee portal home page with a welcome banner, a rotating announcement, and three sections of cards covering wellness, occupational health, and work/life support.",
+          caption: "The employee portal home page.",
         },
       },
-      { type: "heading", text: "The stack" },
+      { type: "heading", text: "Designing before building" },
       {
         type: "text",
-        html: "Astro renders the storefront as fast, mostly-static HTML. Product, category, and page content live in Sanity.io as structured content, so the catalog can change without touching code. Snipcart is layered on top for cart state and checkout, which meant working within a client-side commerce widget instead of writing custom cart logic. The site is built and hosted on Netlify.",
-      },
-      { type: "heading", text: "Catalog and checkout" },
-      {
-        type: "text",
-        html: "The build covers a product catalog split across categories (backpacks, tents, sleep, and accessories) and individual product pages with pricing and details pulled from Sanity.",
-      },
-      {
-        type: "image",
-        image: {
-          src: hyperliteCategory,
-          alt: "Backpacks category page listing three ultralight packs with pricing.",
-          caption: "Category listing page, pulled from Sanity.",
-        },
-      },
-      {
-        type: "image",
-        image: {
-          src: hyperliteProduct,
-          alt: "Southwest backpack product page with price, specs, image gallery, and an add to cart button.",
-          caption: "Product detail page with Snipcart add-to-cart.",
-        },
-      },
-      {
-        type: "text",
-        html: 'On top of that sits a working cart and checkout flow through Snipcart (Snipcart is kept in test mode since nothing is actually being sold, but payments will succeed with test card 4242424242424242. See <a href="https://docs.snipcart.com/v3/testing/payments" target="_blank" rel="noopener noreferrer">docs</a> for more).',
-      },
-      {
-        type: "image",
-        image: {
-          src: hyperliteCart,
-          alt: "Snipcart cart summary showing the Southwest backpack, quantity, and checkout total.",
-          caption: "Cart summary and checkout, handled entirely by Snipcart.",
-        },
-      },
-      { type: "heading", text: "Performance on every deploy" },
-      {
-        type: "text",
-        html: "Every Netlify deploy preview runs a Lighthouse report and gives a build preview to check before merging into main, which turned performance into something to verify on every change rather than an afterthought. Chasing good Lighthouse scores across a client-side cart widget and image-heavy product pages was one of the bigger lessons of the project.",
-      },
-      {
-        type: "image",
-        image: {
-          src: hyperliteLighthouse,
-          alt: "Lighthouse report from a Netlify deploy preview showing performance, accessibility, best practices, and SEO scores.",
-          caption:
-            "Lighthouse report generated on a Netlify deploy preview, part of tuning the site for performance before merging to production.",
-        },
-      },
-      {
-        type: "text",
-        html: 'Product photography was the biggest single drag on those scores, so I swapped Astro\'s built-in image handling for <a href="https://unpic.pics/img/astro/" target="_blank" rel="noopener noreferrer">@unpic/astro</a>. It detects the CDN an image is served from and generates the right responsive srcset, sizes, and layout for it automatically, so product images pulled from Sanity\'s image CDN get properly optimized variants without hand-rolling breakpoints for every image on the site.',
-      },
-      { type: "heading", text: "Design tokens with Sugarcube" },
-      {
-        type: "text",
-        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters more and more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
-      },
-      { type: "heading", text: "What I learned" },
-      {
-        type: "text",
-        html: "Overall, I learned a lot about how to set up a basic ecommerce store, some of the tradeoffs that need to be made based on the site goals, and more about performance updates across the board. My time was definitely well spent on this project.",
-      },
-    ],
-    cover: {
-      src: hyperliteHome,
-      alt: "Hyperlite Mountain Gear homepage with a full-width photo collage hero and category navigation.",
-    },
-  },
-  {
-    slug: "portfolio-site",
-    title: "This Site",
-    summary:
-      "My own portfolio, built with Astro. A place to show photography and projects, and an excuse to sweat details like a canvas ripple animation and build-time EXIF metadata.",
-    year: "2026",
-    stack: ["Astro", "TypeScript", "exifr", "Netlify"],
-    responsibilities: [
-      "Design and development, from sketches to launch",
-      "Canvas rewrite and tuning of the puddle animation",
-      "Build-time EXIF pipeline and tag-based photo collections",
-      "Photography, image optimization, and performance",
-    ],
-    links: {
-      live: "https://samyoung.dev/",
-      repo: "https://github.com/sam-young-dev/sam-site",
-    },
-    content: [
-      {
-        type: "text",
-        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
-      },
-      {
-        type: "image",
-        image: {
-          src: portfolioPuddle,
-          alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
-          caption:
-            "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
-        },
-      },
-      { type: "heading", text: "Rebuilding the puddle background" },
-      {
-        type: "text",
-        html: 'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000 to 4,500 or more cells, more elements and style recalculations than a browser can update at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it afterward: ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
-      },
-      { type: "heading", text: "Photo details straight from the file" },
-      {
-        type: "text",
-        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Along with this locations, descriptions, and tags were manually added to each photo to provide more detail and to allow for grouping images by collection.",
+        html: "I designed both halves in Figma before writing code and used the prototypes to get quick feedback and buy-in from the client. Changing a design is much cheaper than changing a build.",
       },
       {
         type: "gallery",
         images: [
           {
-            src: portfolioPhotoExif,
-            alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
-            caption:
-              "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
+            src: clinicDashboardMockup,
+            alt: "Figma mockup of the employee portal home page with a welcome banner, a rotating announcement, and Wellness, Health, and Resources columns of cards.",
+            caption: "Portal home",
           },
           {
-            src: portfolioPhotoCollectionIndex,
-            alt: "Photo collections page showing photo collections grouped by user tags.",
-            caption: "Collection view of photos grouped by tags.",
+            src: clinicPortalMockup,
+            alt: "Figma mockup of the wellness page showing the employee's current reward level, reward amounts for each level, and three wellness check cards.",
+            caption: "Wellness page",
           },
         ],
+        caption: "Figma mockups of the employee portal.",
       },
-      { type: "heading", text: "The small details" },
+      { type: "heading", text: "A dashboard the clinic team controls" },
       {
         type: "text",
-        html: "The rest is the usual accumulation of small decisions: chasing down Lighthouse warnings across every page, re-encoding a folder of multi-megabyte camera JPEGs down to something that loads quickly without looking compressed, and a handful of passes on the header, footer, and layout to get the site feeling less like a template and more like a specific, considered place.",
+        html: "Every card on the portal dashboard is configured in the admin app. The clinic team chooses which cards exist, which section each belongs to, the order they appear in, and whether each is active. When priorities change during the year, they change the dashboard themselves.",
       },
       {
         type: "image",
         image: {
-          src: portfolioPhotographyIndex,
-          alt: "Photography index page showing a masonry grid of landscape and hiking photos.",
-          caption:
-            "The photography index, a masonry grid over the same photo set.",
+          src: clinicAdminDashboardConfig,
+          alt: "Admin modal listing dashboard cards with their section, sort order, and active status, each with an edit button.",
+          caption: "Admin: every dashboard card, its section, order, and status.",
         },
       },
-      { type: "heading", text: "A mountain for a footer" },
       {
         type: "text",
-        html: "The footer also is a place with a nice touch. One of my photos with a mountain in it had the background removed and was converted into an svg shape to be used for the footer. The result is subtle, calculated, and fits into the site as a whole really well.",
+        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
+      },
+      { type: "heading", text: "Deep dive: the wellness incentive program" },
+      {
+        type: "text",
+        html: "The wellness incentive program is the largest module in the admin app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
       },
       {
         type: "image",
         image: {
-          src: portfolioFooter,
-          alt: "Footer mountain svg shape.",
-          caption: "The footer mountain svg shape.",
+          src: clinicAdminGftgConfig,
+          alt: "Admin form for editing a yearly program configuration, with tabs for details, reward levels, and history, and rich text editors for the content shown to employees.",
+          caption: "Admin: a yearly program configuration with rich text editors for portal content.",
         },
       },
-      { type: "heading", text: "Looking back" },
       {
         type: "text",
-        html: "I learned a lot about animations, writing code for good performance, and I had a blast making this site go from sketches and ideas to a reality. There are some improvements that can be made for sure, but it is in a great spot as I see it right now.",
+        html: "Starting a new year does not mean starting over. The clinic team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalGftg,
+          alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
+          caption: "Portal: the same configuration, as employees see it.",
+        },
+      },
+      { type: "heading", text: "The incentive program, from the employee side" },
+      {
+        type: "text",
+        html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalWal,
+          alt: "Employee portal page listing wellness actions as cards, with a count of how many are completed out of how many are required.",
+          caption: "Portal: the wellness action log.",
+        },
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: clinicPortalWalModal,
+            alt: "Modal explaining three ways to complete a wellness action, with the dates it counts for.",
+          },
+          {
+            src: clinicPortalWalModal2,
+            alt: "Modal with a short quiz made of checkboxes and radio buttons, with cancel and submit buttons.",
+          },
+        ],
+        caption: "Each action explains how to earn it, and some include a short quiz.",
+      },
+      { type: "heading", text: "Content stays editable" },
+      {
+        type: "text",
+        html: "The same idea runs through the rest of the portal. Page content is managed in the admin app too, with an edit and a history view for each page, so the clinic team can update the words on the portal without waiting for a release.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicAdminPortalConfig,
+          alt: "Admin table of portal pages with a description for each and buttons to edit the content or view its history.",
+          caption: "Admin: portal page content, with edit and history for each page.",
+        },
+      },
+      { type: "heading", text: "What else the portal does" },
+      {
+        type: "text",
+        html: "The portal covers much more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalKyn,
+          alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
+          caption: "Portal: health measurements at a glance, with a trend chart.",
+        },
+      },
+      { type: "heading", text: "Security and access control" },
+      {
+        type: "text",
+        html: "This is a healthcare system, so access control is built into the platform instead of added on top. Staff and employees sign in through the organization's existing Microsoft single sign-on, with no separate passwords to manage. Scheduled jobs that call the API use their own authentication scheme, separate from the one people use.",
+      },
+      {
+        type: "text",
+        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
+      },
+      {
+        type: "text",
+        html: "Two smaller safeguards matter in a healthcare setting. The apps sign people out after a period of inactivity, and every change made in the admin app is written to the audit log in the same database transaction as the change itself, so a record can never change without leaving a trace.",
+      },
+      { type: "heading", text: "Architecture" },
+      {
+        type: "text",
+        html: "The system is two Angular applications and two ASP.NET Core APIs, one pair for the internal admin app and one pair for the employee portal. Both APIs sit on the same layers underneath: domain services, then data access with Dapper and hand-written SQL, then shared utilities. Both Angular apps install the same shared component library. Reusing libraries instead of copying code meant a fix or a new feature in one place showed up in both apps.",
+      },
+      {
+        type: "text",
+        html: "The front end is current Angular with standalone components and functional route guards. The shared library is a small design system built on PrimeNG: a data table with lazy loading, filters and sort that persist during a session, CSV export, and row reordering, along with form controls, breadcrumbs, and audit history components. Shared services handle toast messages and HTTP calls, so errors look and behave the same everywhere.",
+      },
+      { type: "heading", text: "Engineering decisions" },
+      {
+        type: "text",
+        html: "Bulk work was a recurring need. The admin app has about ten file-driven workflows, such as importing users, adding roles, and loading service or reward records. Instead of ten one-off screens, they share one pattern: upload a file, validate it, preview the result, then submit. New imports reuse the same flow.",
+      },
+      {
+        type: "text",
+        html: "Audit writes taught me to match the strategy to the size of the job. Small sets of audit events go in as batched inserts, and once a write passes a threshold of 100 rows it switches to a bulk copy, which is much faster for large imports.",
+      },
+      {
+        type: "text",
+        html: "One production bug was hard to see. Validation failures return a 400 on purpose, but a malformed request body also returns a 400, and those were being lost among the expected ones. A small piece of middleware now tells them apart, so accidental 400s are logged as real errors. Validation also separates hard errors from warnings, which a user can acknowledge and continue past.",
+      },
+      {
+        type: "text",
+        html: "Deploys needed care too. The app checks a version file as people move between pages and reloads itself when a new build is live, so nobody keeps running stale code. The API logs startup failures through a bootstrap logger, so a bad configuration is recorded even if the app never finishes starting.",
+      },
+      {
+        type: "text",
+        html: "The API has two layers of tests. Fast unit tests mock the data layer at the controller boundary, and a separate suite runs against a real database. The pipeline leaves the slower suite out of the quick run, so every commit gets fast feedback.",
+      },
+      { type: "heading", text: "Building with AI assistance" },
+      {
+        type: "text",
+        html: "The client approved GitHub Copilot for this project, and I used it throughout the two years of development. It sped up the work enough that we regularly finished sprint work early and pulled more into the sprint. Over that time I built up a lot of hands-on experience with AI-assisted development: where it saves the most time, how to review what it produces, and where my own judgment still has to lead.",
+      },
+      { type: "heading", text: "Go-live" },
+      {
+        type: "text",
+        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system.",
       },
     ],
     cover: {
-      src: portfolioPuddle,
-      alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+      src: clinicPortalHome,
+      alt: "Employee portal home page with a welcome banner and three sections of cards.",
     },
   },
   {
@@ -423,207 +443,200 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "healthcare-compliance-platform",
-    title: "Healthcare Compliance Platform",
+    slug: "portfolio-site",
+    title: "This Site",
     summary:
-      "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the clinic team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
-    year: "2024–2026",
-    stack: [
-      "Angular",
-      "ASP.NET Core",
-      "SQL Server",
-      "Dapper",
-      "PrimeNG",
-      "Azure AD",
-      "Azure Pipelines",
-      "Figma",
-      "GitHub Copilot",
-    ],
+      "My own portfolio, built with Astro. A place to show photography and projects, and an excuse to sweat details like a canvas ripple animation and build-time EXIF metadata.",
+    year: "2026",
+    stack: ["Astro", "TypeScript", "exifr", "Netlify"],
     responsibilities: [
-      "Full stack development of the admin app and the employee portal",
-      "UI design in Figma and client design reviews",
-      "A configuration system that lets clinic staff run programs and dashboards without a developer",
-      "Single sign-on, role-based permissions, and audit logging across the admin app, portal, and APIs",
-      "A shared Angular component library and reusable bulk-import workflow used across both apps",
-      "Two years of AI-assisted development with GitHub Copilot, which sped up sprints",
-      "On-site support for go-live of the new system",
+      "Design and development, from sketches to launch",
+      "Canvas rewrite and tuning of the puddle animation",
+      "Build-time EXIF pipeline and tag-based photo collections",
+      "Photography, image optimization, and performance",
     ],
-    links: {},
+    links: {
+      live: "https://samyoung.dev/",
+      repo: "https://github.com/sam-young-dev/sam-site",
+    },
     content: [
       {
         type: "text",
-        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations take over much of the manual tracking the clinic team used to do by hand. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
+        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
       },
       {
         type: "image",
         image: {
-          src: clinicPortalHome,
-          alt: "Employee portal home page with a welcome banner, a rotating announcement, and three sections of cards covering wellness, occupational health, and work/life support.",
-          caption: "The employee portal home page.",
+          src: portfolioPuddle,
+          alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+          caption:
+            "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
         },
       },
-      { type: "heading", text: "Designing before building" },
+      { type: "heading", text: "Rebuilding the puddle background" },
       {
         type: "text",
-        html: "I designed both halves in Figma before writing code and used the prototypes to get quick feedback and buy-in from the client. Changing a design is much cheaper than changing a build.",
+        html: 'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000 to 4,500 or more cells, more elements and style recalculations than a browser can update at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it afterward: ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
       },
-      {
-        type: "placeholder",
-        label: "Figma mockups coming soon",
-        caption: "Figma designs for the admin app and the portal.",
-      },
-      { type: "heading", text: "A dashboard the clinic team controls" },
+      { type: "heading", text: "Photo details straight from the file" },
       {
         type: "text",
-        html: "Every card on the portal dashboard is configured in the admin app. The clinic team chooses which cards exist, which section each belongs to, the order they appear in, and whether each is active. When priorities change during the year, they change the dashboard themselves.",
-      },
-      {
-        type: "image",
-        image: {
-          src: clinicAdminDashboardConfig,
-          alt: "Admin modal listing dashboard cards with their section, sort order, and active status, each with an edit button.",
-          caption: "Admin: every dashboard card, its section, order, and status.",
-        },
-      },
-      {
-        type: "text",
-        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
-      },
-      { type: "heading", text: "Deep dive: the wellness incentive program" },
-      {
-        type: "text",
-        html: "The wellness incentive program is the largest module in the admin app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
-      },
-      {
-        type: "image",
-        image: {
-          src: clinicAdminGftgConfig,
-          alt: "Admin form for editing a yearly program configuration, with tabs for details, reward levels, and history, and rich text editors for the content shown to employees.",
-          caption: "Admin: a yearly program configuration with rich text editors for portal content.",
-        },
-      },
-      {
-        type: "text",
-        html: "Starting a new year does not mean starting over. The clinic team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
-      },
-      {
-        type: "image",
-        image: {
-          src: clinicPortalGftg,
-          alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
-          caption: "Portal: the same configuration, as employees see it.",
-        },
-      },
-      { type: "heading", text: "The incentive program, from the employee side" },
-      {
-        type: "text",
-        html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
-      },
-      {
-        type: "image",
-        image: {
-          src: clinicPortalWal,
-          alt: "Employee portal page listing wellness actions as cards, with a count of how many are completed out of how many are required.",
-          caption: "Portal: the wellness action log.",
-        },
+        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Along with this locations, descriptions, and tags were manually added to each photo to provide more detail and to allow for grouping images by collection.",
       },
       {
         type: "gallery",
         images: [
           {
-            src: clinicPortalWalModal,
-            alt: "Modal explaining three ways to complete a wellness action, with the dates it counts for.",
+            src: portfolioPhotoExif,
+            alt: "Photo detail page showing a mountain landscape alongside EXIF metadata: date, camera, lens, focal length, aperture, shutter speed, and ISO.",
+            caption:
+              "EXIF metadata read from the JPEG at build time and rendered next to each photo.",
           },
           {
-            src: clinicPortalWalModal2,
-            alt: "Modal with a short quiz made of checkboxes and radio buttons, with cancel and submit buttons.",
+            src: portfolioPhotoCollectionIndex,
+            alt: "Photo collections page showing photo collections grouped by user tags.",
+            caption: "Collection view of photos grouped by tags.",
           },
         ],
-        caption: "Each action explains how to earn it, and some include a short quiz.",
       },
-      { type: "heading", text: "Content stays editable" },
+      { type: "heading", text: "The small details" },
       {
         type: "text",
-        html: "The same idea runs through the rest of the portal. Page content is managed in the admin app too, with an edit and a history view for each page, so the clinic team can update the words on the portal without waiting for a release.",
+        html: "The rest is the usual accumulation of small decisions: chasing down Lighthouse warnings across every page, re-encoding a folder of multi-megabyte camera JPEGs down to something that loads quickly without looking compressed, and a handful of passes on the header, footer, and layout to get the site feeling less like a template and more like a specific, considered place.",
       },
       {
         type: "image",
         image: {
-          src: clinicAdminPortalConfig,
-          alt: "Admin table of portal pages with a description for each and buttons to edit the content or view its history.",
-          caption: "Admin: portal page content, with edit and history for each page.",
+          src: portfolioPhotographyIndex,
+          alt: "Photography index page showing a masonry grid of landscape and hiking photos.",
+          caption:
+            "The photography index, a masonry grid over the same photo set.",
         },
       },
-      { type: "heading", text: "What else the portal does" },
+      { type: "heading", text: "A mountain for a footer" },
       {
         type: "text",
-        html: "The portal covers much more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
+        html: "The footer also is a place with a nice touch. One of my photos with a mountain in it had the background removed and was converted into an svg shape to be used for the footer. The result is subtle, calculated, and fits into the site as a whole really well.",
       },
       {
         type: "image",
         image: {
-          src: clinicPortalKyn,
-          alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
-          caption: "Portal: health measurements at a glance, with a trend chart.",
+          src: portfolioFooter,
+          alt: "Footer mountain svg shape.",
+          caption: "The footer mountain svg shape.",
         },
       },
-      { type: "heading", text: "Security and access control" },
+      { type: "heading", text: "Looking back" },
       {
         type: "text",
-        html: "This is a healthcare system, so access control is built into the platform instead of added on top. Staff and employees sign in through the organization's existing Microsoft single sign-on, with no separate passwords to manage. Scheduled jobs that call the API use their own authentication scheme, separate from the one people use.",
-      },
-      {
-        type: "text",
-        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
-      },
-      {
-        type: "text",
-        html: "Two smaller safeguards matter in a healthcare setting. The apps sign people out after a period of inactivity, and every change made in the admin app is written to the audit log in the same database transaction as the change itself, so a record can never change without leaving a trace.",
-      },
-      { type: "heading", text: "Architecture" },
-      {
-        type: "text",
-        html: "The system is two Angular applications and two ASP.NET Core APIs, one pair for the internal admin app and one pair for the employee portal. Both APIs sit on the same layers underneath: domain services, then data access with Dapper and hand-written SQL, then shared utilities. Both Angular apps install the same shared component library. Reusing libraries instead of copying code meant a fix or a new feature in one place showed up in both apps.",
-      },
-      {
-        type: "text",
-        html: "The front end is current Angular with standalone components and functional route guards. The shared library is a small design system built on PrimeNG: a data table with lazy loading, filters and sort that persist during a session, CSV export, and row reordering, along with form controls, breadcrumbs, and audit history components. Shared services handle toast messages and HTTP calls, so errors look and behave the same everywhere.",
-      },
-      { type: "heading", text: "Engineering decisions" },
-      {
-        type: "text",
-        html: "Bulk work was a recurring need. The admin app has about ten file-driven workflows, such as importing users, adding roles, and loading service or reward records. Instead of ten one-off screens, they share one pattern: upload a file, validate it, preview the result, then submit. New imports reuse the same flow.",
-      },
-      {
-        type: "text",
-        html: "Audit writes taught me to match the strategy to the size of the job. Small sets of audit events go in as batched inserts, and once a write passes a threshold of 100 rows it switches to a bulk copy, which is much faster for large imports.",
-      },
-      {
-        type: "text",
-        html: "One production bug was hard to see. Validation failures return a 400 on purpose, but a malformed request body also returns a 400, and those were being lost among the expected ones. A small piece of middleware now tells them apart, so accidental 400s are logged as real errors. Validation also separates hard errors from warnings, which a user can acknowledge and continue past.",
-      },
-      {
-        type: "text",
-        html: "Deploys needed care too. The app checks a version file as people move between pages and reloads itself when a new build is live, so nobody keeps running stale code. The API logs startup failures through a bootstrap logger, so a bad configuration is recorded even if the app never finishes starting.",
-      },
-      {
-        type: "text",
-        html: "The API has two layers of tests. Fast unit tests mock the data layer at the controller boundary, and a separate suite runs against a real database. The pipeline leaves the slower suite out of the quick run, so every commit gets fast feedback.",
-      },
-      { type: "heading", text: "Building with AI assistance" },
-      {
-        type: "text",
-        html: "The client approved GitHub Copilot for this project, and I used it throughout the two years of development. It sped up the work enough that we regularly finished sprint work early and pulled more into the sprint. Over that time I built up a lot of hands-on experience with AI-assisted development: where it saves the most time, how to review what it produces, and where my own judgment still has to lead.",
-      },
-      { type: "heading", text: "Go-live" },
-      {
-        type: "text",
-        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system.",
+        html: "I learned a lot about animations, writing code for good performance, and I had a blast making this site go from sketches and ideas to a reality. There are some improvements that can be made for sure, but it is in a great spot as I see it right now.",
       },
     ],
     cover: {
-      src: clinicPortalHome,
-      alt: "Employee portal home page with a welcome banner and three sections of cards.",
+      src: portfolioPuddle,
+      alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+    },
+  },
+  {
+    slug: "ecommerce-store",
+    title: "Ecommerce Store",
+    summary:
+      "A hiking-gear ecommerce storefront built to learn headless commerce with Astro, Sanity, and Snipcart.",
+    year: "2026",
+    stack: ["Astro", "Sanity.io", "Snipcart", "Netlify"],
+    responsibilities: [
+      "Solo build, from front end to CMS and deployment",
+      "Product and category content modeling in Sanity",
+      "Cart and checkout integration with Snipcart",
+      "Performance tuning, image optimization, and design tokens",
+    ],
+    links: {
+      live: "https://hyperlite.netlify.app/",
+      repo: "https://github.com/sam-young-dev/hyperlite-ecommerce",
+    },
+    content: [
+      {
+        type: "text",
+        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn't to design a store from scratch, it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
+      },
+      {
+        type: "image",
+        image: {
+          src: hyperliteHome,
+          alt: "Hyperlite Mountain Gear homepage with a full-width photo collage hero and category navigation.",
+          caption: "Homepage hero and category navigation.",
+        },
+      },
+      { type: "heading", text: "The stack" },
+      {
+        type: "text",
+        html: "Astro renders the storefront as fast, mostly-static HTML. Product, category, and page content live in Sanity.io as structured content, so the catalog can change without touching code. Snipcart is layered on top for cart state and checkout, which meant working within a client-side commerce widget instead of writing custom cart logic. The site is built and hosted on Netlify.",
+      },
+      { type: "heading", text: "Catalog and checkout" },
+      {
+        type: "text",
+        html: "The build covers a product catalog split across categories (backpacks, tents, sleep, and accessories) and individual product pages with pricing and details pulled from Sanity.",
+      },
+      {
+        type: "image",
+        image: {
+          src: hyperliteCategory,
+          alt: "Backpacks category page listing three ultralight packs with pricing.",
+          caption: "Category listing page, pulled from Sanity.",
+        },
+      },
+      {
+        type: "image",
+        image: {
+          src: hyperliteProduct,
+          alt: "Southwest backpack product page with price, specs, image gallery, and an add to cart button.",
+          caption: "Product detail page with Snipcart add-to-cart.",
+        },
+      },
+      {
+        type: "text",
+        html: 'On top of that sits a working cart and checkout flow through Snipcart (Snipcart is kept in test mode since nothing is actually being sold, but payments will succeed with test card 4242424242424242. See <a href="https://docs.snipcart.com/v3/testing/payments" target="_blank" rel="noopener noreferrer">docs</a> for more).',
+      },
+      {
+        type: "image",
+        image: {
+          src: hyperliteCart,
+          alt: "Snipcart cart summary showing the Southwest backpack, quantity, and checkout total.",
+          caption: "Cart summary and checkout, handled entirely by Snipcart.",
+        },
+      },
+      { type: "heading", text: "Performance on every deploy" },
+      {
+        type: "text",
+        html: "Every Netlify deploy preview runs a Lighthouse report and gives a build preview to check before merging into main, which turned performance into something to verify on every change rather than an afterthought. Chasing good Lighthouse scores across a client-side cart widget and image-heavy product pages was one of the bigger lessons of the project.",
+      },
+      {
+        type: "image",
+        image: {
+          src: hyperliteLighthouse,
+          alt: "Lighthouse report from a Netlify deploy preview showing performance, accessibility, best practices, and SEO scores.",
+          caption:
+            "Lighthouse report generated on a Netlify deploy preview, part of tuning the site for performance before merging to production.",
+        },
+      },
+      {
+        type: "text",
+        html: 'Product photography was the biggest single drag on those scores, so I swapped Astro\'s built-in image handling for <a href="https://unpic.pics/img/astro/" target="_blank" rel="noopener noreferrer">@unpic/astro</a>. It detects the CDN an image is served from and generates the right responsive srcset, sizes, and layout for it automatically, so product images pulled from Sanity\'s image CDN get properly optimized variants without hand-rolling breakpoints for every image on the site.',
+      },
+      { type: "heading", text: "Design tokens with Sugarcube" },
+      {
+        type: "text",
+        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters more and more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
+      },
+      { type: "heading", text: "What I learned" },
+      {
+        type: "text",
+        html: "Overall, I learned a lot about how to set up a basic ecommerce store, some of the tradeoffs that need to be made based on the site goals, and more about performance updates across the board. My time was definitely well spent on this project.",
+      },
+    ],
+    cover: {
+      src: hyperliteHome,
+      alt: "Hyperlite Mountain Gear homepage with a full-width photo collage hero and category navigation.",
     },
   },
 ];
