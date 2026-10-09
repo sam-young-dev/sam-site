@@ -93,7 +93,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations take over much of the manual tracking the clinic team used to do by hand. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
+        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations were reworked to be easy to add and update in the future along with adding documentation for each flow. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
       },
       {
         type: "image",
@@ -134,24 +134,34 @@ export const projects: Project[] = [
         image: {
           src: clinicAdminDashboardConfig,
           alt: "Admin modal listing dashboard cards with their section, sort order, and active status, each with an edit button.",
-          caption: "Admin: every dashboard card, its section, order, and status.",
+          caption:
+            "Admin: every dashboard card, its section, order, and status.",
         },
       },
       {
         type: "text",
         html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
       },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalHome,
+          alt: "Employee portal home page with a welcome banner, a rotating announcement, and three sections of cards covering wellness, occupational health, and work/life support.",
+          caption: "The wellness dashboard showing the configured cards.",
+        },
+      },
       { type: "heading", text: "Deep dive: the wellness incentive program" },
       {
         type: "text",
-        html: "The wellness incentive program is the largest module in the admin app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete steps to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
+        html: "The wellness incentive program is one area I worked on in the app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete actions to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the actions/steps, the actions employees can choose from, and all the explanatory copy.",
       },
       {
         type: "image",
         image: {
           src: clinicAdminGftgConfig,
           alt: "Admin form for editing a yearly program configuration, with tabs for details, reward levels, and history, and rich text editors for the content shown to employees.",
-          caption: "Admin: a yearly program configuration with rich text editors for portal content.",
+          caption:
+            "Admin: a yearly program configuration with rich text editors for portal content.",
         },
       },
       {
@@ -159,14 +169,9 @@ export const projects: Project[] = [
         html: "Starting a new year does not mean starting over. The clinic team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
       },
       {
-        type: "image",
-        image: {
-          src: clinicPortalGftg,
-          alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
-          caption: "Portal: the same configuration, as employees see it.",
-        },
+        type: "heading",
+        text: "The incentive program, from the employee side",
       },
-      { type: "heading", text: "The incentive program, from the employee side" },
       {
         type: "text",
         html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
@@ -174,9 +179,9 @@ export const projects: Project[] = [
       {
         type: "image",
         image: {
-          src: clinicPortalWal,
-          alt: "Employee portal page listing wellness actions as cards, with a count of how many are completed out of how many are required.",
-          caption: "Portal: the wellness action log.",
+          src: clinicPortalGftg,
+          alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
+          caption: "Portal: the same configuration, as employees see it.",
         },
       },
       {
@@ -191,7 +196,8 @@ export const projects: Project[] = [
             alt: "Modal with a short quiz made of checkboxes and radio buttons, with cancel and submit buttons.",
           },
         ],
-        caption: "Each action explains how to earn it, and some include a short quiz.",
+        caption:
+          "Each action explains how to earn it, and some include a short quiz.",
       },
       { type: "heading", text: "Content stays editable" },
       {
@@ -203,7 +209,8 @@ export const projects: Project[] = [
         image: {
           src: clinicAdminPortalConfig,
           alt: "Admin table of portal pages with a description for each and buttons to edit the content or view its history.",
-          caption: "Admin: portal page content, with edit and history for each page.",
+          caption:
+            "Admin: portal page content, with edit and history for each page.",
         },
       },
       { type: "heading", text: "What else the portal does" },
@@ -216,7 +223,8 @@ export const projects: Project[] = [
         image: {
           src: clinicPortalKyn,
           alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
-          caption: "Portal: health measurements at a glance, with a trend chart.",
+          caption:
+            "Portal: health measurements at a glance, with a trend chart.",
         },
       },
       { type: "heading", text: "Security and access control" },
@@ -256,10 +264,6 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Deploys needed care too. The app checks a version file as people move between pages and reloads itself when a new build is live, so nobody keeps running stale code. The API logs startup failures through a bootstrap logger, so a bad configuration is recorded even if the app never finishes starting.",
-      },
-      {
-        type: "text",
         html: "The API has two layers of tests. Fast unit tests mock the data layer at the controller boundary, and a separate suite runs against a real database. The pipeline leaves the slower suite out of the quick run, so every commit gets fast feedback.",
       },
       { type: "heading", text: "Building with AI assistance" },
@@ -270,7 +274,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Go-live" },
       {
         type: "text",
-        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system.",
+        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system. I grew and learned a lot from this project and am a better developer and consultant from this work.",
       },
     ],
     cover: {
