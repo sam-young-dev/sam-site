@@ -22,14 +22,14 @@ import roiSummaryExpandMockup from "../assets/projects/roi-app/roi-summary-expan
 import roiRetentionMockup from "../assets/projects/roi-app/retention-mockup.png";
 
 import clinicPortalHome from "../assets/projects/healthcare-compliance-app/portal-home.png";
-import clinicPortalGftg from "../assets/projects/healthcare-compliance-app/portal-gftg.png";
-import clinicPortalWal from "../assets/projects/healthcare-compliance-app/portal-wal.png";
-import clinicPortalWalModal from "../assets/projects/healthcare-compliance-app/portal-wal-modal.png";
-import clinicPortalWalModal2 from "../assets/projects/healthcare-compliance-app/portal-wal-modal-2.png";
+import clinicPortalWellnessIncentive from "../assets/projects/healthcare-compliance-app/portal-wellness-incentive.png";
+import clinicPortalWellnessAction from "../assets/projects/healthcare-compliance-app/portal-wellness-action.png";
+import clinicPortalWellnessActionModal from "../assets/projects/healthcare-compliance-app/portal-wellness-action-modal.png";
+import clinicPortalWellnessActionModal2 from "../assets/projects/healthcare-compliance-app/portal-wellness-action-modal-2.png";
 import clinicDashboardMockup from "../assets/projects/healthcare-compliance-app/dashboard-mockup.png";
 import clinicPortalMockup from "../assets/projects/healthcare-compliance-app/portal-mockup.png";
-import clinicPortalKyn from "../assets/projects/healthcare-compliance-app/portal-kyn.png";
-import clinicAdminGftgConfig from "../assets/projects/healthcare-compliance-app/admin-gftg-config.png";
+import clinicPortalHealthMeasurements from "../assets/projects/healthcare-compliance-app/portal-health-measurements.png";
+import clinicAdminWellnessIncentiveConfig from "../assets/projects/healthcare-compliance-app/admin-wellness-incentive-config.png";
 import clinicAdminPortalConfig from "../assets/projects/healthcare-compliance-app/admin-portal-config.png";
 import clinicAdminDashboardConfig from "../assets/projects/healthcare-compliance-app/admin-portal-dashboard-config.png";
 // admin-services.png is intentionally not imported yet; it is held back for now.
@@ -158,7 +158,7 @@ export const projects: Project[] = [
       {
         type: "image",
         image: {
-          src: clinicAdminGftgConfig,
+          src: clinicAdminWellnessIncentiveConfig,
           alt: "Admin form for editing a yearly program configuration, with tabs for details, reward levels, and history, and rich text editors for the content shown to employees.",
           caption:
             "Admin: a yearly program configuration with rich text editors for portal content.",
@@ -179,7 +179,7 @@ export const projects: Project[] = [
       {
         type: "image",
         image: {
-          src: clinicPortalGftg,
+          src: clinicPortalWellnessIncentive,
           alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
           caption: "Portal: the same configuration, as employees see it.",
         },
@@ -188,11 +188,11 @@ export const projects: Project[] = [
         type: "gallery",
         images: [
           {
-            src: clinicPortalWalModal,
+            src: clinicPortalWellnessActionModal,
             alt: "Modal explaining three ways to complete a wellness action, with the dates it counts for.",
           },
           {
-            src: clinicPortalWalModal2,
+            src: clinicPortalWellnessActionModal2,
             alt: "Modal with a short quiz made of checkboxes and radio buttons, with cancel and submit buttons.",
           },
         ],
@@ -221,7 +221,7 @@ export const projects: Project[] = [
       {
         type: "image",
         image: {
-          src: clinicPortalKyn,
+          src: clinicPortalHealthMeasurements,
           alt: "Employee portal page with a summary of recent health measurements and a line chart of blood pressure over time, with a legend explaining the reading ranges.",
           caption:
             "Portal: health measurements at a glance, with a trend chart.",
