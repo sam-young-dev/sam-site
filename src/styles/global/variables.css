@@ -18,7 +18,7 @@
   /* --color-brand-primary has no dark-mode counterpart in the design
      tokens (it's meant to be a fixed brand swatch for things like button
      fills), but it's also used all over as the page's "ink" color for
-     text sitting directly on the page background — which does need to
+     text sitting directly on the page background, which does need to
      invert for contrast once that background goes dark. */
   --text-ink: light-dark(var(--color-brand-primary), var(--color-amber-200));
 }

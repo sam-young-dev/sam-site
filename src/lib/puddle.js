@@ -1,7 +1,7 @@
 // Based on Puddle.js
 // https://batmannair.com/puddle.js/
 //
-// Renders to a single <canvas> rather than one DOM node per grid cell —
+// Renders to a single <canvas> rather than one DOM node per grid cell,
 // a typical viewport needs 1,000-4,500+ cells, which is far too many
 // elements/style recalcs for the DOM to carry.
 

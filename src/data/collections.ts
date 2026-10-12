@@ -3,7 +3,7 @@ export interface CollectionData {
 }
 
 // Keyed by the raw tag string as it appears in src/data/photos.ts. An
-// entry is optional — a tag with no entry here still gets a collection
+// entry is optional; a tag with no entry here still gets a collection
 // page, just without a description.
 export const collectionData: Record<string, CollectionData> = {
   PCT: {

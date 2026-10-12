@@ -1,4 +1,4 @@
-# Sam Young — Personal Site
+# Sam Young: Personal Site
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/cfaa4515-eb0a-4bee-bd48-1520f17ea868/deploy-status)](https://app.netlify.com/projects/young-sam/deploys)
 
@@ -6,8 +6,8 @@ Personal portfolio site for Sam Young, built with [Astro](https://astro.build). 
 
 ## Features
 
-- **Projects** — case studies for personal and professional work
-- **Photography** — a photo grid with per-image detail pages, EXIF metadata (via [exifr](https://github.com/MikeKovarik/exifr)), a lightbox, and curated collections
+- **Projects**: case studies for personal and professional work
+- **Photography**: a photo grid with per-image detail pages, EXIF metadata (via [exifr](https://github.com/MikeKovarik/exifr)), a lightbox, and curated collections
 - **About** and **Resume** pages (resume also available as a PDF)
 - Image optimization via Astro and [sharp](https://sharp.pixelplumbing.com/)
 - Design tokens and CSS tooling via [Sugarcube](https://github.com/sugarcube-sh)

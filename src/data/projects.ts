@@ -68,7 +68,7 @@ export const projects: Project[] = [
     title: "Healthcare Compliance Platform",
     summary:
       "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the clinic team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
-    year: "2024–2026",
+    year: "2024-2026",
     stack: [
       "Angular",
       "ASP.NET Core",
