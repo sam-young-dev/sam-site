@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { projects } from "../../data/projects";
+import ExpandIcon from "../../assets/expand.svg?raw";
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -99,19 +100,27 @@ const { project } = Astro.props;
             <div class="project-detail__gallery-grid">
               {block.images.map((image) => (
                 <figure class="project-detail__gallery-cell">
-                  <Image
-                    src={image.src}
-                    widths={[500, 900, 1400, 2000]}
-                    sizes="(min-width: 48rem) 80vw, 100vw"
-                    format="avif"
-                    quality={85}
-                    alt={image.alt}
-                    loading="lazy"
-                    class="project-detail__gallery-image"
-                  />
-                  {image.caption && (
-                    <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
-                  )}
+                  <button type="button" class="project-detail__zoom" aria-label={`Expand image: ${image.alt}`}>
+                    <Image
+                      src={image.src}
+                      widths={[500, 900, 1400, 2000]}
+                      sizes="(min-width: 48rem) 80vw, 100vw"
+                      format="avif"
+                      quality={85}
+                      alt={image.alt}
+                      loading="lazy"
+                      class="project-detail__gallery-image"
+                    />
+                  </button>
+                  <div class="project-detail__gallery-meta">
+                    {image.caption && (
+                      <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
+                    )}
+                    <button type="button" class="project-detail__expand-hint" tabindex="-1" aria-hidden="true">
+                      <span class="project-detail__expand-hint-icon" set:html={ExpandIcon} />
+                      Expand
+                    </button>
+                  </div>
                 </figure>
               ))}
             </div>
@@ -130,19 +139,27 @@ const { project } = Astro.props;
           </figure>
         ) : (
           <figure class="project-detail__gallery-item">
-            <Image
-              src={block.image.src}
-              widths={[500, 900, 1400, 2000]}
-              sizes="(min-width: 48rem) 44rem, 100vw"
-              format="avif"
-              quality={85}
-              alt={block.image.alt}
-              loading="lazy"
-              class="project-detail__gallery-image"
-            />
-            {block.image.caption && (
-              <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
-            )}
+            <button type="button" class="project-detail__zoom" aria-label={`Expand image: ${block.image.alt}`}>
+              <Image
+                src={block.image.src}
+                widths={[500, 900, 1400, 2000]}
+                sizes="(min-width: 48rem) 44rem, 100vw"
+                format="avif"
+                quality={85}
+                alt={block.image.alt}
+                loading="lazy"
+                class="project-detail__gallery-image"
+              />
+            </button>
+            <div class="project-detail__gallery-meta">
+              {block.image.caption && (
+                <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
+              )}
+              <button type="button" class="project-detail__expand-hint" tabindex="-1" aria-hidden="true">
+                <span class="project-detail__expand-hint-icon" set:html={ExpandIcon} />
+                Expand
+              </button>
+            </div>
           </figure>
         )
       )}
@@ -151,4 +168,42 @@ const { project } = Astro.props;
   </div>
 
   <div class="region"></div>
+
+  <dialog class="image-viewer" aria-label="Expanded image view">
+    <button type="button" class="image-viewer__close" aria-label="Close expanded image">&times;</button>
+    <img class="image-viewer__image" alt="" />
+  </dialog>
 </BaseLayout>
+
+<script>
+  // Delegated on document so it survives ClientRouter page swaps; the dialog
+  // is looked up at click time since it's replaced on each navigation.
+  function largestSource(img: HTMLImageElement) {
+    const candidates = img.srcset.split(",").map((s) => s.trim().split(/\s+/));
+    return candidates.length && candidates[candidates.length - 1][0]
+      ? candidates[candidates.length - 1][0]
+      : img.currentSrc || img.src;
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const dialog = document.querySelector<HTMLDialogElement>(".image-viewer");
+    if (!dialog) return;
+
+    const zoom = target.closest<HTMLButtonElement>(".project-detail__zoom, .project-detail__expand-hint");
+    if (zoom) {
+      const thumb = zoom.closest("figure")?.querySelector("img");
+      const full = dialog.querySelector<HTMLImageElement>(".image-viewer__image");
+      if (!thumb || !full) return;
+      full.src = largestSource(thumb);
+      full.alt = thumb.alt;
+      dialog.showModal();
+      return;
+    }
+
+    // Backdrop (the dialog element itself) or close button dismisses
+    if (target === dialog || target.closest(".image-viewer__close")) {
+      dialog.close();
+    }
+  });
+</script>

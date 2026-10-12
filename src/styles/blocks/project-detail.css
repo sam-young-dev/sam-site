@@ -136,6 +136,134 @@
   border: var(--stroke-solid);
 }
 
+/* Whole image is the expand trigger; the cursor signals it */
+.project-detail__zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: zoom-in;
+  overflow: hidden;
+}
+
+.project-detail__zoom .project-detail__gallery-image {
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project-detail__zoom .project-detail__gallery-image {
+    transition:
+      transform var(--transition-normal) var(--ease-out),
+      filter var(--transition-normal) var(--ease-out);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-detail__zoom:hover .project-detail__gallery-image,
+  .project-detail__zoom:focus-visible .project-detail__gallery-image {
+    transform: scale(1.02);
+    filter: brightness(104%);
+  }
+}
+
+/* Caption on the left, expand hint on the right, both below the image */
+.project-detail__gallery-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+.project-detail__gallery-meta .project-detail__gallery-caption {
+  margin-inline-end: auto;
+}
+
+.project-detail__expand-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin: var(--space-2xs) 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--size-step--1);
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.project-detail__expand-hint:hover {
+  opacity: 1;
+}
+
+.project-detail__expand-hint-icon {
+  display: flex;
+  width: 1em;
+  height: 1em;
+}
+
+.project-detail__expand-hint-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.image-viewer {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: var(--space-md-lg);
+  border: 0;
+  background: rgb(0 0 0 / 0.92);
+  /* Above .site-head (z-index: 1000); the top layer already wins, this is a safeguard */
+  z-index: 1001;
+}
+
+.image-viewer[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-viewer__image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+}
+
+.image-viewer__close {
+  position: fixed;
+  top: var(--space-sm-md);
+  right: var(--space-sm-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--background-light);
+  color: var(--color-brand-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+}
+
+.image-viewer__close:hover,
+.image-viewer__close:focus-visible {
+  filter: brightness(105%);
+}
+
 .project-detail__placeholder {
   display: grid;
   place-items: center;
