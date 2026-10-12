@@ -23,7 +23,7 @@ import roiRetentionMockup from "../assets/projects/roi-app/retention-mockup.png"
 
 import clinicPortalHome from "../assets/projects/healthcare-compliance-app/portal-home.png";
 import clinicPortalWellnessIncentive from "../assets/projects/healthcare-compliance-app/portal-wellness-incentive.png";
-import clinicPortalWellnessAction from "../assets/projects/healthcare-compliance-app/portal-wellness-action.png";
+import clinicPortalWellnessActions from "../assets/projects/healthcare-compliance-app/portal-wellness-actions.png";
 import clinicPortalWellnessActionModal from "../assets/projects/healthcare-compliance-app/portal-wellness-action-modal.png";
 import clinicPortalWellnessActionModal2 from "../assets/projects/healthcare-compliance-app/portal-wellness-action-modal-2.png";
 import clinicDashboardMockup from "../assets/projects/healthcare-compliance-app/dashboard-mockup.png";
@@ -32,7 +32,6 @@ import clinicPortalHealthMeasurements from "../assets/projects/healthcare-compli
 import clinicAdminWellnessIncentiveConfig from "../assets/projects/healthcare-compliance-app/admin-wellness-incentive-config.png";
 import clinicAdminPortalConfig from "../assets/projects/healthcare-compliance-app/admin-portal-config.png";
 import clinicAdminDashboardConfig from "../assets/projects/healthcare-compliance-app/admin-portal-dashboard-config.png";
-// admin-services.png is intentionally not imported yet; it is held back for now.
 
 export interface ProjectImage {
   src: ImageMetadata;
@@ -67,7 +66,7 @@ export const projects: Project[] = [
     slug: "healthcare-compliance-platform",
     title: "Healthcare Compliance Platform",
     summary:
-      "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the clinic team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
+      "An admin app and employee portal for a healthcare employer to manage compliance and wellness for thousands of employees, built so the admin team can configure the dashboard and programs like the yearly wellness incentive themselves, with no developer in the loop.",
     year: "2024-2026",
     stack: [
       "Angular",
@@ -83,7 +82,7 @@ export const projects: Project[] = [
     responsibilities: [
       "Full stack development of the admin app and the employee portal",
       "UI design in Figma and client design reviews",
-      "A configuration system that lets clinic staff run programs and dashboards without a developer",
+      "A configuration system that lets the admin team run programs and dashboards without a developer",
       "Single sign-on, role-based permissions, and audit logging across the admin app, portal, and APIs",
       "A shared Angular component library and reusable bulk-import workflow used across both apps",
       "Two years of AI-assisted development with GitHub Copilot, which sped up sprints",
@@ -93,7 +92,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. The platform has two halves: an internal admin app where the clinic team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Automations were reworked to be easy to add and update in the future along with adding documentation for each flow. Below, I walk through the platform as a whole, then go deeper on its biggest module, an annual wellness incentive program, to show how the configuration approach works in practice.",
+        html: "A healthcare employer needed one place to manage compliance and wellness for thousands of employees, each in a different situation. This project combined several systems into one while modernizing the technology, improving processes, and providing a better user experience.  The platform has two parts: an internal admin app where the admin team does their work every day, and an employee portal where people see what they need to do, what they have completed, and whether they are compliant for their job. Below, I walk through the high level of the platform, then go deeper on one part, an annual wellness incentive program.",
       },
       {
         type: "image",
@@ -106,7 +105,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Designing before building" },
       {
         type: "text",
-        html: "I designed both halves in Figma before writing code and used the prototypes to get quick feedback and buy-in from the client. Changing a design is much cheaper than changing a build.",
+        html: "I designed the admin and employee UI in Figma before writing code and used them to get quick feedback and buy-in from the client. It is hard for a client to say what they want or don’t want until they see a visual. A mockup is a quick way to get everyone on the same page and rules out a lot of guesswork. Changing a design is much cheaper than changing a build.",
       },
       {
         type: "gallery",
@@ -124,10 +123,10 @@ export const projects: Project[] = [
         ],
         caption: "Figma mockups of the employee portal.",
       },
-      { type: "heading", text: "A dashboard the clinic team controls" },
+      { type: "heading", text: "A dashboard the admin team controls" },
       {
         type: "text",
-        html: "Every card on the portal dashboard is configured in the admin app. The clinic team chooses which cards exist, which section each belongs to, the order they appear in, and whether each is active. When priorities change during the year, they change the dashboard themselves.",
+        html: "Every card on the portal dashboard is configured in the admin app. The admin team chooses which cards exist, which section each belongs to, the order they appear in, and whether each is active. When priorities change during the year, they change the dashboard themselves.",
       },
       {
         type: "image",
@@ -140,7 +139,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the clinic team and take effect without a code release.",
+        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the admin team and take effect without a code release.",
       },
       {
         type: "image",
@@ -153,7 +152,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Deep dive: the wellness incentive program" },
       {
         type: "text",
-        html: "The wellness incentive program is one area I worked on in the app, and a good example of how the whole platform is meant to work: the clinic team configures it, employees experience it in the portal. Employees complete actions to reach reward levels, and earn benefits for completing the program. The admin side gives the clinic team full control of how it is set up each year: dates, reward levels and amounts, the actions/steps, the actions employees can choose from, and all the explanatory copy.",
+        html: "The wellness incentive program is one area I worked on in the app and is a good example of how the whole platform is meant to work: the admin team configures it; employees see the configurations in the portal. Employees complete actions to reach reward levels and earn benefits for completing the program. The admin side gives the admin team full control of how it is set up each year: dates, reward levels and amounts, the steps, the actions employees can choose from, and all the explanatory copy.",
       },
       {
         type: "image",
@@ -166,7 +165,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Starting a new year does not mean starting over. The clinic team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
+        html: "Starting a new year does not mean starting over. The admin team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
       },
       {
         type: "heading",
@@ -174,7 +173,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detail view that explains how to earn it, and some include short interactive quizzes.",
+        html: "Employees see exactly what was configured: their current level, what each level earns, and the steps to reach the next one. One of those steps is a log of wellness actions, where people choose from a set of activities to reach the number required. Each action opens a detailed view that explains how to earn it, and some include short interactive quizzes.",
       },
       {
         type: "image",
@@ -182,6 +181,15 @@ export const projects: Project[] = [
           src: clinicPortalWellnessIncentive,
           alt: "Employee portal page for the incentive program showing the current reward level, reward amounts, and three step cards with completion status.",
           caption: "Portal: the same configuration, as employees see it.",
+        },
+      },
+      {
+        type: "image",
+        image: {
+          src: clinicPortalWellnessActions,
+          alt: "Employee portal page listing the available wellness actions and their completion status.",
+          caption:
+            "Portal: After view the Wellness Check 2, these are the wellness actions employees can choose from to complete to earn incentives.",
         },
       },
       {
@@ -202,7 +210,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Content stays editable" },
       {
         type: "text",
-        html: "The same idea runs through the rest of the portal. Page content is managed in the admin app too, with an edit and a history view for each page, so the clinic team can update the words on the portal without waiting for a release.",
+        html: "The same idea runs through the rest of the portal. Page content is managed in the admin app too, with an edit and a history view for each page, so the admin team can update the words on the portal without waiting for a release.",
       },
       {
         type: "image",
@@ -216,7 +224,7 @@ export const projects: Project[] = [
       { type: "heading", text: "What else the portal does" },
       {
         type: "text",
-        html: "The portal covers much more than the incentive program. Employees can also connect a health device, see their latest measurements at a glance, and chart them over time, with plain-language explanations of what each reading range means.",
+        html: "The portal covers much more than the incentive program. Employees can also connect a health device, see their latest measurements, and chart them over time, with plain-language explanations of what each reading range means.",
       },
       {
         type: "image",
@@ -234,20 +242,20 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
+        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens and actions their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
       },
       {
         type: "text",
-        html: "Two smaller safeguards matter in a healthcare setting. The apps sign people out after a period of inactivity, and every change made in the admin app is written to the audit log in the same database transaction as the change itself, so a record can never change without leaving a trace.",
+        html: "Two smaller safeguards matter in a healthcare setting. The apps sign people out after a period of inactivity and every change made in the admin app is written to the audit log in the same database transaction as the change itself, so a record can never change without leaving a trace.",
       },
       { type: "heading", text: "Architecture" },
       {
         type: "text",
-        html: "The system is two Angular applications and two ASP.NET Core APIs, one pair for the internal admin app and one pair for the employee portal. Both APIs sit on the same layers underneath: domain services, then data access with Dapper and hand-written SQL, then shared utilities. Both Angular apps install the same shared component library. Reusing libraries instead of copying code meant a fix or a new feature in one place showed up in both apps.",
+        html: "The system is composed of two Angular applications and two ASP.NET Core APIs, one pair for the internal admin app and one pair for the employee portal. Both APIs utilize the same layers underneath: services, Dapper repositories, SQL. Both Angular apps use the same shared component library. Reusing libraries instead of copying code meant a fix or a new feature in one place showed up in both apps as many patterns were shared between the two.",
       },
       {
         type: "text",
-        html: "The front end is current Angular with standalone components and functional route guards. The shared library is a small design system built on PrimeNG: a data table with lazy loading, filters and sort that persist during a session, CSV export, and row reordering, along with form controls, breadcrumbs, and audit history components. Shared services handle toast messages and HTTP calls, so errors look and behave the same everywhere.",
+        html: "The front end is current Angular with standalone components and functional route guards. The shared library is a small design system built on PrimeNG: a data table with lazy loading, filters and sorting that persist during a session, CSV export, and row reordering, along with form controls, breadcrumbs, and audit history components. Shared services handle toast messages and HTTP calls, so errors look and behave the same everywhere.",
       },
       { type: "heading", text: "Engineering decisions" },
       {
@@ -269,12 +277,12 @@ export const projects: Project[] = [
       { type: "heading", text: "Building with AI assistance" },
       {
         type: "text",
-        html: "The client approved GitHub Copilot for this project, and I used it throughout the two years of development. It sped up the work enough that we regularly finished sprint work early and pulled more into the sprint. Over that time I built up a lot of hands-on experience with AI-assisted development: where it saves the most time, how to review what it produces, and where my own judgment still has to lead.",
+        html: "The client approved GitHub Copilot for this project, and I used it throughout the two years of development. It sped up the work enough that we regularly finished sprint work early and pulled more into the sprint. Over that time, I built up a lot of hands-on experience with AI-assisted development: where it saves the most time, how to review what it produces, and where my own experience and judgment should override accepting the generated solution to just get a task done. There are many solutions of how a problem can be coded, but knowing if an AI generated solution is not quite right (too complex, not in line with previous coding standards, over-engineered, etc.) or spot on is key to maintaining ownership of a software product while keeping a quick pace of development.",
       },
       { type: "heading", text: "Go-live" },
       {
         type: "text",
-        html: "I also supported the launch on site, working alongside the clinic team while they moved onto the new system. I grew and learned a lot from this project and am a better developer and consultant from this work.",
+        html: "I also supported the launch on site, working alongside the admin team while they moved onto the new system. Overall, I grew and learned a lot from this project and am a better designer, developer, and consultant from this work.",
       },
     ],
     cover: {
@@ -363,11 +371,11 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "First came the reference data. I wrote a repeatable T-SQL script that cleans the raw monthly performance data. It drops providers with gaps in their records and periods dominated by zero-activity months, and trims the extreme low and high months in each reporting period. Each provider is then ranked into quartiles by years of experience and monthly volume using window functions (NTILE, PERCENTILE_CONT), and the results land in indexed lookup tables that the projection functions filter against.",
+        html: "First came the reference data. I wrote a repeatable T-SQL script that cleans the raw monthly performance data. It drops providers with gaps in their records and periods dominated by zero-activity months and trims the extreme low and high months in each reporting period. Each provider is then ranked into quartiles by years of experience and monthly volume using window functions (NTILE, PERCENTILE_CONT), and the results land in indexed lookup tables that the projection functions filter against.",
       },
       {
         type: "text",
-        html: "The functions take the prospect's inputs and run them through the CTE chain. CROSS APPLY and LAG() work out the quartile boundaries on the fly and place the client in the right experience and productivity buckets. From there the function matches comparable historical providers, measures each one's change from their baseline to their first program year (within fixed bounds), and returns a mean projection with a 95% confidence interval, along with its annual dollar value and ROI per provider.",
+        html: "The functions take the prospect's inputs and run them through the CTE chain. CROSS APPLY and LAG() work out the quartile boundaries on the fly and place the client in the right experience and productivity buckets. From there the function matches comparable historical providers, measures each one's change from their baseline to their first program year (within fixed bounds) and returns a mean projection with a 95% confidence interval, along with its annual dollar value and ROI per provider.",
       },
       { type: "heading", text: "Why table-valued functions" },
       {
@@ -485,7 +493,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Photo details straight from the file" },
       {
         type: "text",
-        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Along with this locations, descriptions, and tags were manually added to each photo to provide more detail and to allow for grouping images by collection.",
+        html: "The photography section reads real EXIF data out of each JPEG at build time with exifr: camera, lens, focal length, aperture, shutter speed, ISO, and GPS coordinates. It formats that data for display next to the photo. The data comes straight from the file, so adding a new photo means dropping in a JPEG, not hand-typing camera settings. Also locations, descriptions, and tags were manually added to each photo to provide more detail and to allow for grouping images by collection.",
       },
       {
         type: "gallery",
@@ -520,7 +528,7 @@ export const projects: Project[] = [
       { type: "heading", text: "A mountain for a footer" },
       {
         type: "text",
-        html: "The footer also is a place with a nice touch. One of my photos with a mountain in it had the background removed and was converted into an svg shape to be used for the footer. The result is subtle, calculated, and fits into the site as a whole really well.",
+        html: "The footer also is a place with a nice touch. One of my photos with a mountain in it had the background removed and was converted into a svg shape to be used for the footer. The result is subtle, calculated, and fits into the site really well.",
       },
       {
         type: "image",
@@ -533,7 +541,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Looking back" },
       {
         type: "text",
-        html: "I learned a lot about animations, writing code for good performance, and I had a blast making this site go from sketches and ideas to a reality. There are some improvements that can be made for sure, but it is in a great spot as I see it right now.",
+        html: "I learned a lot about animations, writing code for good performance, and I had a blast making this site go from sketches and ideas to reality. There are always some improvements that can be made, but it is in a great spot for the first version.",
       },
     ],
     cover: {
@@ -561,7 +569,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn't to design a store from scratch, it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
+        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn't to design a store from scratch; it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
       },
       {
         type: "image",
@@ -574,7 +582,7 @@ export const projects: Project[] = [
       { type: "heading", text: "The stack" },
       {
         type: "text",
-        html: "Astro renders the storefront as fast, mostly-static HTML. Product, category, and page content live in Sanity.io as structured content, so the catalog can change without touching code. Snipcart is layered on top for cart state and checkout, which meant working within a client-side commerce widget instead of writing custom cart logic. The site is built and hosted on Netlify.",
+        html: "Astro renders the storefront as fast, mostly static HTML. Product, category, and page content live in Sanity.io as structured content, so the catalog can change without touching code. Snipcart is layered on top for cart state and checkout, which meant working within a client-side commerce widget instead of writing custom cart logic. The site is built and hosted on Netlify.",
       },
       { type: "heading", text: "Catalog and checkout" },
       {
@@ -612,7 +620,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Performance on every deploy" },
       {
         type: "text",
-        html: "Every Netlify deploy preview runs a Lighthouse report and gives a build preview to check before merging into main, which turned performance into something to verify on every change rather than an afterthought. Chasing good Lighthouse scores across a client-side cart widget and image-heavy product pages was one of the bigger lessons of the project.",
+        html: "Every Netlify deploy preview runs a Lighthouse report and gives a live preview to check before merging into main, which turned performance into something to verify on every change rather than an afterthought. Chasing good Lighthouse scores across a client-side cart widget and image-heavy product pages was one of the bigger lessons of the project.",
       },
       {
         type: "image",
@@ -630,12 +638,12 @@ export const projects: Project[] = [
       { type: "heading", text: "Design tokens with Sugarcube" },
       {
         type: "text",
-        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters more and more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
+        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters exponentially more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
       },
       { type: "heading", text: "What I learned" },
       {
         type: "text",
-        html: "Overall, I learned a lot about how to set up a basic ecommerce store, some of the tradeoffs that need to be made based on the site goals, and more about performance updates across the board. My time was definitely well spent on this project.",
+        html: "Overall, I learned a lot about how to set up a basic ecommerce store, some of the tradeoffs that need to be made based on the site goals, and more about performance updates across the board. My time was well spent on this project.",
       },
     ],
     cover: {
