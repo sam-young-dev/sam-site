@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { projects } from "../../data/projects";
-import ExpandIcon from "../../assets/expand.svg?raw";
+import ExpandButton from "../../components/core/ExpandButton.astro";
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -116,10 +116,7 @@ const { project } = Astro.props;
                     {image.caption && (
                       <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
                     )}
-                    <button type="button" class="project-detail__expand-hint" tabindex="-1" aria-hidden="true">
-                      <span class="project-detail__expand-hint-icon" set:html={ExpandIcon} />
-                      Expand
-                    </button>
+                    <ExpandButton decorative />
                   </div>
                 </figure>
               ))}
@@ -155,10 +152,7 @@ const { project } = Astro.props;
               {block.image.caption && (
                 <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
               )}
-              <button type="button" class="project-detail__expand-hint" tabindex="-1" aria-hidden="true">
-                <span class="project-detail__expand-hint-icon" set:html={ExpandIcon} />
-                Expand
-              </button>
+              <ExpandButton decorative />
             </div>
           </figure>
         )
@@ -190,7 +184,7 @@ const { project } = Astro.props;
     const dialog = document.querySelector<HTMLDialogElement>(".image-viewer");
     if (!dialog) return;
 
-    const zoom = target.closest<HTMLButtonElement>(".project-detail__zoom, .project-detail__expand-hint");
+    const zoom = target.closest<HTMLButtonElement>(".project-detail__zoom, .expand-button");
     if (zoom) {
       const thumb = zoom.closest("figure")?.querySelector("img");
       const full = dialog.querySelector<HTMLImageElement>(".image-viewer__image");

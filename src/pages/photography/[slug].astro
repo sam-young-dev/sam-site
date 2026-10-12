@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPhotos } from "../../utils/photos";
 import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
-import ExpandIcon from "../../assets/expand.svg?raw";
+import ExpandButton from "../../components/core/ExpandButton.astro";
 import CloseIcon from "../../assets/close.svg?raw";
 
 export async function getStaticPaths() {
@@ -90,15 +90,10 @@ const metaItems = [
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
-        <button
-          type="button"
-          id="photo-detail-expand"
-          class="photo-detail__expand"
-          aria-label="View photo full screen"
-        >
-          <span class="photo-detail__expand-icon" set:html={ExpandIcon} />
-        </button>
-        {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+        <div class="photo-detail__caption">
+          {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+          <ExpandButton id="photo-detail-expand" />
+        </div>
       </div>
       {(tags.length > 0 || metaItems.length > 0) && (
         <figcaption class="photo-detail__meta">
@@ -293,6 +288,8 @@ const metaItems = [
     }
 
     expandBtn?.addEventListener("click", openLightbox);
+    // The image itself is a mouse shortcut; the button remains the keyboard/AT path.
+    mainImage?.addEventListener("click", openLightbox);
 
     // `lightbox` and `lightboxClose` live inside the persisted lightbox node,
     // so on a soft navigation they're the same elements as before rather than
