@@ -1,0 +1,23 @@
+---
+import ExpandIcon from "../../assets/expand.svg?raw";
+
+interface Props {
+  label?: string;
+  id?: string;
+  /** Hide from assistive tech and the tab order when a parent control already handles expanding. */
+  decorative?: boolean;
+}
+
+const { label = "Expand", id, decorative = false } = Astro.props;
+---
+
+<button
+  type="button"
+  id={id}
+  class="expand-button"
+  aria-hidden={decorative ? "true" : undefined}
+  tabindex={decorative ? -1 : undefined}
+>
+  <span class="expand-button__icon" set:html={ExpandIcon} />
+  {label}
+</button>

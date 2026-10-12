@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPhotos } from "../../utils/photos";
 import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
-import ExpandIcon from "../../assets/expand.svg?raw";
+import ExpandButton from "../../components/core/ExpandButton.astro";
 import CloseIcon from "../../assets/close.svg?raw";
 
 export async function getStaticPaths() {
@@ -54,7 +54,7 @@ const metaItems = [
 ---
 
 <BaseLayout
-  title={`Photography — ${meta.camera ?? "Photo"} — Sam Young`}
+  title={`Photography | ${meta.camera ?? "Photo"} | Sam Young`}
   description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
 >
   <a
@@ -90,15 +90,10 @@ const metaItems = [
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
-        <button
-          type="button"
-          id="photo-detail-expand"
-          class="photo-detail__expand"
-          aria-label="View photo full screen"
-        >
-          <span class="photo-detail__expand-icon" set:html={ExpandIcon} />
-        </button>
-        {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+        <div class="photo-detail__caption">
+          {blurb && <p class="photo-detail__blurb">{blurb}</p>}
+          <ExpandButton id="photo-detail-expand" />
+        </div>
       </div>
       {(tags.length > 0 || metaItems.length > 0) && (
         <figcaption class="photo-detail__meta">
@@ -205,9 +200,9 @@ const metaItems = [
 
     // The detail image's `srcset` is sized against its own (smaller) `sizes`
     // attribute, so its `currentSrc` is a lower-res candidate than the
-    // lightbox needs at full screen. Picking the largest candidate directly —
+    // lightbox needs at full screen. Picking the largest candidate directly,
     // rather than assigning `src`/`srcset`/`sizes` and letting the browser
-    // re-run its own selection against `sizes="100vw"` — avoids a second,
+    // re-run its own selection against `sizes="100vw"` | avoids a second,
     // asynchronous swap that flashed the smaller image before the full-size
     // one loaded in.
     function getLargestCandidate(imgEl) {
@@ -273,7 +268,7 @@ const metaItems = [
 
     // `#photo-lightbox` has transition:persist, so navigating to the prev/next
     // photo while it's open keeps this same DOM node on screen the whole time
-    // instead of closing and recreating it — swap the image in place rather
+    // instead of closing and recreating it | swap the image in place rather
     // than replaying the open animation, which used to flash the smaller
     // inline image underneath between photos.
     if (isOpen()) {
@@ -293,10 +288,12 @@ const metaItems = [
     }
 
     expandBtn?.addEventListener("click", openLightbox);
+    // The image itself is a mouse shortcut; the button remains the keyboard/AT path.
+    mainImage?.addEventListener("click", openLightbox);
 
     // `lightbox` and `lightboxClose` live inside the persisted lightbox node,
     // so on a soft navigation they're the same elements as before rather than
-    // fresh ones — swap out the previous run's handlers instead of stacking
+    // fresh ones | swap out the previous run's handlers instead of stacking
     // new ones on top (their closures also close over this run's mainImage
     // etc., so simply skipping the rebind would leave them pointing at stale,
     // now-detached elements from an earlier photo).
@@ -329,7 +326,7 @@ const metaItems = [
     }
 
     // Astro's ClientRouter swaps page content without reloading, but `document`
-    // itself persists across navigations — re-adding this listener on every
+    // itself persists across navigations | re-adding this listener on every
     // page load would stack stale handlers referencing detached elements.
     if (window.__photoLightboxKeydown) {
       document.removeEventListener("keydown", window.__photoLightboxKeydown);

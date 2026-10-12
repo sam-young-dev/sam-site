@@ -21,7 +21,7 @@ import MoonIcon from '../../assets/icons/moon.svg?raw';
   }
 
   // The inline script in BaseLayout's <head> already set data-mode before
-  // paint (from localStorage or the OS preference) — just sync this
+  // paint (from localStorage or the OS preference); just sync this
   // button's own label/state to match, since its SSR markup can't know it.
   applyTheme(document.documentElement.getAttribute("data-mode") === "dark" ? "dark" : "light");
 

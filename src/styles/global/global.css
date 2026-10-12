@@ -248,7 +248,7 @@ caption {
    across wrapped lines of inline prose text. */
 a:not([class]) {
   /* Padding (not the position calc it replaces) is what gives the
-     background room to paint below the baseline — backgrounds are
+     background room to paint below the baseline; backgrounds are
      clipped to the border box, so a position offset with no matching
      padding gets silently clipped away. */
   padding-block-end: 0.15em;
