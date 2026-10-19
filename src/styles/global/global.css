@@ -6,11 +6,11 @@
 */
 
 html {
-  background: light-dark(var(--background-light), var(--black));
+  background: var(--background-light);
 }
 
 body {
-  background: light-dark(var(--background-light), var(--black));
+  background: var(--background-light);
   color: var(--text-ink);
   font-size: var(--size-step-1);
   font-family: var(--font-body);
@@ -38,19 +38,23 @@ body > * {
   font-family: var(--font-heading);
 }
 
+/* tracking tightens as type grows; body text stays near 0 */
 h1 {
   font-size: var(--size-step-6);
   max-width: 20ch;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: var(--size-step-5);
   max-width: 35ch;
+  letter-spacing: -0.015em;
 }
 
 h3 {
   font-size: var(--size-step-4);
   max-width: 35ch;
+  letter-spacing: -0.01em;
 }
 
 :is(h1, h2, h3, h4):where(
@@ -198,7 +202,7 @@ img {
 figcaption {
   padding-block-start: 0.5em;
   font-size: var(--size-step-0);
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 table {
@@ -405,4 +409,27 @@ summary {
 
 details[open] summary {
   margin-block-end: var(--space-sm);
+}
+
+/* Small-size headings (card titles) sit at body size, so they shouldn't inherit display tracking. */
+:is(.project-card__title, .collection-card__title) {
+  letter-spacing: 0;
+}
+
+/* Press feedback for text-sized links and chips, on press not release */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.site-head nav a, .site-foot a, .photo-detail__tag, .photo-detail__back, .project-detail__back, .collection-detail__back) {
+    transition: transform var(--transition-fast) var(--ease-out);
+  }
+
+  :is(.site-head nav a, .site-foot a, .photo-detail__tag, .photo-detail__back, .project-detail__back, .collection-detail__back):active {
+    transform: scale(var(--press-scale-md));
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --stroke: var(--stroke-width) solid currentColor;
+    --stroke-solid: var(--stroke-width) solid currentColor;
+  }
 }

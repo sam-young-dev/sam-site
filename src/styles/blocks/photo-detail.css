@@ -38,6 +38,8 @@
   width: 100%;
   height: auto;
   cursor: zoom-in;
+  /* vertical scroll stays native; horizontal swipe is handled in photo-gestures.js */
+  touch-action: pan-y pinch-zoom;
 }
 
 .photo-lightbox {
@@ -51,6 +53,12 @@
   padding: var(--space-md-lg);
   background: rgb(0 0 0 / 0.92);
   opacity: 0;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .photo-lightbox {
+    background: rgb(0 0 0);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -71,7 +79,9 @@
   height: auto;
   object-fit: contain;
   opacity: 0;
-  transform: scale(0.96);
+  /* start from the on-page photo's position (set from JS); falls back to a slight scale */
+  transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(var(--from-scale, 0.96));
+  touch-action: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -84,7 +94,7 @@
 
 .photo-lightbox.is-open .photo-lightbox__image {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 .photo-lightbox__close {
@@ -107,6 +117,19 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .photo-lightbox__close {
     transition: filter var(--transition-normal) var(--ease-out);
+  }
+}
+
+/* feedback on press, not release */
+@media (prefers-reduced-motion: no-preference) {
+  .photo-lightbox__close {
+    transition:
+      filter var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+
+  .photo-lightbox__close:active {
+    transform: scale(var(--press-scale-lg));
   }
 }
 
@@ -212,6 +235,20 @@
   .photo-detail__nav--next:hover,
   .photo-detail__nav--next:focus-visible {
     transform: translateX(2px);
+  }
+}
+
+/* feedback on press, not release; touch gets it too */
+@media (prefers-reduced-motion: no-preference) {
+  .photo-detail__nav {
+    transition:
+      background var(--transition-normal) var(--ease-out),
+      filter var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+
+  .photo-detail__nav:active {
+    transform: scale(var(--press-scale-lg));
   }
 }
 
@@ -345,5 +382,11 @@
   .photo-detail__nav--next:hover,
   .photo-detail__nav--next:focus-visible {
     transform: translateY(-50%) translateX(2px);
+  }
+}
+
+@media (min-width: 90rem) and (prefers-reduced-motion: no-preference) {
+  .photo-detail__nav:active {
+    transform: translateY(-50%) scale(var(--press-scale-lg));
   }
 }

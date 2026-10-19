@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoIconLight from '../assets/logo-amber-large.svg?raw';
-import LogoIconDark from '../assets/logo-amber-200-large.svg?raw';
 ---
 
 <BaseLayout
@@ -14,8 +13,7 @@ import LogoIconDark from '../assets/logo-amber-200-large.svg?raw';
     <div class="hero-content-container">
       <div class="hero-content hero-content--stagger">
         <h1 class="hero-content__heading">
-          <span class="hero-content__icon hero-content__icon--light" set:html={LogoIconLight} />
-          <span class="hero-content__icon hero-content__icon--dark" set:html={LogoIconDark} />
+          <span class="hero-content__icon" set:html={LogoIconLight} />
           Sam Young
         </h1>
         <p>Developer</p>

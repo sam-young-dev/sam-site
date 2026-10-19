@@ -195,13 +195,6 @@ class Puddle {
     this.resizeHandler = this.#resizeHandler.bind(this);
     window.addEventListener("resize", this.resizeHandler);
 
-    this.colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    this.colorSchemeHandler = () => {
-      this.#readColor();
-      this.#redrawAll();
-    };
-    this.colorSchemeQuery.addEventListener("change", this.colorSchemeHandler);
-
     this.#initialize();
   }
 
@@ -259,12 +252,24 @@ class Puddle {
     if (this._listenersSetup) return;
     this._listenersSetup = true;
 
-    this.canvas.addEventListener("click", (e) => {
+    const ripple = (e) => {
       const { xx, yy } = this.#cellFromEvent(e);
       if (!this.data.isValidCoordinate(xx, yy)) return;
       this.data.startRipple(xx, yy);
       this.#flushChanged();
       this.#startLoopIfIdle();
+    };
+
+    // mouse and pen respond on press, not release
+    this.canvas.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      ripple(e);
+    });
+
+    // touch waits for click so a scroll that starts on the canvas doesn't ripple
+    this.canvas.addEventListener("click", (e) => {
+      if (e.pointerType === "mouse" || e.pointerType === "pen") return;
+      ripple(e);
     });
 
     const canHover = window.matchMedia(
@@ -343,10 +348,6 @@ class Puddle {
 
   destroy() {
     window.removeEventListener("resize", this.resizeHandler);
-    this.colorSchemeQuery.removeEventListener(
-      "change",
-      this.colorSchemeHandler,
-    );
     if (this.updateLoop) cancelAnimationFrame(this.updateLoop);
     this.updateLoop = null;
   }

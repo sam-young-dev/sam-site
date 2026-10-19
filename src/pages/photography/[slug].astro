@@ -177,6 +177,8 @@ const metaItems = [
 
     const LIGHTBOX_OPEN_KEY = "photoLightboxOpen";
 
+    window.__photoLightbox = { close: () => closeLightbox(), isOpen: () => isOpen() };
+
     function isOpen() {
       return lightbox?.classList.contains("is-open") ?? false;
     }
@@ -234,10 +236,29 @@ const metaItems = [
       nextLinkEl?.classList.toggle("is-hidden", !visible);
     }
 
+    // Opens/closes from (and back to) the on-page photo: offset and scale the
+    // lightbox image to where the inline photo sits, so it grows out of it.
+    function setLightboxOrigin() {
+      if (!lightboxImage || !mainImage) return;
+      const src = mainImage.getBoundingClientRect();
+      const ratio = (mainImage.naturalWidth || src.width) / (mainImage.naturalHeight || src.height || 1);
+      const pad = parseFloat(getComputedStyle(lightbox).paddingLeft) || 0;
+      const availW = window.innerWidth - pad * 2;
+      const availH = window.innerHeight - pad * 2;
+      const w = Math.min(availW, availH * ratio);
+      const scale = src.width && w ? Math.min(Math.max(src.width / w, 0.2), 1) : 0.96;
+      const dx = src.left + src.width / 2 - window.innerWidth / 2;
+      const dy = src.top + src.height / 2 - window.innerHeight / 2;
+      lightboxImage.style.setProperty("--from-x", dx + "px");
+      lightboxImage.style.setProperty("--from-y", dy + "px");
+      lightboxImage.style.setProperty("--from-scale", String(scale));
+    }
+
     function openLightbox({ animate = true } = {}) {
       if (!lightbox || !lightboxImage || !mainImage) return;
       syncLightboxImage();
       lightbox.style.display = "flex";
+      setLightboxOrigin();
       if (animate) {
         requestAnimationFrame(() => lightbox.classList.add("is-open"));
         lightboxClose?.focus();
@@ -251,6 +272,7 @@ const metaItems = [
 
     function closeLightbox() {
       if (!lightbox) return;
+      setLightboxOrigin();
       lightbox.classList.remove("is-open");
       document.body.style.overflow = "";
       expandBtn?.focus();
@@ -358,3 +380,7 @@ const metaItems = [
     document.addEventListener("keydown", window.__photoLightboxKeydown);
   </script>
 </BaseLayout>
+
+<script>
+  import "../../lib/photo-gestures.js";
+</script>

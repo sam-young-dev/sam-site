@@ -7,31 +7,18 @@
   --radius-m: 0.75rem;
   --radius-l: 2.5rem;
   --uppercase-kerning: 0.04ch;
+  /* press feedback: sm for large surfaces (cards), md for text-sized targets, lg for small round controls */
+  --press-scale-sm: 0.985;
+  --press-scale-md: 0.97;
+  --press-scale-lg: 0.94;
   --indent-size: var(--space-xs-sm);
   --wrapper-max-width: 80rem;
   --wrapper-padding-inline: var(--space-md-lg);
 
   color-scheme: light;
-  --black: var(--color-stone-900);
   --background-light: var(--color-amber-50);
 
-  /* --color-brand-primary has no dark-mode counterpart in the design
-     tokens (it's meant to be a fixed brand swatch for things like button
-     fills), but it's also used all over as the page's "ink" color for
-     text sitting directly on the page background, which does need to
-     invert for contrast once that background goes dark. */
-  --text-ink: light-dark(var(--color-brand-primary), var(--color-amber-200));
-}
-
-/* Forces color-scheme (and therefore every light-dark() value) to follow
-   the toggle's explicit choice instead of just the OS/browser preference,
-   once JS has set data-mode. See ThemeToggle.astro. */
-:root[data-mode="light"] {
-  color-scheme: light;
-}
-
-:root[data-mode="dark"] {
-  color-scheme: dark;
+  --text-ink: var(--color-brand-primary);
 }
 
 @media (min-width: 100rem) {

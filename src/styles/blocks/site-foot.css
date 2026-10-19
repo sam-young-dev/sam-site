@@ -1,6 +1,6 @@
 .site-foot {
   color: var(--color-amber-200);
-  line-height: var(--leading-none);
+  line-height: var(--leading-body);
 }
 
 .site-foot__content {
@@ -21,6 +21,20 @@
 
 .site-foot a:hover {
   color: var(--color-amber-300);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-foot a {
+    transition:
+      color var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+}
+
+.site-foot .nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
 }
 
 .site-foot__mountain {

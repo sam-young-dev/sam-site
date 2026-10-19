@@ -33,6 +33,10 @@
 .site-head nav a {
   position: relative;
   text-decoration: none;
+  /* comfortable tap target without changing visual size */
+  display: inline-block;
+  padding-block: 0.75em;
+  margin-block: -0.75em;
 }
 
 .site-head nav a[aria-current="page"] {
@@ -56,7 +60,15 @@
   border-radius: var(--radius-pill, 999px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  background-color: light-dark(var(--background-light), var(--black));
+  background-color: color-mix(in srgb, var(--background-light) 70%, transparent);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-head--home nav .cluster {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: var(--background-light);
+  }
 }
 
 .site-head__brand a:not(:hover) {
@@ -78,18 +90,6 @@
 .site-head__brand-icon svg {
   block-size: 100%;
   inline-size: auto;
-}
-
-.site-head__brand-icon--dark {
-  display: none;
-}
-
-:root[data-mode="dark"] .site-head__brand-icon--light {
-  display: none;
-}
-
-:root[data-mode="dark"] .site-head__brand-icon--dark {
-  display: inline-flex;
 }
 
 .site-head hr {
