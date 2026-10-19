@@ -41,18 +41,6 @@
   inline-size: auto;
 }
 
-.hero-content__icon--dark {
-  display: none;
-}
-
-:root[data-mode="dark"] .hero-content__icon--light {
-  display: none;
-}
-
-:root[data-mode="dark"] .hero-content__icon--dark {
-  display: inline-flex;
-}
-
 .hero-content--stagger > *:nth-child(1) {
   animation-delay: 0ms;
 }
@@ -118,6 +106,6 @@
 
 /* feedback on press, not release */
 .explore-list a:active {
-  transform: scale(0.97);
+  transform: scale(var(--press-scale-md));
   transition-duration: var(--transition-fast);
 }

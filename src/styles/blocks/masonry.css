@@ -48,16 +48,22 @@ without leaving gaps, the way a Pinterest-style grid does. */
 /* feedback on press, not release; applies to touch too */
 @media (prefers-reduced-motion: no-preference) {
   .masonry__link:active {
-    transform: scale(0.985);
+    transform: scale(var(--press-scale-sm));
     transition-duration: var(--transition-fast);
   }
 }
 
 .masonry__image {
-  opacity: 0;
-  transition: opacity var(--transition-slow) var(--ease-out);
 }
 
-.masonry__image.is-loaded {
-  opacity: 1;
+/* Hidden until loaded only when JS can reveal it */
+@media (scripting: enabled) {
+  .masonry__image {
+    opacity: 0;
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+
+  .masonry__image.is-loaded {
+    opacity: 1;
+  }
 }

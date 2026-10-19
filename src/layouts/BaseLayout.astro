@@ -41,5 +41,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <slot />
     </main>
     <SiteFooter />
+    <script is:inline>
+      // Images that finished loading before their onload handler could run (cache hits, router swaps) would stay hidden.
+      document.addEventListener("astro:page-load", function () {
+        document.querySelectorAll("img").forEach(function (img) {
+          if (img.complete) img.classList.add("is-loaded");
+        });
+      });
+    </script>
   </body>
 </html>

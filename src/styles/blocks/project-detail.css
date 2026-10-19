@@ -197,7 +197,7 @@
   }
 
   .project-detail__zoom:active .project-detail__gallery-image {
-    transform: scale(0.985);
+    transform: scale(var(--press-scale-sm));
     transition-duration: var(--transition-fast);
   }
 }
@@ -319,7 +319,7 @@
 
   /* feedback on press, not release */
   .image-viewer__close:active {
-    transform: scale(0.94);
+    transform: scale(var(--press-scale-lg));
   }
 }
 

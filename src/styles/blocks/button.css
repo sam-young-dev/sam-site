@@ -30,7 +30,7 @@
 }
 
 .button:active {
-  transform: scale(99%);
+  transform: scale(var(--press-scale-md));
   transition-duration: var(--transition-fast);
 }
 

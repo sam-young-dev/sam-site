@@ -195,13 +195,6 @@ class Puddle {
     this.resizeHandler = this.#resizeHandler.bind(this);
     window.addEventListener("resize", this.resizeHandler);
 
-    this.colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    this.colorSchemeHandler = () => {
-      this.#readColor();
-      this.#redrawAll();
-    };
-    this.colorSchemeQuery.addEventListener("change", this.colorSchemeHandler);
-
     this.#initialize();
   }
 
@@ -355,10 +348,6 @@ class Puddle {
 
   destroy() {
     window.removeEventListener("resize", this.resizeHandler);
-    this.colorSchemeQuery.removeEventListener(
-      "change",
-      this.colorSchemeHandler,
-    );
     if (this.updateLoop) cancelAnimationFrame(this.updateLoop);
     this.updateLoop = null;
   }

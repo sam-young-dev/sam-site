@@ -34,7 +34,7 @@
 /* feedback on press, not release; applies to touch too */
 @media (prefers-reduced-motion: no-preference) {
   .collection-card__link:active {
-    transform: scale(0.985);
+    transform: scale(var(--press-scale-sm));
     transition-duration: var(--transition-fast);
   }
 }
@@ -44,12 +44,18 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity var(--transition-slow) var(--ease-out);
 }
 
-.collection-card__image.is-loaded {
-  opacity: 1;
+/* Hidden until loaded only when JS can reveal it */
+@media (scripting: enabled) {
+  .collection-card__image {
+    opacity: 0;
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+
+  .collection-card__image.is-loaded {
+    opacity: 1;
+  }
 }
 
 .collection-card__body {

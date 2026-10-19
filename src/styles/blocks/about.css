@@ -114,7 +114,7 @@ A small photography accent alongside the photography paragraph. */
 /* feedback on press, not release; applies to touch too */
 @media (prefers-reduced-motion: no-preference) {
   .about-photo-link:active {
-    transform: scale(0.985);
+    transform: scale(var(--press-scale-sm));
     transition-duration: var(--transition-fast);
   }
 }
@@ -124,4 +124,15 @@ A small photography accent alongside the photography paragraph. */
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+@media (scripting: enabled) {
+  .about-photo {
+    opacity: 0;
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+
+  .about-photo.is-loaded {
+    opacity: 1;
+  }
 }

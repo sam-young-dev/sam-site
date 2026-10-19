@@ -81,8 +81,7 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
       {featuredPhoto && (
         <a
           href={`/photography/${featuredPhoto.slug}/`}
-          class=""
-          aria-label="View this photo in the gallery"
+          class="about-photo-link"
         >
           <Image
             src={featuredPhoto.image}
@@ -90,17 +89,17 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
             format="avif"
             quality={80}
-            alt="View of a snowy mountain through the trees."
+            alt={featuredPhoto.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
+            onload="this.classList.add('is-loaded')"
           />
         </a>
       )}
       {featuredPhoto2 && (
         <a
           href={`/photography/${featuredPhoto2.slug}/`}
-          class=""
-          aria-label="View this photo in the gallery"
+          class="about-photo-link"
         >
           <Image
             src={featuredPhoto2.image}
@@ -108,17 +107,17 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
             format="avif"
             quality={80}
-            alt="View of a snowy mountain through the trees."
+            alt={featuredPhoto2.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
+            onload="this.classList.add('is-loaded')"
           />
         </a>
       )}
       {featuredPhoto3 && (
         <a
           href={`/photography/${featuredPhoto3.slug}/`}
-          class=""
-          aria-label="View this photo in the gallery"
+          class="about-photo-link"
         >
           <Image
             src={featuredPhoto3.image}
@@ -126,9 +125,10 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
             format="avif"
             quality={80}
-            alt="View of a snowy mountain through the trees."
+            alt={featuredPhoto3.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
+            onload="this.classList.add('is-loaded')"
           />
         </a>
       )}
