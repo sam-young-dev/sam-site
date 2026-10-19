@@ -110,6 +110,7 @@ const { project } = Astro.props;
                       alt={image.alt}
                       loading="lazy"
                       class="project-detail__gallery-image"
+                      onload="this.classList.add('is-loaded')"
                     />
                   </button>
                   <div class="project-detail__gallery-meta">
@@ -146,6 +147,7 @@ const { project } = Astro.props;
                 alt={block.image.alt}
                 loading="lazy"
                 class="project-detail__gallery-image"
+                onload="this.classList.add('is-loaded')"
               />
             </button>
             <div class="project-detail__gallery-meta">
