@@ -134,6 +134,17 @@
   width: 100%;
   height: auto;
   border: var(--stroke-solid);
+  transition: opacity var(--transition-slow) var(--ease-out);
+}
+
+@media (scripting: enabled) {
+  .project-detail__gallery-image {
+    opacity: 0;
+  }
+
+  .project-detail__gallery-image.is-loaded {
+    opacity: 1;
+  }
 }
 
 /* Whole image is the expand trigger; the cursor signals it */
@@ -155,6 +166,7 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project-detail__zoom .project-detail__gallery-image {
     transition:
+      opacity var(--transition-slow) var(--ease-out),
       transform var(--transition-normal) var(--ease-out),
       filter var(--transition-normal) var(--ease-out);
   }
@@ -179,6 +191,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .project-detail__zoom .project-detail__gallery-image {
     transition:
+      opacity var(--transition-slow) var(--ease-out),
       transform var(--transition-normal) var(--ease-out),
       filter var(--transition-normal) var(--ease-out);
   }
