@@ -15,6 +15,7 @@ token setup.
 | [006](006-masonry-image-fade-in.md) | Fade in masonry images as they finish loading | LOW | DONE |
 | [007](007-homepage-identity-stagger.md) | Stagger the homepage identity block's entrance | LOW | DONE |
 | [008](008-cross-page-view-transitions.md) | Add cross-page View Transitions | MEDIUM | DONE |
+| [009](009-project-gallery-image-fade-in.md) | Fade in project detail gallery images as they finish loading | LOW | TODO |
 
 ## Recommended execution order
 
@@ -43,6 +44,12 @@ token setup.
    commit. Running 008 after 001/004/005 have landed (as they now have,
    per the status column above) means its "current code" excerpts match
    what's actually in the file.
+
+## Plan 009 (added at commit `d47a6aa`)
+
+Independent of 001-008. It reuses the on-load fade pattern from the card and
+masonry images and must edit the two existing `transition` lists in
+`project-detail.css`, so it can run at any time.
 
 ## Dependencies
 
