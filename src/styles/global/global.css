@@ -38,19 +38,23 @@ body > * {
   font-family: var(--font-heading);
 }
 
+/* tracking tightens as type grows; body text stays near 0 */
 h1 {
   font-size: var(--size-step-6);
   max-width: 20ch;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: var(--size-step-5);
   max-width: 35ch;
+  letter-spacing: -0.015em;
 }
 
 h3 {
   font-size: var(--size-step-4);
   max-width: 35ch;
+  letter-spacing: -0.01em;
 }
 
 :is(h1, h2, h3, h4):where(

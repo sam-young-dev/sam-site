@@ -163,8 +163,29 @@
 @media (hover: hover) and (pointer: fine) {
   .project-detail__zoom:hover .project-detail__gallery-image,
   .project-detail__zoom:focus-visible .project-detail__gallery-image {
-    transform: scale(1.02);
     filter: brightness(104%);
+  }
+}
+
+/* the scale only happens when it can be animated */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project-detail__zoom:hover .project-detail__gallery-image,
+  .project-detail__zoom:focus-visible .project-detail__gallery-image {
+    transform: scale(1.02);
+  }
+}
+
+/* feedback on press, not release; touch gets it too */
+@media (prefers-reduced-motion: no-preference) {
+  .project-detail__zoom .project-detail__gallery-image {
+    transition:
+      transform var(--transition-normal) var(--ease-out),
+      filter var(--transition-normal) var(--ease-out);
+  }
+
+  .project-detail__zoom:active .project-detail__gallery-image {
+    transform: scale(0.985);
+    transition-duration: var(--transition-fast);
   }
 }
 
@@ -197,6 +218,48 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .image-viewer {
+    background: rgb(0 0 0);
+  }
+}
+
+/* The viewer fades and the image settles in; the exit mirrors it. display and
+   overlay are transitioned discretely so the dialog stays visible while it
+   fades out. */
+@media (prefers-reduced-motion: no-preference) {
+  .image-viewer {
+    opacity: 0;
+    transition:
+      opacity var(--transition-slow) var(--ease-out),
+      display var(--transition-slow) allow-discrete,
+      overlay var(--transition-slow) allow-discrete;
+  }
+
+  .image-viewer[open] {
+    opacity: 1;
+  }
+
+  .image-viewer .image-viewer__image {
+    transform: scale(0.96);
+    transition: transform var(--transition-slow) var(--ease-out);
+  }
+
+  .image-viewer[open] .image-viewer__image {
+    transform: scale(1);
+  }
+
+  @starting-style {
+    .image-viewer[open] {
+      opacity: 0;
+    }
+
+    .image-viewer[open] .image-viewer__image {
+      transform: scale(0.96);
+    }
+  }
 }
 
 .image-viewer__image {
@@ -232,6 +295,19 @@
 .image-viewer__close:hover,
 .image-viewer__close:focus-visible {
   filter: brightness(105%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .image-viewer__close {
+    transition:
+      filter var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+
+  /* feedback on press, not release */
+  .image-viewer__close:active {
+    transform: scale(0.94);
+  }
 }
 
 .project-detail__placeholder {
