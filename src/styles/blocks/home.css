@@ -17,6 +17,7 @@
 
 .hero-content--stagger > * {
   opacity: 0;
+  transform: translateY(0.5rem);
   animation: hero-content-in var(--transition-slow) var(--ease-out) forwards;
 }
 
@@ -24,6 +25,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
+  /* large display text wants tighter tracking and leading */
+  letter-spacing: -0.02em;
+  line-height: 1.05;
 }
 
 .hero-content__icon {
@@ -65,12 +69,26 @@
 @keyframes hero-content-in {
   to {
     opacity: 1;
+    transform: none;
   }
 }
 
+/* reduced motion: keep the cross-fade, drop the slide */
 @media (prefers-reduced-motion: reduce) {
   .hero-content--stagger > * {
-    animation: none;
+    transform: none;
+    animation-name: hero-content-fade;
+  }
+
+  .explore-list a,
+  .explore-list a:hover,
+  .explore-list a:active {
+    transform: none;
+  }
+}
+
+@keyframes hero-content-fade {
+  to {
     opacity: 1;
   }
 }
@@ -90,4 +108,16 @@
   min-inline-size: 48px;
   padding-inline: var(--space-sm);
   margin-inline-start: calc(-1 * var(--space-sm));
+  transform-origin: left center;
+  transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.explore-list a:hover {
+  transform: translateX(0.25rem);
+}
+
+/* feedback on press, not release */
+.explore-list a:active {
+  transform: scale(0.97);
+  transition-duration: var(--transition-fast);
 }
