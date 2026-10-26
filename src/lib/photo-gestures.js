@@ -12,11 +12,14 @@ function setupSwipe() {
   const tracker = createVelocityTracker();
   let startX = 0;
   let startY = 0;
+  let lastX = 0;
   let x = 0;
   let dragging = false;
   let intent = null;
   let cancelSpring = () => {};
   let suppressClick = false;
+
+  const hasLink = (dir) => Boolean(document.getElementById(`photo-detail-${dir}`));
 
   const render = (value) => {
     x = value;
@@ -28,7 +31,8 @@ function setupSwipe() {
     cancelSpring(); // grab it mid-flight: continue from the on-screen value
     dragging = true;
     intent = null;
-    startX = e.clientX - x;
+    startX = e.clientX;
+    lastX = e.clientX;
     startY = e.clientY;
     tracker.reset();
     tracker.add(e.clientX, e.clientY);
@@ -39,14 +43,24 @@ function setupSwipe() {
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
     if (!intent) {
-      if (Math.abs(dx - x) < HYSTERESIS && Math.abs(dy) < HYSTERESIS) return;
-      intent = Math.abs(dx - x) > Math.abs(dy) ? "x" : "y";
+      if (Math.abs(dx) < HYSTERESIS && Math.abs(dy) < HYSTERESIS) return;
+      intent = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
       if (intent === "x") image.setPointerCapture(e.pointerId);
     }
     if (intent !== "x") return;
     suppressClick = true;
     tracker.add(e.clientX, e.clientY);
-    render(dx);
+
+    // No photo on that side: resist progressively instead of following 1:1.
+    // Applied per-delta so it stays continuous when grabbed mid-flight.
+    let delta = e.clientX - lastX;
+    lastX = e.clientX;
+    const edge = x + delta < 0 ? !hasLink("next") : !hasLink("prev");
+    if (edge && Math.sign(delta) === Math.sign(x + delta)) {
+      const width = image.getBoundingClientRect().width;
+      delta *= 0.55 * (1 - Math.min(Math.abs(x) / (width * 0.5), 0.9));
+    }
+    render(x + delta);
   });
 
   const end = () => {
