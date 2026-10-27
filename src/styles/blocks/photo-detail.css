@@ -44,12 +44,18 @@
   line-height: var(--leading-body);
 }
 
-.photo-detail__meta {
+/* Flow spacing is set on the children (> *) because each child reads its own
+   --flow-space for the margin above it; setting it on a nested flow container
+   would change the gap above that container instead of between its children. */
+.photo-detail__meta > * {
   --flow-space: var(--space-md-lg);
+}
+
+.photo-detail__meta {
   color: inherit;
 }
 
-.photo-detail__tags-group {
+.photo-detail__tags-group > * {
   --flow-space: 0.4em;
 }
 
@@ -63,7 +69,6 @@
 
 .photo-detail__tags {
   --cluster-gap: var(--space-xs-sm, 0.5rem);
-  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -98,13 +103,12 @@
   opacity: 1;
 }
 
-.photo-detail__meta-list {
-  --flow-space: var(--space-sm-md);
-  margin: 0;
+.photo-detail__meta-list > * {
+  --flow-space: var(--space-md-lg);
 }
 
-.photo-detail__meta-item {
-  --flow-space: 0.25em;
+.photo-detail__meta-item > * {
+  --flow-space: 0.15em;
 }
 
 .photo-detail__meta-item dt {
