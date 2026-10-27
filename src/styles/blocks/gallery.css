@@ -1,0 +1,109 @@
+.gallery-item {
+  margin-inline: 0;
+  margin-block-end: 0;
+}
+
+.gallery-grid {
+  --grid-placement: auto-fit;
+  --grid-item-min: min(100%, 16rem);
+  --grid-gap: var(--space-sm-md);
+}
+
+/* With an odd number of images, the first one spans the full row */
+.gallery-cell:first-child:nth-last-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.gallery-cell {
+  margin: 0;
+}
+
+.gallery-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--stroke-solid);
+  transition: opacity var(--transition-slow) var(--ease-out);
+}
+
+@media (scripting: enabled) {
+  .gallery-image {
+    opacity: 0;
+  }
+
+  .gallery-image[data-state='loaded'] {
+    opacity: 1;
+  }
+}
+
+/* Whole image is the expand trigger; the cursor signals it */
+.gallery-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: zoom-in;
+  overflow: hidden;
+}
+
+.gallery-zoom .gallery-image {
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery-zoom:hover .gallery-image,
+  .gallery-zoom:focus-visible .gallery-image {
+    filter: brightness(104%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-zoom .gallery-image {
+    transition:
+      opacity var(--transition-slow) var(--ease-out),
+      transform var(--transition-normal) var(--ease-out),
+      filter var(--transition-normal) var(--ease-out);
+  }
+
+  /* the scale only happens when it can be animated */
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-zoom:hover .gallery-image,
+    .gallery-zoom:focus-visible .gallery-image {
+      transform: scale(1.02);
+    }
+  }
+
+  /* feedback on press, not release; touch gets it too */
+  .gallery-zoom:active .gallery-image {
+    transform: scale(var(--press-scale-sm));
+    transition-duration: var(--transition-fast);
+  }
+}
+
+/* Caption on the left, expand hint on the right, both below the image */
+.gallery-meta {
+  --repel-vertical-alignment: baseline;
+  --repel-gap: var(--space-xs);
+}
+
+.gallery-meta .gallery-caption {
+  margin-inline-end: auto;
+}
+
+.gallery-caption {
+  margin-top: var(--space-2xs);
+  font-size: var(--size-step--1);
+  opacity: 0.7;
+}
+
+.gallery-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 7;
+  border: var(--stroke-solid);
+  border-style: dashed;
+  font-size: var(--size-step--1);
+  opacity: 0.7;
+}

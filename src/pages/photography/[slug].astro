@@ -60,23 +60,25 @@ const metaItems = [
   <a
     id="photo-detail-prev"
     href={`/photography/${prevSlug}/`}
-    class="photo-detail__nav photo-detail__nav--prev"
+    class="photo-nav round-button"
+    data-direction="prev"
     aria-label="View previous photo"
   >
-    <span class="photo-detail__nav-icon" set:html={ArrowIcon} />
+    <span class="photo-nav__icon" set:html={ArrowIcon} />
   </a>
 
   <a
     id="photo-detail-next"
     href={`/photography/${nextSlug}/`}
-    class="photo-detail__nav photo-detail__nav--next"
+    class="photo-nav round-button"
+    data-direction="next"
     aria-label="View next photo"
   >
-    <span class="photo-detail__nav-icon" set:html={ArrowIcon} />
+    <span class="photo-nav__icon" set:html={ArrowIcon} />
   </a>
 
   <div class="region wrapper">
-    <a id="photo-detail-back" href="/photography/" class="photo-detail__back">&larr; Back to gallery</a>
+    <a id="photo-detail-back" href="/photography/" class="photo-detail__back link-underline press">&larr; Back to gallery</a>
 
     <figure class="photo-detail">
       <div class="photo-detail__media">
@@ -90,29 +92,29 @@ const metaItems = [
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
-        <div class="photo-detail__caption">
+        <div class="photo-detail__caption repel">
           {blurb && <p class="photo-detail__blurb">{blurb}</p>}
           <ExpandButton id="photo-detail-expand" />
         </div>
       </div>
       {(tags.length > 0 || metaItems.length > 0) && (
-        <figcaption class="photo-detail__meta">
+        <figcaption class="photo-detail__meta flow">
           {tags.length > 0 && (
-            <div class="photo-detail__tags-group">
+            <div class="photo-detail__tags-group flow">
               <p class="photo-detail__tags-label">{tags.length > 1 ? "Collections" : "Collection"}</p>
-              <ul class="photo-detail__tags">
+              <ul class="photo-detail__tags cluster">
                 {tags.map((tag) => (
                   <li>
-                    <a href={`/collections/${slugifyTag(tag)}/`} class="photo-detail__tag">{tag}</a>
+                    <a href={`/collections/${slugifyTag(tag)}/`} class="photo-detail__tag press">{tag}</a>
                   </li>
                 ))}
               </ul>
             </div>
           )}
           {metaItems.length > 0 && (
-            <dl class="photo-detail__meta-list">
+            <dl class="photo-detail__meta-list flow">
               {metaItems.map((item) => (
-                <div class="photo-detail__meta-item">
+                <div class="photo-detail__meta-item flow">
                   <dt>{item.label}</dt>
                   <dd>{item.value}</dd>
                 </div>
@@ -134,7 +136,7 @@ const metaItems = [
       <button
         type="button"
         id="photo-lightbox-close"
-        class="photo-lightbox__close"
+        class="photo-lightbox__close round-button"
         aria-label="Close full screen view"
       >
         <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
@@ -180,7 +182,7 @@ const metaItems = [
     window.__photoLightbox = { close: () => closeLightbox(), isOpen: () => isOpen() };
 
     function isOpen() {
-      return lightbox?.classList.contains("is-open") ?? false;
+      return lightbox?.dataset.state === "open";
     }
 
     // Remembers across prev/next navigation that the lightbox was open, so
@@ -232,8 +234,10 @@ const metaItems = [
     // The nav buttons float above the lightbox (z-index) so they'd otherwise
     // sit on top of the full-screen image; hide them for the duration.
     function setNavVisible(visible) {
-      prevLinkEl?.classList.toggle("is-hidden", !visible);
-      nextLinkEl?.classList.toggle("is-hidden", !visible);
+      for (const link of [prevLinkEl, nextLinkEl]) {
+        if (visible) delete link?.dataset.state;
+        else if (link) link.dataset.state = "hidden";
+      }
     }
 
     // Opens/closes from (and back to) the on-page photo: offset and scale the
@@ -260,10 +264,10 @@ const metaItems = [
       lightbox.style.display = "flex";
       setLightboxOrigin();
       if (animate) {
-        requestAnimationFrame(() => lightbox.classList.add("is-open"));
+        requestAnimationFrame(() => (lightbox.dataset.state = "open"));
         lightboxClose?.focus();
       } else {
-        lightbox.classList.add("is-open");
+        lightbox.dataset.state = "open";
       }
       document.body.style.overflow = "hidden";
       rememberLightboxOpen(true);
@@ -273,7 +277,7 @@ const metaItems = [
     function closeLightbox() {
       if (!lightbox) return;
       setLightboxOrigin();
-      lightbox.classList.remove("is-open");
+      delete lightbox.dataset.state;
       document.body.style.overflow = "";
       expandBtn?.focus();
       rememberLightboxOpen(false);

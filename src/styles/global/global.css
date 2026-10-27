@@ -5,10 +5,6 @@
   project: https://cube.fyi/css.html
 */
 
-html {
-  background: var(--background-light);
-}
-
 body {
   background: var(--background-light);
   color: var(--text-ink);
@@ -409,22 +405,6 @@ summary {
 
 details[open] summary {
   margin-block-end: var(--space-sm);
-}
-
-/* Small-size headings (card titles) sit at body size, so they shouldn't inherit display tracking. */
-:is(.project-card__title, .collection-card__title) {
-  letter-spacing: 0;
-}
-
-/* Press feedback for text-sized links and chips, on press not release */
-@media (prefers-reduced-motion: no-preference) {
-  :is(.site-head nav a, .site-foot a, .photo-detail__tag, .photo-detail__back, .project-detail__back, .collection-detail__back) {
-    transition: transform var(--transition-fast) var(--ease-out);
-  }
-
-  :is(.site-head nav a, .site-foot a, .photo-detail__tag, .photo-detail__back, .project-detail__back, .collection-detail__back):active {
-    transform: scale(var(--press-scale-md));
-  }
 }
 
 @media (prefers-contrast: more) {

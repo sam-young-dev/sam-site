@@ -63,7 +63,7 @@ without leaving gaps, the way a Pinterest-style grid does. */
     transition: opacity var(--transition-slow) var(--ease-out);
   }
 
-  .masonry__image.is-loaded {
+  .masonry__image[data-state='loaded'] {
     opacity: 1;
   }
 }

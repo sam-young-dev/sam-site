@@ -19,13 +19,13 @@ const { project } = Astro.props;
   description={project.summary}
 >
   <div class="wrapper region">
-    <a href="/projects/" class="project-detail__back">&larr; Back to projects</a>
+    <a href="/projects/" class="project-detail__back link-underline press">&larr; Back to projects</a>
 
     <header class="project-detail__header">
       <h1>{project.title}</h1>
       <p class="project-detail__summary">{project.summary}</p>
 
-      <dl class="project-detail__meta">
+      <dl class="project-detail__meta cluster">
         <div class="project-detail__meta-item">
           <dt>Year</dt>
           <dd>{project.year}</dd>
@@ -33,17 +33,17 @@ const { project } = Astro.props;
         <div class="project-detail__meta-item">
           <dt>Stack</dt>
           <dd>
-            <ul class="project-detail__stack not-prose">
+            <ul class="project-detail__stack cluster not-prose">
               {project.stack.map((tech) => (
                 <li>{tech}</li>
               ))}
             </ul>
           </dd>
         </div>
-        <div class="project-detail__meta-item project-detail__meta-item--full">
+        <div class="project-detail__meta-item" data-span="full">
           <dt>My role</dt>
           <dd>
-            <ul class="project-detail__responsibilities">
+            <ul class="project-detail__responsibilities flow">
               {project.responsibilities.map((item) => (
                 <li>{item}</li>
               ))}
@@ -52,7 +52,7 @@ const { project } = Astro.props;
         </div>
       </dl>
 
-      <div class="project-detail__links">
+      <div class="project-detail__links cluster">
         {project.links.live && (
           <a
             class="button"
@@ -92,15 +92,15 @@ const { project } = Astro.props;
         block.type === "heading" ? (
           <h2 class="project-detail__heading">{block.text}</h2>
         ) : block.type === "text" ? (
-          <div class="prose">
+          <div class="project-detail__prose prose">
             <p set:html={block.html} />
           </div>
         ) : block.type === "gallery" ? (
-          <figure class="project-detail__gallery-item project-detail__gallery">
-            <div class="project-detail__gallery-grid">
+          <figure class="gallery-item project-detail__gallery">
+            <div class="gallery-grid grid-auto">
               {block.images.map((image) => (
-                <figure class="project-detail__gallery-cell">
-                  <button type="button" class="project-detail__zoom" aria-label={`Expand image: ${image.alt}`}>
+                <figure class="gallery-cell">
+                  <button type="button" class="gallery-zoom" aria-label={`Expand image: ${image.alt}`}>
                     <Image
                       src={image.src}
                       widths={[500, 900, 1400, 2000]}
@@ -109,13 +109,13 @@ const { project } = Astro.props;
                       quality={85}
                       alt={image.alt}
                       loading="lazy"
-                      class="project-detail__gallery-image"
-                      onload="this.classList.add('is-loaded')"
+                      class="gallery-image"
+                      onload="this.dataset.state = 'loaded'"
                     />
                   </button>
-                  <div class="project-detail__gallery-meta">
+                  <div class="gallery-meta repel">
                     {image.caption && (
-                      <figcaption class="project-detail__gallery-caption">{image.caption}</figcaption>
+                      <figcaption class="gallery-caption">{image.caption}</figcaption>
                     )}
                     <ExpandButton decorative />
                   </div>
@@ -123,21 +123,21 @@ const { project } = Astro.props;
               ))}
             </div>
             {block.caption && (
-              <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
+              <figcaption class="gallery-caption">{block.caption}</figcaption>
             )}
           </figure>
         ) : block.type === "placeholder" ? (
-          <figure class="project-detail__gallery-item">
-            <div class="project-detail__placeholder" role="img" aria-label={block.label}>
+          <figure class="gallery-item">
+            <div class="gallery-placeholder" role="img" aria-label={block.label}>
               <span>{block.label}</span>
             </div>
             {block.caption && (
-              <figcaption class="project-detail__gallery-caption">{block.caption}</figcaption>
+              <figcaption class="gallery-caption">{block.caption}</figcaption>
             )}
           </figure>
         ) : (
-          <figure class="project-detail__gallery-item">
-            <button type="button" class="project-detail__zoom" aria-label={`Expand image: ${block.image.alt}`}>
+          <figure class="gallery-item">
+            <button type="button" class="gallery-zoom" aria-label={`Expand image: ${block.image.alt}`}>
               <Image
                 src={block.image.src}
                 widths={[500, 900, 1400, 2000]}
@@ -146,13 +146,13 @@ const { project } = Astro.props;
                 quality={85}
                 alt={block.image.alt}
                 loading="lazy"
-                class="project-detail__gallery-image"
-                onload="this.classList.add('is-loaded')"
+                class="gallery-image"
+                onload="this.dataset.state = 'loaded'"
               />
             </button>
-            <div class="project-detail__gallery-meta">
+            <div class="gallery-meta repel">
               {block.image.caption && (
-                <figcaption class="project-detail__gallery-caption">{block.image.caption}</figcaption>
+                <figcaption class="gallery-caption">{block.image.caption}</figcaption>
               )}
               <ExpandButton decorative />
             </div>
@@ -166,7 +166,7 @@ const { project } = Astro.props;
   <div class="region"></div>
 
   <dialog class="image-viewer" aria-label="Expanded image view">
-    <button type="button" class="image-viewer__close" aria-label="Close expanded image">&times;</button>
+    <button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">&times;</button>
     <img class="image-viewer__image" alt="" />
   </dialog>
 </BaseLayout>
@@ -186,7 +186,7 @@ const { project } = Astro.props;
     const dialog = document.querySelector<HTMLDialogElement>(".image-viewer");
     if (!dialog) return;
 
-    const zoom = target.closest<HTMLButtonElement>(".project-detail__zoom, .expand-button");
+    const zoom = target.closest<HTMLButtonElement>(".gallery-zoom, .expand-button");
     if (zoom) {
       const thumb = zoom.closest("figure")?.querySelector("img");
       const full = dialog.querySelector<HTMLImageElement>(".image-viewer__image");

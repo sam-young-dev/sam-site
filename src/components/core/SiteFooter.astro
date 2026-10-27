@@ -27,7 +27,7 @@ import { siteData } from '../../data/site-data'
 
         {siteData.personalLinks.length > 0 && (
           <nav aria-label="social" class="nav">
-            <ul class="cluster site-foot__personal-links" role="list">
+            <ul class="site-foot__personal-links cluster" role="list">
               {siteData.personalLinks.map((item) => (
                 <li>
                   <a href={item.href} {...(item.isExternal ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>

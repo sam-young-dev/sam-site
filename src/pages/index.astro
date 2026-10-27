@@ -8,17 +8,17 @@ import LogoIconLight from '../assets/logo-amber-large.svg?raw';
   description="Sam Young's digital garden, a Nashville-based full-stack software engineer, designer, and artist."
 >
   <div class="home">
-    <div id="puddle-container"></div>
+    <div id="puddle-container" class="puddle"></div>
 
     <div class="hero-content-container">
-      <div class="hero-content hero-content--stagger">
-        <h1 class="hero-content__heading">
+      <div class="hero-content" data-motion="stagger">
+        <h1 class="hero-content__heading" style="--i: 0">
           <span class="hero-content__icon" set:html={LogoIconLight} />
           Sam Young
         </h1>
-        <p>Developer</p>
-        <p>Designer</p>
-        <p>Artist</p>
+        <p style="--i: 1">Developer</p>
+        <p style="--i: 2">Designer</p>
+        <p style="--i: 3">Artist</p>
       </div>
 
       <div class="content region prose prose-w-sm flow">

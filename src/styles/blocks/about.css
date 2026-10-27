@@ -132,7 +132,7 @@ A small photography accent alongside the photography paragraph. */
     transition: opacity var(--transition-slow) var(--ease-out);
   }
 
-  .about-photo.is-loaded {
+  .about-photo[data-state='loaded'] {
     opacity: 1;
   }
 }

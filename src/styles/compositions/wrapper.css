@@ -12,5 +12,4 @@ CUSTOM PROPERTIES AND CONFIGURATION
   max-width: var(--wrapper-max-width, 1360px);
   padding-left: var(--wrapper-padding-inline, 1rem);
   padding-right: var(--wrapper-padding-inline, 1rem);
-  position: relative;
 }
