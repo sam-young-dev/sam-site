@@ -19,6 +19,13 @@
   --background-light: var(--color-amber-50);
 
   --text-ink: var(--color-brand-primary);
+  --scrim: rgb(0 0 0 / 0.92);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --scrim: rgb(0 0 0);
+  }
 }
 
 @media (min-width: 100rem) {

@@ -29,6 +29,11 @@
       color var(--transition-normal) var(--ease-out),
       transform var(--transition-fast) var(--ease-out);
   }
+
+  /* feedback on press, not release */
+  .site-foot a:active {
+    transform: scale(var(--press-scale-md));
+  }
 }
 
 .site-foot .nav a {

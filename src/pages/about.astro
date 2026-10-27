@@ -92,7 +92,7 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             alt={featuredPhoto.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
-            onload="this.classList.add('is-loaded')"
+            onload="this.dataset.state = 'loaded'"
           />
         </a>
       )}
@@ -110,7 +110,7 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             alt={featuredPhoto2.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
-            onload="this.classList.add('is-loaded')"
+            onload="this.dataset.state = 'loaded'"
           />
         </a>
       )}
@@ -128,7 +128,7 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
             alt={featuredPhoto3.blurb || "Photograph from the gallery"}
             loading="lazy"
             class="about-photo"
-            onload="this.classList.add('is-loaded')"
+            onload="this.dataset.state = 'loaded'"
           />
         </a>
       )}

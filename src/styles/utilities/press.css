@@ -1,0 +1,13 @@
+/*
+PRESS UTILITY
+Scale-down feedback on press, not release, for text-sized links and chips
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .press {
+    transition: transform var(--transition-fast) var(--ease-out);
+  }
+
+  .press:active {
+    transform: scale(var(--press-scale-md));
+  }
+}

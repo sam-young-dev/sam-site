@@ -23,7 +23,7 @@ const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
         alt={photo.blurb || "Photograph"}
         loading="lazy"
         class="masonry__image"
-        onload="this.classList.add('is-loaded')"
+        onload="this.dataset.state = 'loaded'"
         transition:name={`photo-${photo.slug}`}
       />
     </a>

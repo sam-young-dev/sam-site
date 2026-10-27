@@ -53,7 +53,7 @@
     transition: opacity var(--transition-slow) var(--ease-out);
   }
 
-  .collection-card__image.is-loaded {
+  .collection-card__image[data-state='loaded'] {
     opacity: 1;
   }
 }
@@ -63,6 +63,8 @@
 }
 
 .collection-card__title {
+  /* small headings sit at body size, so they shouldn't inherit display tracking */
+  letter-spacing: 0;
   margin: 0;
   font-size: var(--size-step-1);
 }

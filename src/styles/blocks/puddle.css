@@ -1,4 +1,4 @@
-#puddle-container {
+.puddle {
   position: absolute;
   inset: 0;
   color: var(--color-stone-400);

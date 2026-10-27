@@ -1,0 +1,72 @@
+.image-viewer {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: var(--space-md-lg);
+  border: 0;
+  background: var(--scrim);
+  /* Above .site-head (z-index: 1000); the top layer already wins, this is a safeguard */
+  z-index: 1001;
+}
+
+.image-viewer[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The viewer fades and the image settles in; the exit mirrors it. display and
+   overlay are transitioned discretely so the dialog stays visible while it
+   fades out. */
+@media (prefers-reduced-motion: no-preference) {
+  .image-viewer {
+    opacity: 0;
+    transition:
+      opacity var(--transition-slow) var(--ease-out),
+      display var(--transition-slow) allow-discrete,
+      overlay var(--transition-slow) allow-discrete;
+  }
+
+  .image-viewer[open] {
+    opacity: 1;
+  }
+
+  .image-viewer .image-viewer__image {
+    transform: scale(0.96);
+    transition: transform var(--transition-slow) var(--ease-out);
+  }
+
+  .image-viewer[open] .image-viewer__image {
+    transform: scale(1);
+  }
+
+  @starting-style {
+    .image-viewer[open] {
+      opacity: 0;
+    }
+
+    .image-viewer[open] .image-viewer__image {
+      transform: scale(0.96);
+    }
+  }
+}
+
+.image-viewer__image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+}
+
+.image-viewer__close {
+  position: fixed;
+  top: var(--space-sm-md);
+  right: var(--space-sm-md);
+  font-size: 1.5rem;
+  line-height: 1;
+}
