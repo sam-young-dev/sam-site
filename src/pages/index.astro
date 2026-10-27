@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoIconLight from '../assets/logo-amber-large.svg?raw';
+import Contour from '../components/contour/Contour.astro';
 ---
 
 <BaseLayout
@@ -8,7 +9,7 @@ import LogoIconLight from '../assets/logo-amber-large.svg?raw';
   description="Sam Young's digital garden, a Nashville-based full-stack software engineer, designer, and artist."
 >
   <div class="home">
-    <div id="puddle-container" class="puddle"></div>
+    <Contour />
 
     <div class="hero-content-container">
       <div class="hero-content" data-motion="stagger">
@@ -41,7 +42,3 @@ import LogoIconLight from '../assets/logo-amber-large.svg?raw';
     </div>
   </div>
 </BaseLayout>
-
-<script>
-	import '../lib/puddle.js';
-</script>

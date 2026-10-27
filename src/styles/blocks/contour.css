@@ -1,0 +1,92 @@
+.contour {
+  position: absolute;
+  inset: 0;
+  color: var(--color-stone-400);
+  user-select: none;
+  contain: layout paint style;
+
+  /* layers stack: wash first, dots on top */
+  canvas {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    display: block;
+    cursor: pointer;
+    /* the wash bitmap is one pixel per cell, keep the squares crisp */
+    image-rendering: pixelated;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      transparent,
+      var(--background-light)
+    );
+    pointer-events: none;
+  }
+}
+
+/* Palette exceptions, the engine reads the resolved colour */
+.contour[data-palette="ink"] {
+  color: var(--text-ink);
+}
+
+.contour[data-palette="amber"] {
+  color: var(--color-amber-500);
+}
+
+.contour-panel {
+  position: fixed;
+  inset-block-end: var(--space-sm);
+  inset-inline-end: var(--space-sm);
+  z-index: 10;
+  display: grid;
+  justify-items: end;
+  gap: var(--space-2xs);
+}
+
+.contour-panel__toggle {
+  list-style: none;
+  background: var(--background-light);
+}
+
+.contour-panel__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.contour-panel__body {
+  --flow-space: var(--space-xs);
+
+  inline-size: min(20rem, calc(100vw - 2 * var(--space-sm)));
+  max-block-size: 70dvb;
+  overflow-y: auto;
+  padding: var(--space-sm);
+  background: var(--background-light);
+  border: var(--stroke-solid);
+  border-radius: var(--radius-m);
+  font-size: var(--size-step--1, 0.875rem);
+}
+
+.contour-panel__row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 3rem;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.contour-panel__row output {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+/* selects span the control and value columns */
+.contour-panel__row select {
+  grid-column: 2 / -1;
+  min-block-size: 2rem;
+}
+
+.contour-panel__hint {
+  opacity: 0.7;
+}

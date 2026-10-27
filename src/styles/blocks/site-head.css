@@ -35,8 +35,13 @@
   text-decoration: none;
   /* comfortable tap target without changing visual size */
   display: inline-block;
-  padding-block: 0.75em;
-  margin-block: -0.75em;
+  --tap-pad: 0.75em;
+  /* gap between the text and its underline */
+  --underline-gap: 0.15em;
+  padding-block: var(--tap-pad);
+  margin-block: calc(var(--tap-pad) * -1);
+  /* the hover underline is a background, so lift it out of the tap padding */
+  background-position: 0% calc(100% - var(--tap-pad) + var(--underline-gap));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -58,28 +63,10 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  block-size: 0.08em;
-  inset-block-end: -0em;
+  block-size: calc(var(--stroke-width) * 2);
+  inset-block-end: calc(var(--tap-pad) - var(--underline-gap));
   background-color: var(--text-ink);
   border-radius: var(--radius-pill, 999px);
-}
-
-.site-head[data-page='home'] .site-head__links {
-  --gutter: var(--space-s);
-  padding-inline: var(--space-s);
-  padding-block: var(--space-2xs);
-  border-radius: var(--radius-pill, 999px);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background-color: color-mix(in srgb, var(--background-light) 70%, transparent);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .site-head[data-page='home'] .site-head__links {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background-color: var(--background-light);
-  }
 }
 
 .site-head__brand a:not(:hover) {
