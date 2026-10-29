@@ -28,14 +28,14 @@ export const KNOBS = [
 
 export const DEFAULTS = {
   field: "ridges",
-  palette: "stone",
+  palette: "ink",
   seed: 783098,
-  cell: 3,
-  levels: 13,
-  scale: 1.9,
+  cell: 2,
+  levels: 16,
+  scale: 1.8,
   detail: 3,
   warp: 1.45,
   dotSize: 0.8,
   shading: 0.5,
-  speed: 0.5,
+  speed: 0.45,
 };

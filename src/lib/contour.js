@@ -1,12 +1,13 @@
 // Draws the contour lines of a scalar field onto a coarse grid of squares,
 // like a topographic map rendered in pixels.
 //
-// Each cell samples the field, the value is quantised into bands, and a cell
-// is inked when a neighbour sits in a different band. Every few levels the
-// line is an "index" contour, drawn stronger like on a real map.
+// Each cell samples the field and measures how far it sits from the nearest
+// band boundary. Close cells get a dot, sized by that distance so a line glides
+// across the grid. Every few levels the line is an "index" contour, drawn
+// stronger like on a real map.
 //
-// The canvas bitmap is one pixel per cell, scaled up with CSS
-// (image-rendering: pixelated), so a frame is a single putImageData.
+// Between the lines, a lattice of shading dots in three tones (page colour, a
+// mid tone, ink) gives the height. Everything is drawn as dots onto one canvas.
 
 import { DEFAULTS, FIELDS, KNOBS, PALETTES } from "./contour-config.js";
 
@@ -15,14 +16,28 @@ import { DEFAULTS, FIELDS, KNOBS, PALETTES } from "./contour-config.js";
 const REFERENCE_SIZE = 1000;
 const INDEX_EVERY = 4;
 const LINE_ALPHA = 0.55;
-const SHADE_STRENGTH = 0.35;
+// shading dots sit one per block of this many cells, a full dot per cell
+// would be a solid fill and cost four times the arcs
+const SHADE_STRIDE = 2;
+// how far each shading tone reaches into its neighbour, in tone units
+const TONE_BLEND = 0.25;
 const RESIZE_DELAY = 150;
-// ~30fps, the field is slow so more frames buy nothing
-const FRAME_INTERVAL = 33;
+// a render slower than this (ms, smoothed) drops the loop to every other frame,
+// an even 30fps beats a 60fps that stutters
+const FRAME_BUDGET = 12;
 // stops a tiny cell size on a huge screen from sampling millions of cells
 const MAX_CELLS = 200000;
-// how fast the normalisation range follows the field as it moves
-const RANGE_EASE = 0.08;
+// how fast the normalisation range follows the field as it moves, per second
+const RANGE_RATE = 2.5;
+// a line fades out this many cells from its contour, so dots grow and shrink
+// as a line passes instead of popping on and off
+const LINE_REACH = 0.8;
+// flat ground has no gradient, keep the distance maths from blowing up there
+const GRADIENT_FLOOR = 0.15;
+// line dots fainter than this are invisible, skip them
+const MIN_COVERAGE = 0.05;
+// dots smaller than this (px) don't register, skip the arc
+const MIN_RADIUS = 0.15;
 
 function mulberry32(seed) {
   let a = seed >>> 0;
@@ -136,6 +151,20 @@ const colorProbe = document.createElement("canvas");
 colorProbe.width = colorProbe.height = 1;
 const probeCtx = colorProbe.getContext("2d", { willReadFrequently: true });
 
+function addDot(path, cx, cy, radius) {
+  if (radius < MIN_RADIUS) return;
+  path.moveTo(cx + radius, cy);
+  path.arc(cx, cy, radius, 0, Math.PI * 2);
+}
+
+// How much of a tone a shading dot shows, given its distance from that tone's
+// centre in tone units (a tone is one unit wide). Full inside the tone, easing to
+// nothing a little past its edge, so at a boundary both tones sit at half size.
+function toneWeight(distance) {
+  const t = (distance - (0.5 - TONE_BLEND)) / (2 * TONE_BLEND);
+  return 1 - smooth(Math.max(0, Math.min(1, t)));
+}
+
 // Resolve any CSS colour (including oklch and friends) to 8-bit RGB
 function toRgb(color) {
   probeCtx.clearRect(0, 0, 1, 1);
@@ -145,12 +174,6 @@ function toRgb(color) {
   return [r, g, b];
 }
 
-// ImageData is little-endian RGBA, so a packed pixel is 0xAABBGGRR
-function pack([r, g, b], alpha) {
-  const a = Math.round(Math.max(0, Math.min(1, alpha)) * 255);
-  return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
-}
-
 class Contour {
   constructor(container, settings) {
     this.container = container;
@@ -158,17 +181,16 @@ class Contour {
     this.time = 0;
     this.lastFrame = 0;
     this.loop = null;
+    this.sampler = null;
+    this.frameCost = 0;
+    this.ticks = 0;
 
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    // two layers: a one-pixel-per-cell wash underneath, and the dots on top
     this.canvas = document.createElement("canvas");
-    this.dots = document.createElement("canvas");
-    for (const layer of [this.canvas, this.dots]) layer.setAttribute("aria-hidden", "true");
-    container.prepend(this.dots);
+    this.canvas.setAttribute("aria-hidden", "true");
     container.prepend(this.canvas);
     this.ctx = this.canvas.getContext("2d");
-    this.dotsCtx = this.dots.getContext("2d");
 
     this.onResize = () => {
       clearTimeout(this.resizeTimeout);
@@ -183,6 +205,7 @@ class Contour {
     this.reducedMotion.addEventListener("change", this.onVisibility);
 
     this.container.dataset.palette = this.settings.palette;
+    this.#resolveColor();
     this.#layout();
     this.#render();
     this.#syncLoop();
@@ -192,9 +215,13 @@ class Contour {
     const previous = this.settings;
     this.settings = { ...previous, ...changes };
     this.container.dataset.palette = this.settings.palette;
+    this.#resolveColor();
 
     // a different field or seed has a different range, don't ease from the old one
-    if (changes.field || changes.seed || changes.detail) this.range = null;
+    if (changes.field || changes.seed || changes.detail) {
+      this.range = null;
+      this.sampler = null;
+    }
     if (changes.cell) this.#layout();
 
     this.#render();
@@ -206,7 +233,18 @@ class Contour {
     return this.settings.seed;
   }
 
-  // Size the one-pixel-per-cell bitmap and stretch it over the container
+  // The palette only changes through update(), so resolve the colours here
+  // rather than reading computed style and canvas pixels every frame
+  #resolveColor() {
+    const style = getComputedStyle(this.container);
+    this.color = style.color;
+    // the mid tone sits halfway between ink and the page colour behind the canvas
+    const ink = toRgb(this.color);
+    const page = toRgb(style.backgroundColor);
+    this.midColor = `rgb(${ink.map((channel, i) => Math.round((channel + page[i]) / 2)).join(" ")})`;
+  }
+
+  // Size the canvas to a whole number of cells and stretch it over the container
   #layout() {
     const { clientWidth: width, clientHeight: height } = this.container;
     if (!width || !height) return;
@@ -217,29 +255,25 @@ class Contour {
 
     this.cols = Math.ceil(width / this.cell);
     this.rows = Math.ceil(height / this.cell);
-    this.canvas.width = this.cols;
-    this.canvas.height = this.rows;
-    this.canvas.style.width = `${this.cols * this.cell}px`;
-    this.canvas.style.height = `${this.rows * this.cell}px`;
 
     // dots are drawn at device resolution so small circles stay round
     this.dpr = window.devicePixelRatio || 1;
-    this.dots.width = Math.round(this.cols * this.cell * this.dpr);
-    this.dots.height = Math.round(this.rows * this.cell * this.dpr);
-    this.dots.style.width = this.canvas.style.width;
-    this.dots.style.height = this.canvas.style.height;
+    this.canvas.width = Math.round(this.cols * this.cell * this.dpr);
+    this.canvas.height = Math.round(this.rows * this.cell * this.dpr);
+    this.canvas.style.width = `${this.cols * this.cell}px`;
+    this.canvas.style.height = `${this.rows * this.cell}px`;
 
-    this.image = this.ctx.createImageData(this.cols, this.rows);
-    this.pixels = new Uint32Array(this.image.data.buffer);
     this.values = new Float32Array(this.cols * this.rows);
-    this.bands = new Uint8Array(this.cols * this.rows);
+    this.coverages = new Float32Array(this.cols * this.rows);
     this.range = null;
   }
 
-  #sample() {
+  #sample(dt) {
     const { field, seed, scale, warp, detail } = this.settings;
     const { cols, rows, values } = this;
-    const sampler = FIELD_BUILDERS[field]({ seed, detail });
+    // builders can be costly (hills seeds a random set), build once per settings change
+    this.sampler ??= FIELD_BUILDERS[field]({ seed, detail });
+    const sampler = this.sampler;
     const step = (this.cell / REFERENCE_SIZE) * scale;
     // warp field drifts too, which is what makes the lines swim rather than slide
     const warpTime = this.time * 0.1;
@@ -267,8 +301,10 @@ class Contour {
     if (!this.range) {
       this.range = { min, max };
     } else {
-      this.range.min += (min - this.range.min) * RANGE_EASE;
-      this.range.max += (max - this.range.max) * RANGE_EASE;
+      // time-based so the easing doesn't speed up or slow down with the frame rate
+      const ease = 1 - Math.exp(-RANGE_RATE * dt);
+      this.range.min += (min - this.range.min) * ease;
+      this.range.max += (max - this.range.max) * ease;
     }
     const span = this.range.max - this.range.min || 1;
     for (let i = 0; i < values.length; i++) {
@@ -276,66 +312,97 @@ class Contour {
     }
   }
 
-  #render() {
+  // `dt` is the seconds since the last render, it only paces the range easing
+  #render(dt = 0) {
     if (!this.cols) return;
 
     const { levels, shading, dotSize } = this.settings;
-    const { cols, rows, values, bands, pixels, cell } = this;
+    const { cols, rows, values, coverages, cell } = this;
 
-    this.#sample();
+    this.#sample(dt);
 
-    const color = getComputedStyle(this.container).color;
-    const rgb = toRgb(color);
-    const radius = (cell * dotSize) / 2;
+    const maxRadius = (cell * dotSize) / 2;
     const linePath = new Path2D();
     const indexPath = new Path2D();
-    // one precomputed wash per band, higher ground is denser
-    const wash = Array.from({ length: levels }, (_, band) =>
-      pack(rgb, shading * (band / levels) * SHADE_STRENGTH),
-    );
-
-    for (let i = 0; i < values.length; i++) {
-      bands[i] = Math.min(levels - 1, Math.floor(values[i] * levels));
-    }
+    const midPath = new Path2D();
+    const inkPath = new Path2D();
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const index = row * cols + col;
-        const band = bands[index];
+        const level = values[index] * levels;
 
-        // boundary level shared with the right and lower neighbours
-        const right = col + 1 < cols ? bands[index + 1] : band;
-        const below = row + 1 < rows ? bands[index + cols] : band;
-        const rightLevel = right !== band ? Math.max(band, right) : 0;
-        const belowLevel = below !== band ? Math.max(band, below) : 0;
+        // distance, in cells, to the nearest band boundary. Measuring it rather
+        // than testing "is a neighbour in another band" lets a line fade through
+        // a cell, so it glides across the grid instead of hopping a cell at a time
+        const boundary = Math.round(level);
+        let coverage = 0;
+        if (boundary > 0 && boundary < levels) {
+          const gx =
+            (values[col + 1 < cols ? index + 1 : index] - values[col > 0 ? index - 1 : index]) *
+            levels *
+            0.5;
+          const gy =
+            (values[row + 1 < rows ? index + cols : index] -
+              values[row > 0 ? index - cols : index]) *
+            levels *
+            0.5;
+          const gradient = Math.max(Math.sqrt(gx * gx + gy * gy), GRADIENT_FLOOR);
+          const distance = Math.abs(level - boundary) / gradient;
+          coverage = Math.max(0, 1 - distance / LINE_REACH);
+        }
 
-        if (rightLevel || belowLevel) {
-          const isIndex =
-            (rightLevel && rightLevel % INDEX_EVERY === 0) ||
-            (belowLevel && belowLevel % INDEX_EVERY === 0);
-          // the contour itself is a dot, the wash layer stays clear here
-          pixels[index] = 0;
-          const path = isIndex ? indexPath : linePath;
-          const cx = (col + 0.5) * cell;
-          const cy = (row + 0.5) * cell;
-          path.moveTo(cx + radius, cy);
-          path.arc(cx, cy, radius, 0, Math.PI * 2);
-        } else {
-          pixels[index] = wash[band];
+        coverages[index] = coverage;
+
+        if (coverage > MIN_COVERAGE) {
+          const path = boundary % INDEX_EVERY === 0 ? indexPath : linePath;
+          addDot(path, (col + 0.5) * cell, (row + 0.5) * cell, maxRadius * smooth(coverage));
         }
       }
     }
 
-    this.ctx.putImageData(this.image, 0, 0);
+    // Shading: a sparser lattice of dots, one per block of cells. Each block is
+    // one of three tones by height. Background, mid and ink.
+    // Neighbouring tones overlap and trade size (see toneWeight), so a dot swells
+    // in as the next tone takes over, rather than flipping colour.
+    // Background-tone dots are the page colour, so drawing them would change
+    // nothing, they're simply left out.
+    const shadeRadius = ((cell * SHADE_STRIDE) / 2) * shading;
+    if (shadeRadius > 0) {
+      for (let row = 0; row < rows; row += SHADE_STRIDE) {
+        for (let col = 0; col < cols; col += SHADE_STRIDE) {
+          // leave a clear halo around the contour lines
+          let nearLine = 0;
+          for (let r = row; r < Math.min(row + SHADE_STRIDE, rows); r++) {
+            for (let c = col; c < Math.min(col + SHADE_STRIDE, cols); c++) {
+              nearLine = Math.max(nearLine, coverages[r * cols + c]);
+            }
+          }
+          const open = 1 - nearLine;
+          if (open <= 0) continue;
 
-    const dots = this.dotsCtx;
-    dots.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    dots.clearRect(0, 0, this.cols * cell, this.rows * cell);
-    dots.fillStyle = color;
-    dots.globalAlpha = LINE_ALPHA;
-    dots.fill(linePath);
-    dots.globalAlpha = 1;
-    dots.fill(indexPath);
+          const height = values[row * cols + col] * 3;
+          const cx = (col + SHADE_STRIDE / 2) * cell;
+          const cy = (row + SHADE_STRIDE / 2) * cell;
+          addDot(midPath, cx, cy, shadeRadius * open * toneWeight(Math.abs(height - 1.5)));
+          // the top tone holds all the way up, it has no higher neighbour to hand over to
+          addDot(inkPath, cx, cy, shadeRadius * open * toneWeight(Math.max(0, 2.5 - height)));
+        }
+      }
+    }
+
+    // paint low to high so the ink sits over the mid tone it is replacing
+    const ctx = this.ctx;
+    ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    ctx.clearRect(0, 0, cols * cell, rows * cell);
+    ctx.fillStyle = this.midColor;
+    ctx.fill(midPath);
+    ctx.fillStyle = this.color;
+    ctx.fill(inkPath);
+    ctx.globalAlpha = LINE_ALPHA;
+    ctx.fill(linePath);
+    ctx.globalAlpha = 1;
+    ctx.fill(indexPath);
   }
 
   get isAnimated() {
@@ -351,14 +418,23 @@ class Contour {
     if (this.loop) return;
 
     this.lastFrame = 0;
+    let pending = 0;
     const tick = (now) => {
       if (!this.lastFrame) this.lastFrame = now;
-      const elapsed = now - this.lastFrame;
-      if (elapsed >= FRAME_INTERVAL) {
-        this.lastFrame = now;
-        // clamp so a backgrounded tab doesn't leap when it returns
-        this.time += (Math.min(elapsed, 100) / 1000) * this.settings.speed;
-        this.#render();
+      // clamp so a backgrounded tab doesn't leap when it returns
+      const dt = Math.min(now - this.lastFrame, 100) / 1000;
+      this.lastFrame = now;
+      this.time += dt * this.settings.speed;
+      pending += dt;
+      this.ticks++;
+
+      // render every display frame, unless renders are running long. Then render
+      // every other frame, counted rather than timed, so the cadence stays even
+      if (this.frameCost <= FRAME_BUDGET || this.ticks % 2 === 0) {
+        const start = performance.now();
+        this.#render(pending);
+        pending = 0;
+        this.frameCost += (performance.now() - start - this.frameCost) * 0.1;
       }
       this.loop = requestAnimationFrame(tick);
     };
@@ -373,7 +449,6 @@ class Contour {
     if (this.loop) cancelAnimationFrame(this.loop);
     this.loop = null;
     this.canvas.remove();
-    this.dots.remove();
   }
 }
 
@@ -422,7 +497,7 @@ function init() {
   }
 
   // a click on the map is a new composition
-  contour.dots.addEventListener("click", () => syncPanel(contour.reseed()), { signal });
+  contour.canvas.addEventListener("click", () => syncPanel(contour.reseed()), { signal });
 
   if (panel) {
     syncPanel(contour.settings.seed);

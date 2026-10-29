@@ -4,16 +4,15 @@
   color: var(--color-stone-400);
   user-select: none;
   contain: layout paint style;
+  /* the engine reads this as the lightest tone, so the dots match the page */
+  background-color: var(--background-light);
 
-  /* layers stack: wash first, dots on top */
   canvas {
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
     display: block;
     cursor: pointer;
-    /* the wash bitmap is one pixel per cell, keep the squares crisp */
-    image-rendering: pixelated;
   }
 
   &::after {
