@@ -2,8 +2,9 @@
   display: none;
   position: fixed;
   inset: 0;
-  /* Above .site-head (z-index: 1000) so the overlay isn't tucked under the fixed header. */
-  z-index: 1001;
+  --focus-color: white;
+  /* Above .site-head so the overlay isn't tucked under the fixed header. */
+  z-index: var(--z-modal);
   align-items: center;
   justify-content: center;
   padding: var(--space-md-lg);
@@ -51,7 +52,8 @@
   position: fixed;
   top: var(--space-sm-md);
   right: var(--space-sm-md);
-  z-index: 1002;
+  /* the lightbox is its own stacking context, so this only has to clear the image */
+  z-index: 1;
 }
 
 .photo-lightbox__close-icon {

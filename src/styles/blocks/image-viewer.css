@@ -7,8 +7,9 @@
   padding: var(--space-md-lg);
   border: 0;
   background: var(--scrim);
-  /* Above .site-head (z-index: 1000); the top layer already wins, this is a safeguard */
-  z-index: 1001;
+  --focus-color: white;
+  /* Above .site-head; the top layer already wins, this is a safeguard */
+  z-index: var(--z-modal);
 }
 
 .image-viewer[open] {

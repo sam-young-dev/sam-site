@@ -12,6 +12,8 @@ body {
   font-family: var(--font-body);
   line-height: var(--leading-body);
   font-size-adjust: from-font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
   margin: 0;
 
@@ -282,7 +284,7 @@ a:not([class]):hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus-color, currentColor);
+  outline: 2px solid var(--focus-color);
   outline-offset: var(--focus-offset, 0.2lh);
 }
 

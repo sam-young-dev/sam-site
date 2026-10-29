@@ -5,7 +5,6 @@
   --button-x-padding: 0.75em;
   --button-y-padding: 0.5em;
   --button-gutter: 0.5ch;
-  --focus-color: var(--color-interactive-fill-default);
 
   display: inline-flex;
   gap: var(--button-gutter);
@@ -38,19 +37,16 @@
 .button[data-button-variant="secondary"] {
   --button-bg: var(--color-fill-loud);
   --button-text: var(--color-on-loud);
-  --focus-color: var(--text-ink);
   --corner-secondary-color: var(--color-brand-primary);
 }
 
 .button[data-button-variant="brand"] {
   --button-bg: var(--color-brand-primary);
   --button-text: var(--color-brand-light);
-  --focus-color: var(--text-ink);
 }
 
 .button[data-button-variant="border"] {
   --button-bg: transparent;
   --button-text: var(--text-ink);
   --button-border-color: var(--text-ink);
-  --focus-color: var(--text-ink);
 }

@@ -5,7 +5,7 @@
   font-size: var(--size-step-0);
   font-weight: var(--font-weight-bold);
   padding-block-start: var(--space-md);
-  --z-index: 1000;
+  --z-index: var(--z-header);
 }
 
 .site-head .repel {
@@ -35,7 +35,7 @@
   text-decoration: none;
   /* comfortable tap target without changing visual size */
   display: inline-block;
-  --tap-pad: 0.75em;
+  --tap-pad: 0.875em;
   /* gap between the text and its underline */
   --underline-gap: 0.15em;
   padding-block: var(--tap-pad);

@@ -1,6 +1,8 @@
 .site-foot {
   color: var(--color-amber-200);
   line-height: var(--leading-body);
+  /* dark surface */
+  --focus-color: white;
 }
 
 .site-foot__content {

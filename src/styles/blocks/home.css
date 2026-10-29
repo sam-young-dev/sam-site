@@ -56,12 +56,6 @@
     transform: none;
     animation-name: hero-content-fade;
   }
-
-  .explore-list a,
-  .explore-list a:hover,
-  .explore-list a:active {
-    transform: none;
-  }
 }
 
 @keyframes hero-content-fade {
@@ -86,15 +80,28 @@
   padding-inline: var(--space-sm);
   margin-inline-start: calc(-1 * var(--space-sm));
   transform-origin: left center;
-  transition: transform var(--transition-normal) var(--ease-out);
 }
 
-.explore-list a:hover {
-  transform: translateX(0.25rem);
-}
+@media (prefers-reduced-motion: no-preference) {
+  .explore-list a {
+    transition: transform var(--transition-normal) var(--ease-out);
+  }
 
-/* feedback on press, not release */
-.explore-list a:active {
-  transform: scale(var(--press-scale-md));
-  transition-duration: var(--transition-fast);
+  /* feedback on press, not release */
+  .explore-list a:active {
+    transform: scale(var(--press-scale-md));
+    transition-duration: var(--transition-fast);
+  }
+
+  /* touch has no hover, a tap would otherwise leave the link nudged */
+  @media (hover: hover) and (pointer: fine) {
+    .explore-list a:hover {
+      transform: translateX(0.25rem);
+    }
+
+    /* keep the nudge while pressed so the link doesn't slide back */
+    .explore-list a:hover:active {
+      transform: translateX(0.25rem) scale(var(--press-scale-md));
+    }
+  }
 }
