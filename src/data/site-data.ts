@@ -6,7 +6,7 @@ import ResumeIcon from "../assets/icons/resume.svg?raw";
 export const siteData = {
   title: "Sam Young",
   // one place to change the contact address, used by the home, about and resume pages
-  email: "sam.young@email.com",
+  email: "sam@samcyoung.com",
   navItems: [
     { label: "Projects", href: "/projects" },
     { label: "Photography", href: "/photography" },
