@@ -46,9 +46,9 @@ const WASH_ALPHA = 0.2;
 // how far (in noise-lattice units) each octave travels around its slow orbit
 const ORBIT_RADIUS = 0.5;
 const RESIZE_DELAY = 150;
-// a render slower than this (ms, smoothed) drops the loop to every other frame,
-// an even 30fps beats a 60fps that stutters
-const FRAME_BUDGET = 12;
+// minimum ms between renders. The land drifts a few px a second, so 30fps looks
+// the same as 60 for half the main-thread time. Slow renders stretch this further
+const FRAME_INTERVAL = 30;
 // stops a tiny cell size on a huge screen from sampling too many nodes
 const MAX_CELLS = 40000;
 // caps the canvas backing store (device px), the sampling budget above doesn't
@@ -76,9 +76,13 @@ function valueNoise(x, y, seed) {
   const iy = Math.floor(y);
   const fx = smooth(x - ix);
   const fy = smooth(y - iy);
-  const top = lattice(ix, iy, seed) + (lattice(ix + 1, iy, seed) - lattice(ix, iy, seed)) * fx;
-  const bottom =
-    lattice(ix, iy + 1, seed) + (lattice(ix + 1, iy + 1, seed) - lattice(ix, iy + 1, seed)) * fx;
+  // each corner is hashed once, this runs several times per node per frame
+  const tl = lattice(ix, iy, seed);
+  const tr = lattice(ix + 1, iy, seed);
+  const bl = lattice(ix, iy + 1, seed);
+  const br = lattice(ix + 1, iy + 1, seed);
+  const top = tl + (tr - tl) * fx;
+  const bottom = bl + (br - bl) * fx;
   return top + (bottom - top) * fy;
 }
 
@@ -227,7 +231,6 @@ class Contour {
     this.loop = null;
     this.sampler = null;
     this.frameCost = 0;
-    this.ticks = 0;
 
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -421,25 +424,21 @@ class Contour {
     if (this.loop) return;
 
     this.lastFrame = 0;
-    let pending = 0;
     const tick = (now) => {
+      this.loop = requestAnimationFrame(tick);
       if (!this.lastFrame) this.lastFrame = now;
+      const elapsed = now - this.lastFrame;
+      // never spend more than half the main thread on this, however slow a render is
+      if (elapsed < Math.max(FRAME_INTERVAL, this.frameCost * 2)) return;
+
       // clamp so a backgrounded tab doesn't leap when it returns
-      const dt = Math.min(now - this.lastFrame, 100) / 1000;
+      const dt = Math.min(elapsed, 100) / 1000;
       this.lastFrame = now;
       this.time += dt * this.settings.speed;
-      pending += dt;
-      this.ticks++;
 
-      // render every display frame, unless renders are running long. Then render
-      // every other frame, counted rather than timed, so the cadence stays even
-      if (this.frameCost <= FRAME_BUDGET || this.ticks % 2 === 0) {
-        const start = performance.now();
-        this.#render(pending);
-        pending = 0;
-        this.frameCost += (performance.now() - start - this.frameCost) * 0.1;
-      }
-      this.loop = requestAnimationFrame(tick);
+      const start = performance.now();
+      this.#render(dt);
+      this.frameCost += (performance.now() - start - this.frameCost) * 0.1;
     };
     this.loop = requestAnimationFrame(tick);
   }
@@ -457,13 +456,26 @@ class Contour {
 }
 
 let active;
+// bumped on every init and destroy, so a start that is still waiting for the
+// first paint is dropped if the page is swapped out in the meantime
+let generation = 0;
 
+// The first render is the single heaviest frame. Waiting for the hero text to
+// paint first keeps it out of the way of LCP and the first interaction. The
+// canvas fades in anyway, so starting a beat late isn't visible.
 function init() {
   const container = document.querySelector("[data-contour]");
-  if (container) active = new Contour(container);
+  if (!container) return;
+  const mine = ++generation;
+  requestAnimationFrame(() =>
+    setTimeout(() => {
+      if (mine === generation) active = new Contour(container);
+    }),
+  );
 }
 
 function destroy() {
+  generation++;
   active?.destroy();
   active = undefined;
 }

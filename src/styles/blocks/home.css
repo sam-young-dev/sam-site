@@ -15,7 +15,9 @@
   line-height: 1.2;
 }
 
-.hero-content[data-motion='stagger'] > * {
+/* the heading is the LCP element, so it is in place on first paint and only the
+   lines under it stagger in */
+.hero-content[data-motion='stagger'] > :not(.hero-content__heading) {
   opacity: 0;
   transform: translateY(0.5rem);
   animation: hero-content-in var(--transition-slow) var(--ease-out) forwards;
@@ -52,7 +54,7 @@
 
 /* reduced motion: keep the cross-fade, drop the slide */
 @media (prefers-reduced-motion: reduce) {
-  .hero-content[data-motion='stagger'] > * {
+  .hero-content[data-motion='stagger'] > :not(.hero-content__heading) {
     transform: none;
     animation-name: hero-content-fade;
   }
