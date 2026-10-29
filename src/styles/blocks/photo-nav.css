@@ -6,7 +6,7 @@
   --round-button-size: 3.25rem;
 
   position: fixed;
-  bottom: calc(var(--space-sm-md) + env(safe-area-inset-bottom, 0px));
+  bottom: var(--space-sm-md);
   z-index: var(--z-floating);
 }
 

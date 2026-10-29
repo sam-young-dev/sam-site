@@ -62,8 +62,8 @@ const metaItems = [
 ---
 
 <BaseLayout
-  title={`Photography | ${meta.camera ?? "Photo"} | Sam Young`}
-  description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
+  title={`${blurb || meta.location || meta.camera || "Photo"} | Photography | Sam Young`}
+  description={blurb || `A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
 >
   <a
     id="photo-detail-prev"
@@ -88,6 +88,8 @@ const metaItems = [
   <div class="region wrapper">
     <a id="photo-detail-back" href="/photography/" class="photo-detail__back link-underline press">&larr; Back to gallery</a>
 
+    <h1 class="visually-hidden">{meta.location ?? imageAlt}</h1>
+
     <figure class="photo-detail">
       <div class="photo-detail__media">
         <Image
@@ -97,6 +99,8 @@ const metaItems = [
           format="avif"
           quality={80}
           alt={imageAlt}
+          loading="eager"
+          fetchpriority="high"
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />

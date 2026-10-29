@@ -49,6 +49,7 @@
 }
 
 .photo-lightbox__close {
+  --round-button-size: 2.75rem;
   position: fixed;
   top: var(--space-sm-md);
   right: var(--space-sm-md);

@@ -15,7 +15,7 @@ import { projects } from "../data/projects";
 
   <div class="wrapper region">
     <ul class="project-list not-prose">
-      {projects.map((project) => (
+      {projects.map((project, index) => (
         <li class="project-card">
           <a href={`/projects/${project.slug}/`} class="project-card__link">
             <Image
@@ -25,9 +25,10 @@ import { projects } from "../data/projects";
               format="avif"
               quality={70}
               alt=""
-              loading="lazy"
+              loading={index < 3 ? "eager" : "lazy"}
               class="project-card__image"
               onload="this.dataset.state = 'loaded'"
+              onerror="this.dataset.state = 'error'"
             />
             <div class="project-card__body">
               <h2 class="project-card__title">{project.title}</h2>

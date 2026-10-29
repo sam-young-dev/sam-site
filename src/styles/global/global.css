@@ -5,6 +5,15 @@
   project: https://cube.fyi/css.html
 */
 
+html {
+  /* every control has its own :active press feedback, so the browser's tap flash is redundant */
+  -webkit-tap-highlight-color: transparent;
+}
+
+:is(a, button, summary) {
+  touch-action: manipulation;
+}
+
 body {
   background: var(--background-light);
   color: var(--text-ink);
@@ -192,6 +201,13 @@ img {
   display: block;
 }
 
+/* images that fade in from opacity 0 once loaded: a failed one keeps its box and shows its alt text */
+@media (scripting: enabled) {
+  img[data-state="error"] {
+    opacity: 1;
+  }
+}
+
 figcaption {
   padding-block-start: 0.5em;
   font-size: var(--size-step-0);
@@ -261,8 +277,10 @@ a:not([class]) {
   }
 }
 
-a:not([class]):hover {
-  background-size: 100% var(--stroke-width);
+@media (hover: hover) and (pointer: fine) {
+  a:not([class]):hover {
+    background-size: 100% var(--stroke-width);
+  }
 }
 
 :is(h1, h2, h3, h4) a:not([class]) {
@@ -270,8 +288,10 @@ a:not([class]):hover {
   background-size: 0% 0.1ex;
 }
 
-:is(h1, h2, h3, h4) a:not([class]):hover {
-  background-size: 100% 0.1ex;
+@media (hover: hover) and (pointer: fine) {
+  :is(h1, h2, h3, h4) a:not([class]):hover {
+    background-size: 100% 0.1ex;
+  }
 }
 
 :focus {

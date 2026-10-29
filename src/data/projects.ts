@@ -468,7 +468,7 @@ export const projects: Project[] = [
       "Photography, image optimization, and performance",
     ],
     links: {
-      live: "https://samyoung.dev/",
+      live: "https://samcyoung.com/",
       repo: "https://github.com/sam-young-dev/sam-site",
     },
     content: [

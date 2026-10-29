@@ -15,7 +15,7 @@ import "../styles/index.css";
 const {
   title = "Sam Young | Developer, Designer, Artist",
   description = "Personal site of Sam Young, a Nashville-based full-stack software engineer working in React, Angular, Astro, and .NET.",
-  socialImage,
+  socialImage = "/og.png",
   allowRobots,
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -24,7 +24,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskRegular} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskMedium} crossorigin />

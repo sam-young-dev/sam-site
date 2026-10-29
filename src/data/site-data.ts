@@ -4,7 +4,7 @@ import BlueskyIcon from "../assets/icons/bluesky.svg?raw";
 import ResumeIcon from "../assets/icons/resume.svg?raw";
 
 export const siteData = {
-  title: "Samsite",
+  title: "Sam Young",
   // one place to change the contact address, used by the home, about and resume pages
   email: "sam.young@email.com",
   navItems: [

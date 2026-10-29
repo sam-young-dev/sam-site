@@ -1,10 +1,25 @@
 ---
-const { title, description, socialImage, allowRobots } = Astro.props;
+const { title, description, canonicalURL, socialImage, allowRobots } = Astro.props;
+const indexable = allowRobots !== false;
+const socialImageURL = socialImage ? new URL(socialImage, Astro.site).href : undefined;
 ---
 
-<meta charset="UTF-8" />
 <meta name="description" content={description} />
-<meta name="viewport" content="width=device-width" />
-{allowRobots === false && <meta name="robots" content="noindex, nofollow" />}
+{indexable ? <link rel="canonical" href={canonicalURL} /> : <meta name="robots" content="noindex, nofollow" />}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#fffbeb" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sam Young" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+{socialImageURL && <meta property="og:image" content={socialImageURL} />}
+{socialImageURL && <meta property="og:image:width" content="1200" />}
+{socialImageURL && <meta property="og:image:height" content="630" />}
+{socialImageURL && <meta property="og:image:alt" content="Sam Young, Developer, Designer, Artist" />}
+<meta name="twitter:card" content={socialImageURL ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{socialImageURL && <meta name="twitter:image" content={socialImageURL} />}
 <title>{title}</title>

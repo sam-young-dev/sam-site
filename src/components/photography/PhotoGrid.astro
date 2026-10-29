@@ -19,7 +19,7 @@ const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
   </div>
 ) : (
   <div class="masonry-grid" style={`--photo-count: ${photos.length};`}>
-    {photos.map((photo) => (
+    {photos.map((photo, index) => (
       <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link">
         <Image
           src={photo.image}
@@ -28,7 +28,7 @@ const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
           format="avif"
           quality={70}
           alt={photo.blurb || `Photograph from ${photo.meta.date ?? fallbackLabel}`}
-          loading="lazy"
+          loading={index < 3 ? "eager" : "lazy"}
           class="masonry__image"
           onload="this.dataset.state = 'loaded'"
           onerror="this.dataset.state = 'error'"

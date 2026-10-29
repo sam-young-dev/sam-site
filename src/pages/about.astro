@@ -93,6 +93,7 @@ const featuredPhotos = featuredSlugs
               loading="lazy"
               class="about-photo"
               onload="this.dataset.state = 'loaded'"
+              onerror="this.dataset.state = 'error'"
             />
           </a>
         ))

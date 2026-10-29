@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-10-29T17:34:38.823Z",
         "reason": "assistant: lightbox <img> is intentionally srcless, photo-lightbox script assigns src when it opens (syncLightboxImage); pre-existing pattern"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/pages/projects/[slug].astro"
+        ],
+        "createdAt": "2026-10-29T18:03:02.710Z",
+        "reason": "assistant: false positive, .image-viewer__image src is assigned by the click handler before showModal()"
       }
     ]
   }
