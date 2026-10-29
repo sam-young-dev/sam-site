@@ -1,6 +1,5 @@
 .resume__title {
   color: var(--text-ink);
-  font-style: italic;
   font-size: var(--size-step-2);
 }
 
@@ -50,6 +49,7 @@
 
 .resume__employer {
   --flow-space: var(--space-sm);
+  font-weight: var(--font-weight-medium);
 }
 
 .resume__skills dt {
@@ -70,4 +70,20 @@
   border-radius: 999px;
   font-size: var(--size-step-0);
   color: var(--text-ink);
+}
+
+/* Printing the page should give a resume, not a website: drop the chrome */
+@media print {
+  body:has(.resume) {
+    background: white;
+    color: black;
+  }
+
+  body:has(.resume) :is(.site-head, .site-foot, .skip-link, .resume__download) {
+    display: none;
+  }
+
+  .resume__skill-tag {
+    border-color: currentColor;
+  }
 }

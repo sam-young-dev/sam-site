@@ -51,6 +51,9 @@ const RESIZE_DELAY = 150;
 const FRAME_BUDGET = 12;
 // stops a tiny cell size on a huge screen from sampling too many nodes
 const MAX_CELLS = 40000;
+// caps the canvas backing store (device px), the sampling budget above doesn't
+// limit how much is rasterised each frame
+const MAX_PIXELS = 4_000_000;
 // how fast the normalisation range follows the field as it moves, per second
 const RANGE_RATE = 2.5;
 
@@ -284,8 +287,11 @@ class Contour {
     this.nodeCols = this.cols + 1;
     this.nodeRows = this.rows + 1;
 
-    // drawn at device resolution so the lines stay crisp
-    this.dpr = window.devicePixelRatio || 1;
+    // drawn at device resolution so the lines stay crisp, but never at more
+    // pixels than MAX_PIXELS: redrawing a 5K screen's worth every frame is
+    // far costlier than the soft lines can show
+    const fitDpr = Math.sqrt(MAX_PIXELS / (width * height));
+    this.dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, fitDpr));
     this.canvas.width = Math.round(this.cols * this.cell * this.dpr);
     this.canvas.height = Math.round(this.rows * this.cell * this.dpr);
     this.canvas.style.width = `${this.cols * this.cell}px`;

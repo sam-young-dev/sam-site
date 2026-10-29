@@ -1,0 +1,23 @@
+/* SKIP LINK
+Hidden off-screen until a keyboard user tabs to it, then it drops in over
+the header so it's the first thing they see. */
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-xs);
+  inset-inline-start: var(--space-xs);
+  z-index: var(--z-floating);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--text-ink);
+  color: var(--color-brand-light);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  /* off-screen, not display: none, so it stays in the tab order */
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+  /* the ink fill would swallow the default ink-coloured ring */
+  outline-color: var(--color-brand-light);
+  outline-offset: -4px;
+}

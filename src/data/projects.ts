@@ -6,7 +6,7 @@ import hyperliteProduct from "../assets/projects/hyperlite/product.png";
 import hyperliteCart from "../assets/projects/hyperlite/cart.png";
 import hyperliteLighthouse from "../assets/projects/hyperlite/lighthouse-report.png";
 
-import portfolioPuddle from "../assets/projects/portfolio-site/home-puddle.png";
+import portfolioContour from "../assets/projects/portfolio-site/home-contour.png";
 import portfolioPhotoExif from "../assets/projects/portfolio-site/photo-exif.png";
 import portfolioPhotoCollectionIndex from "../assets/projects/portfolio-site/photography-collections.png";
 import portfolioPhotographyIndex from "../assets/projects/portfolio-site/photography-index.png";
@@ -458,12 +458,12 @@ export const projects: Project[] = [
     slug: "portfolio-site",
     title: "This Site",
     summary:
-      "My own portfolio, built with Astro. A place to show photography and projects, and an excuse to sweat details like a canvas ripple animation and build-time EXIF metadata.",
+      "My own portfolio, built with Astro. A place to show photography and projects, and an excuse to sweat details like a topographic contour animation and build-time EXIF metadata.",
     year: "2026",
     stack: ["Astro", "TypeScript", "exifr", "Netlify"],
     responsibilities: [
       "Design and development, from sketches to launch",
-      "Canvas rewrite and tuning of the puddle animation",
+      "The canvas contour-line animation on the home page, from terrain noise to marching squares",
       "Build-time EXIF pipeline and tag-based photo collections",
       "Photography, image optimization, and performance",
     ],
@@ -474,21 +474,21 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the puddle background, the photo lightbox) shipping their own JS.",
+        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the contour background, the photo lightbox) shipping their own JS.",
       },
       {
         type: "image",
         image: {
-          src: portfolioPuddle,
-          alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+          src: portfolioContour,
+          alt: "Homepage of the portfolio site showing topographic contour lines across the hero, with the name Sam Young and the words Developer, Designer, and Artist.",
           caption:
-            "The puddle background mid-ripple, rendered to a single canvas instead of thousands of DOM nodes.",
+            "The contour background behind the hero, drawn to a single canvas.",
         },
       },
-      { type: "heading", text: "Rebuilding the puddle background" },
+      { type: "heading", text: "A map that reshapes itself" },
       {
         type: "text",
-        html: 'The rippling dot grid on the homepage started from <a href="https://batmannair.com/puddle.js/" target="_blank" rel="noopener noreferrer">Puddle.js</a>, which renders each grid cell as its own DOM element. A typical viewport needs 1,000 to 4,500 or more cells, more elements and style recalculations than a browser can update at 60fps, so I rewrote it to render the whole grid to a single &lt;canvas&gt;, tracking force values in flat Float32Arrays and only redrawing cells whose neighbors changed on each tick. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it afterward: ripple strength that scales with screen size, snapping small forces to zero so ripples settle cleanly instead of trailing off forever, and respecting prefers-reduced-motion.',
+        html: 'The home page background is a topographic map that never sits still. A value-noise terrain is sampled on a coarse grid, and the contour lines are traced through it with marching squares, so they are smooth vector curves instead of pixels. Every fifth line is drawn heavier like the index contours on a real map, lines fade with elevation so the high ground reads as nearer, and a faint wash deepens toward the peaks. Each noise octave orbits its own slow circle instead of panning, so the land breathes and reshapes in place rather than sliding off the screen. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it: it pauses when the hero scrolls out of view or the tab is hidden, drops to every other frame if renders run long, caps the canvas size so big displays stay cheap, and draws a single still frame when prefers-reduced-motion is on.',
       },
       { type: "heading", text: "Photo details straight from the file" },
       {
@@ -545,8 +545,8 @@ export const projects: Project[] = [
       },
     ],
     cover: {
-      src: portfolioPuddle,
-      alt: "Homepage of the portfolio site showing a dot-grid canvas background rippling outward from mouse movement.",
+      src: portfolioContour,
+      alt: "Homepage of the portfolio site showing topographic contour lines across the hero.",
     },
   },
   {

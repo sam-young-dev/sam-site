@@ -11,8 +11,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 1.8rem;
-  line-height: 2.2rem;
+  font-size: var(--size-step-4);
+  line-height: 1.2;
 }
 
 .hero-content[data-motion='stagger'] > * {
@@ -75,8 +75,8 @@
 .explore-list a {
   display: inline-flex;
   align-items: center;
-  min-block-size: 48px;
-  min-inline-size: 48px;
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
   padding-inline: var(--space-sm);
   margin-inline-start: calc(-1 * var(--space-sm));
   transform-origin: left center;

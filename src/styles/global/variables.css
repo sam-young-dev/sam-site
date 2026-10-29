@@ -29,6 +29,9 @@
   --background-light: var(--color-amber-50);
 
   --text-ink: var(--color-brand-primary);
+  /* secondary text: ink mixed toward the page, not dimmed with opacity, so the
+     contrast is a known ~5:1 on the page colour instead of 3.5-4.4:1 */
+  --text-quiet: color-mix(in srgb, var(--text-ink) 85%, var(--background-light));
   --scrim: rgb(0 0 0 / 0.92);
 }
 

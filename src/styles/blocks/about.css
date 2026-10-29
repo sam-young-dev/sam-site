@@ -66,11 +66,6 @@ on the date's first line instead of the body text's. */
   font-weight: var(--font-weight-semibold);
 }
 
-.timeline__content p:last-child {
-  margin-block-start: var(--space-2xs);
-  opacity: 0.8;
-}
-
 /* FEATURED PHOTOS
 Photography accents ahead of the photography paragraph. */
 

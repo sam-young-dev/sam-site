@@ -38,6 +38,15 @@
   .photo-nav[data-direction='next']:focus-visible {
     transform: translateX(2px);
   }
+
+  /* keep the nudge while pressed, or the hover rule would swallow the press scale */
+  .photo-nav[data-direction='prev']:hover:active {
+    transform: translateX(-2px) scale(var(--press-scale-lg));
+  }
+
+  .photo-nav[data-direction='next']:hover:active {
+    transform: translateX(2px) scale(var(--press-scale-lg));
+  }
 }
 
 .photo-nav__icon {
@@ -86,6 +95,14 @@
   .photo-nav[data-direction='next']:hover,
   .photo-nav[data-direction='next']:focus-visible {
     transform: translateY(-50%) translateX(2px);
+  }
+
+  .photo-nav[data-direction='prev']:hover:active {
+    transform: translateY(-50%) translateX(-2px) scale(var(--press-scale-lg));
+  }
+
+  .photo-nav[data-direction='next']:hover:active {
+    transform: translateY(-50%) translateX(2px) scale(var(--press-scale-lg));
   }
 }
 

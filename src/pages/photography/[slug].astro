@@ -40,6 +40,14 @@ export async function getStaticPaths() {
 
 const { photo, prevSlug, nextSlug, collectionNav } = Astro.props;
 const { image, meta, tags, blurb } = photo;
+// a photo with no blurb still gets a description of where it was taken, not a bare "Photograph"
+const imageAlt =
+  blurb ||
+  (meta.location
+    ? `Photograph taken in ${meta.location}`
+    : meta.date
+      ? `Photograph from ${meta.date}`
+      : "Photograph");
 
 const metaItems = [
   { label: "Location", value: meta.location },
@@ -88,7 +96,7 @@ const metaItems = [
           sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
           format="avif"
           quality={80}
-          alt={blurb || "Photograph"}
+          alt={imageAlt}
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
@@ -141,7 +149,7 @@ const metaItems = [
       >
         <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
       </button>
-      <img class="photo-lightbox__image" alt={blurb || "Photograph"} />
+      <img class="photo-lightbox__image" alt={imageAlt} />
     </div>
   </div>
 

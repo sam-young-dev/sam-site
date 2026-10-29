@@ -76,7 +76,7 @@
   /* the list is .not-prose, so it misses the prose block's wrapping; summaries run long enough to leave orphans */
   text-wrap: pretty;
   margin-block-start: var(--space-2xs);
-  opacity: 0.8;
+  color: var(--text-quiet);
 }
 
 .project-card__stack {

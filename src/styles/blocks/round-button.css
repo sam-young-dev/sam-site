@@ -13,9 +13,15 @@
   cursor: pointer;
 }
 
-.round-button:hover,
 .round-button:focus-visible {
   filter: brightness(105%);
+}
+
+/* hover only where a pointer can actually hover, so taps don't leave it stuck */
+@media (hover: hover) and (pointer: fine) {
+  .round-button:hover {
+    filter: brightness(105%);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

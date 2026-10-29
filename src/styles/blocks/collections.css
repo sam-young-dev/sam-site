@@ -71,5 +71,5 @@
 
 .collection-card__count {
   margin-block-start: var(--space-2xs);
-  opacity: 0.8;
+  color: var(--text-quiet);
 }

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/pages/photography/[slug].astro"
+        ],
+        "createdAt": "2026-10-29T17:34:38.823Z",
+        "reason": "assistant: lightbox <img> is intentionally srcless, photo-lightbox script assigns src when it opens (syncLightboxImage); pre-existing pattern"
+      }
+    ]
+  }
+}

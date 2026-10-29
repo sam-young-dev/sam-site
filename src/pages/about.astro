@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPhotos } from "../utils/photos";
+import { siteData } from "../data/site-data";
 
 const timeline = [
   {
@@ -88,7 +89,7 @@ const featuredPhotos = featuredSlugs
               sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
               format="avif"
               quality={80}
-              alt={photo.blurb || "Photograph from the gallery"}
+              alt={photo.blurb || photo.meta.location || "Photograph from the gallery"}
               loading="lazy"
               class="about-photo"
               onload="this.dataset.state = 'loaded'"
@@ -103,7 +104,7 @@ const featuredPhotos = featuredSlugs
     </p>
 
     <p>
-      I’m reachable through <a href="mailto:sam.young@email.com">email</a>, or
+      I’m reachable through <a href={`mailto:${siteData.email}`}>email</a>, or
       you can view or download my <a href="/resume">resume</a>.
     </p>
   </div>

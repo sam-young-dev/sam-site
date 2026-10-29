@@ -21,8 +21,11 @@
   color: var(--color-amber-50);
 }
 
-.site-foot a:hover {
-  color: var(--color-amber-300);
+/* hover only where a pointer can actually hover, so taps don't leave it stuck */
+@media (hover: hover) and (pointer: fine) {
+  .site-foot a:hover {
+    color: var(--color-amber-300);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

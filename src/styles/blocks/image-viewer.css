@@ -10,6 +10,10 @@
   --focus-color: white;
   /* Above .site-head; the top layer already wins, this is a safeguard */
   z-index: var(--z-modal);
+  /* showModal() doesn't stop wheel and touch scroll chaining to the page
+     behind; this does, without hiding the scrollbar and shifting the layout */
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .image-viewer[open] {

@@ -12,6 +12,9 @@ body {
   font-family: var(--font-body);
   line-height: var(--leading-body);
   font-size-adjust: from-font;
+  /* only upright faces are loaded: a missing weight or italic should fail
+     visibly, not get a browser-slanted fake */
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
@@ -120,10 +123,6 @@ var {
   font-weight: var(--font-weight-medium);
 }
 
-q {
-  font-style: italic;
-}
-
 ul:not([class]) {
   padding-inline-start: 1.7ch;
   list-style-type: disc;
@@ -178,10 +177,6 @@ blockquote footer {
   margin-block-start: var(--space-sm);
   color: var(--text-ink);
   font-size: var(--size-step-0);
-}
-
-blockquote q {
-  font-style: normal;
 }
 
 :is(video, iframe[src*="youtube"], iframe[src*="vimeo"]) {
