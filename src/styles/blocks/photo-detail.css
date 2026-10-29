@@ -64,7 +64,7 @@
   font-size: var(--size-step--1);
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
-  opacity: 0.7;
+  color: var(--text-quiet);
 }
 
 .photo-detail__tags {
@@ -74,33 +74,44 @@
 }
 
 .photo-detail__tag {
+  position: relative;
   display: inline-block;
   padding: 0.25em 0.75em;
   border: 1px solid currentColor;
   border-radius: 999px;
   font-size: var(--size-step--1);
-  color: inherit;
+  color: var(--text-quiet);
   text-decoration: none;
-  opacity: 0.8;
+}
+
+/* Grows the hit area to 44px tall without changing the visible size */
+.photo-detail__tag::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc((100% - 2.75rem) / 2));
 }
 
 @media (hover: hover) and (pointer: fine) {
   .photo-detail__tag {
-    transition: opacity var(--transition-normal) var(--ease-out);
+    transition: color var(--transition-normal) var(--ease-out);
+  }
+
+  .photo-detail__tag:hover {
+    color: var(--text-ink);
   }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .photo-detail__tag {
     transition:
-      opacity var(--transition-normal) var(--ease-out),
+      color var(--transition-normal) var(--ease-out),
       transform var(--transition-fast) var(--ease-out);
   }
 }
 
-.photo-detail__tag:hover,
 .photo-detail__tag:focus-visible {
-  opacity: 1;
+  color: var(--text-ink);
 }
 
 .photo-detail__meta-list > * {
@@ -115,7 +126,7 @@
   font-size: var(--size-step--1);
   text-transform: uppercase;
   letter-spacing: var(--uppercase-kerning);
-  opacity: 0.7;
+  color: var(--text-quiet);
 }
 
 .photo-detail__meta-item dd {

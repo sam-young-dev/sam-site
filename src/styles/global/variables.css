@@ -7,10 +7,20 @@
   --radius-m: 0.75rem;
   --radius-l: 2.5rem;
   --uppercase-kerning: 0.04ch;
-  /* press feedback: sm for large surfaces (cards), md for text-sized targets, lg for small round controls */
+  /* press feedback: sm for large surfaces (cards), md for text-sized targets, lg for small round controls.
+     Nothing goes below 0.95, it reads as exaggerated */
   --press-scale-sm: 0.985;
   --press-scale-md: 0.97;
-  --press-scale-lg: 0.94;
+  --press-scale-lg: 0.96;
+
+  /* the only z-index steps: add a step here rather than a number in a block.
+     Overlays inside a stacking context of their own just use 1 */
+  --z-header: 100;
+  --z-modal: 200;
+  --z-floating: 300;
+
+  /* focus rings are neutral, black on the light page, white on dark surfaces */
+  --focus-color: black;
   --indent-size: var(--space-xs-sm);
   --wrapper-max-width: 80rem;
   --wrapper-padding-inline: var(--space-md-lg);
@@ -19,6 +29,9 @@
   --background-light: var(--color-amber-50);
 
   --text-ink: var(--color-brand-primary);
+  /* secondary text: ink mixed toward the page, not dimmed with opacity, so the
+     contrast is a known ~5:1 on the page colour instead of 3.5-4.4:1 */
+  --text-quiet: color-mix(in srgb, var(--text-ink) 85%, var(--background-light));
   --scrim: rgb(0 0 0 / 0.92);
 }
 

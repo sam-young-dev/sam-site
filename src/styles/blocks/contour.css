@@ -1,0 +1,42 @@
+.contour {
+  position: absolute;
+  inset: 0;
+  color: var(--text-ink);
+  user-select: none;
+  /* decorative, never steals clicks from the header or hero links */
+  pointer-events: none;
+  contain: layout paint style;
+  /* the page colour the wash and lines sit on */
+  background-color: var(--background-light);
+
+  canvas {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    display: block;
+  }
+
+  /* the canvas is added by script after first paint, fade it in rather than pop */
+  @media (prefers-reduced-motion: no-preference) {
+    canvas {
+      animation: contour-in var(--transition-slow) var(--ease-out) both;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      transparent,
+      var(--background-light)
+    );
+    pointer-events: none;
+  }
+}
+
+@keyframes contour-in {
+  from {
+    opacity: 0;
+  }
+}

@@ -2,30 +2,32 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPhotos } from "../utils/photos";
+import { siteData } from "../data/site-data";
 
 const timeline = [
   {
-    date: "2020-2021",
+    date: "2020–2021",
     title: "Consultant I, InfoWorks",
   },
   {
-    date: "2022-2024",
+    date: "2022–2024",
     title: "Consultant II, InfoWorks",
   },
   {
-    date: "2024-2026",
+    date: "2024–2026",
     title: "Senior Consultant I, InfoWorks",
   },
   {
-    date: "2026-Present",
+    date: "2026–Present",
     title: "Senior Consultant II, InfoWorks",
   },
 ];
 
 const photos = await getPhotos();
-const featuredPhoto = photos.find((photo) => photo.slug === "dscf8520") ?? photos[0];
-const featuredPhoto2 = photos.find((photo) => photo.slug === "dscf9704") ?? photos[0];
-const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? photos[0];
+const featuredSlugs = ["dscf8520", "dscf9704", "dscf9241"];
+const featuredPhotos = featuredSlugs
+  .map((slug) => photos.find((photo) => photo.slug === slug) ?? photos[0])
+  .filter(Boolean);
 ---
 
 <BaseLayout
@@ -36,13 +38,13 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
     <h1>About me</h1>
 
     <p>
-      I'm a full stack software engineer with a background in design, based out of
-      Nashville, TN. I like translating what a project needs into something that's
+      I’m a full stack software engineer with a background in design, based out of
+      Nashville, TN. I like translating what a project needs into something that’s
       technically feasible, developer-friendly, and grounded in strong UX.
     </p>
 
     <section class="flow">
-      <h2>Where I've been</h2>
+      <h2>Where I’ve been</h2>
       <ol class="timeline not-prose" role="list">
         {
           timeline.map((item) => (
@@ -72,74 +74,38 @@ const featuredPhoto3 = photos.find((photo) => photo.slug === "dscf9241") ?? phot
       Outside of client work, I like building things just to understand how
       they fit together. My <a href="/projects">projects</a> page has a
       storefront I built to learn headless commerce: Astro for the front
-      end, Sanity for content, and Snipcart for cart and checkout. It's
+      end, Sanity for content, and Snipcart for cart and checkout. It’s
       modeled on a real ultralight backpacking brand, so I could focus on
       the stack instead of inventing a catalog from scratch.
     </p>
 
     <div class="switcher">
-      {featuredPhoto && (
-        <a
-          href={`/photography/${featuredPhoto.slug}/`}
-          class="about-photo-link"
-        >
-          <Image
-            src={featuredPhoto.image}
-            widths={[650, 800, 1400, 2000]}
-            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
-            format="avif"
-            quality={80}
-            alt={featuredPhoto.blurb || "Photograph from the gallery"}
-            loading="lazy"
-            class="about-photo"
-            onload="this.dataset.state = 'loaded'"
-          />
-        </a>
-      )}
-      {featuredPhoto2 && (
-        <a
-          href={`/photography/${featuredPhoto2.slug}/`}
-          class="about-photo-link"
-        >
-          <Image
-            src={featuredPhoto2.image}
-            widths={[650, 800, 1400, 2000]}
-            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
-            format="avif"
-            quality={80}
-            alt={featuredPhoto2.blurb || "Photograph from the gallery"}
-            loading="lazy"
-            class="about-photo"
-            onload="this.dataset.state = 'loaded'"
-          />
-        </a>
-      )}
-      {featuredPhoto3 && (
-        <a
-          href={`/photography/${featuredPhoto3.slug}/`}
-          class="about-photo-link"
-        >
-          <Image
-            src={featuredPhoto3.image}
-            widths={[650, 800, 1400, 2000]}
-            sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
-            format="avif"
-            quality={80}
-            alt={featuredPhoto3.blurb || "Photograph from the gallery"}
-            loading="lazy"
-            class="about-photo"
-            onload="this.dataset.state = 'loaded'"
-          />
-        </a>
-      )}
+      {
+        featuredPhotos.map((photo) => (
+          <a href={`/photography/${photo.slug}/`} class="about-photo-link">
+            <Image
+              src={photo.image}
+              widths={[650, 800, 1400, 2000]}
+              sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
+              format="avif"
+              quality={80}
+              alt={photo.blurb || photo.meta.location || "Photograph from the gallery"}
+              loading="lazy"
+              class="about-photo"
+              onload="this.dataset.state = 'loaded'"
+              onerror="this.dataset.state = 'error'"
+            />
+          </a>
+        ))
+      }
     </div>
     <p>
-      When I'm not writing code, I am often outside with a camera. I keep a
+      When I’m not writing code, I am often outside with a camera. I keep a
       running <a href="/photography">photography</a> gallery here.
     </p>
 
     <p>
-      I'm reachable through <a href="mailto:sam.young@email.com">email</a>, or
+      I’m reachable through <a href={`mailto:${siteData.email}`}>email</a>, or
       you can view or download my <a href="/resume">resume</a>.
     </p>
   </div>

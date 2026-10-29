@@ -7,8 +7,13 @@
   padding: var(--space-md-lg);
   border: 0;
   background: var(--scrim);
-  /* Above .site-head (z-index: 1000); the top layer already wins, this is a safeguard */
-  z-index: 1001;
+  --focus-color: white;
+  /* Above .site-head; the top layer already wins, this is a safeguard */
+  z-index: var(--z-modal);
+  /* showModal() doesn't stop wheel and touch scroll chaining to the page
+     behind; this does, without hiding the scrollbar and shifting the layout */
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .image-viewer[open] {
@@ -64,6 +69,7 @@
 }
 
 .image-viewer__close {
+  --round-button-size: 2.75rem;
   position: fixed;
   top: var(--space-sm-md);
   right: var(--space-sm-md);

@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found | Sam Young"
+  description="That page doesn’t exist or has moved."
+  allowRobots={false}
+>
+  <div class="wrapper region prose prose-w-sm flow">
+    <h1>Page not found</h1>
+    <p>That page doesn’t exist or has moved. Try one of these instead.</p>
+    <ul class="explore-list not-prose">
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/photography">Photography</a></li>
+    </ul>
+  </div>
+</BaseLayout>

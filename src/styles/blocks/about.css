@@ -23,17 +23,22 @@ gap below the heading. */
   margin-block-start: var(--space-lg);
 }
 
+/* Sized like the date so 1lh is the date's line height: the dot centers
+on the date's first line instead of the body text's. */
 .timeline__marker {
+  --dot-size: 0.65rem;
   position: relative;
   display: flex;
   justify-content: center;
+  font-size: var(--size-step--1);
+  pointer-events: none;
 }
 
 .timeline__marker::before {
   content: "";
-  width: 0.65rem;
-  height: 0.65rem;
-  margin-block-start: 0.5em;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  margin-block-start: calc(0.5lh - var(--dot-size) / 2);
   border-radius: 50%;
   background: var(--text-ink);
 }
@@ -41,7 +46,7 @@ gap below the heading. */
 .timeline__item:not(:last-child) .timeline__marker::after {
   content: "";
   position: absolute;
-  top: 1.3rem;
+  top: calc(0.5lh + var(--dot-size) / 2 + 0.125rem);
   bottom: calc(-1 * var(--space-lg));
   left: 50%;
   border-inline-start: var(--stroke);
@@ -61,36 +66,8 @@ gap below the heading. */
   font-weight: var(--font-weight-semibold);
 }
 
-.timeline__content p:last-child {
-  margin-block-start: var(--space-2xs);
-  opacity: 0.8;
-}
-
-/* CURRENT STACK TAGS
-Small pill list, a scannable break from prose. */
-.about-tags {
-  --cluster-gap: 0.5em;
-}
-
-.about-tags[role="list"] {
-  margin-block-start: var(--space-sm-md);
-}
-
-.about-tag {
-  padding: 0.3em 0.9em;
-  border: var(--stroke-solid);
-  border-radius: 999px;
-  font-size: var(--size-step-0);
-  color: var(--text-ink);
-}
-
-/* FEATURED PHOTO
-A small photography accent alongside the photography paragraph. */
-.about-photo-layout {
-  --sidebar-size: 16rem;
-  --sidebar-gap: var(--space-md-lg);
-  --align: center;
-}
+/* FEATURED PHOTOS
+Photography accents ahead of the photography paragraph. */
 
 .about-photo-link {
   display: block;

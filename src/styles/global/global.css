@@ -5,6 +5,15 @@
   project: https://cube.fyi/css.html
 */
 
+html {
+  /* every control has its own :active press feedback, so the browser's tap flash is redundant */
+  -webkit-tap-highlight-color: transparent;
+}
+
+:is(a, button, summary) {
+  touch-action: manipulation;
+}
+
 body {
   background: var(--background-light);
   color: var(--text-ink);
@@ -12,6 +21,11 @@ body {
   font-family: var(--font-body);
   line-height: var(--leading-body);
   font-size-adjust: from-font;
+  /* only upright faces are loaded: a missing weight or italic should fail
+     visibly, not get a browser-slanted fake */
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
   margin: 0;
 
@@ -118,10 +132,6 @@ var {
   font-weight: var(--font-weight-medium);
 }
 
-q {
-  font-style: italic;
-}
-
 ul:not([class]) {
   padding-inline-start: 1.7ch;
   list-style-type: disc;
@@ -178,10 +188,6 @@ blockquote footer {
   font-size: var(--size-step-0);
 }
 
-blockquote q {
-  font-style: normal;
-}
-
 :is(video, iframe[src*="youtube"], iframe[src*="vimeo"]) {
   display: block;
   width: 100%;
@@ -193,6 +199,13 @@ img {
   height: auto;
   max-width: 100%;
   display: block;
+}
+
+/* images that fade in from opacity 0 once loaded: a failed one keeps its box and shows its alt text */
+@media (scripting: enabled) {
+  img[data-state="error"] {
+    opacity: 1;
+  }
 }
 
 figcaption {
@@ -264,8 +277,10 @@ a:not([class]) {
   }
 }
 
-a:not([class]):hover {
-  background-size: 100% var(--stroke-width);
+@media (hover: hover) and (pointer: fine) {
+  a:not([class]):hover {
+    background-size: 100% var(--stroke-width);
+  }
 }
 
 :is(h1, h2, h3, h4) a:not([class]) {
@@ -273,8 +288,10 @@ a:not([class]):hover {
   background-size: 0% 0.1ex;
 }
 
-:is(h1, h2, h3, h4) a:not([class]):hover {
-  background-size: 100% 0.1ex;
+@media (hover: hover) and (pointer: fine) {
+  :is(h1, h2, h3, h4) a:not([class]):hover {
+    background-size: 100% 0.1ex;
+  }
 }
 
 :focus {
@@ -282,7 +299,7 @@ a:not([class]):hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus-color, currentColor);
+  outline: 2px solid var(--focus-color);
   outline-offset: var(--focus-offset, 0.2lh);
 }
 
@@ -298,9 +315,13 @@ a:not([class]):hover {
   scroll-margin-block: 5lh;
 }
 
+/* a tint of the ink, so text keeps its own color and stays readable */
 ::selection {
-  color: var(--color-brand-dark);
-  background: var(--color-brand-light);
+  background: color-mix(in oklab, var(--text-ink) 22%, transparent);
+}
+
+.site-foot ::selection {
+  background: color-mix(in oklab, var(--color-amber-200) 28%, transparent);
 }
 
 hr {

@@ -11,21 +11,30 @@ interface Props {
 const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
 ---
 
-<div class="masonry-grid" style={`--photo-count: ${photos.length};`}>
-  {photos.map((photo) => (
-    <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link" aria-label={`View full-size photo from ${photo.meta.date ?? fallbackLabel}`}>
-      <Image
-        src={photo.image}
-        widths={[480, 800, 1200]}
-        sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
-        format="avif"
-        quality={70}
-        alt={photo.blurb || "Photograph"}
-        loading="lazy"
-        class="masonry__image"
-        onload="this.dataset.state = 'loaded'"
-        transition:name={`photo-${photo.slug}`}
-      />
-    </a>
-  ))}
-</div>
+{photos.length === 0 ? (
+  <div class="masonry-empty flow">
+    <h2 class="masonry-empty__title">No photos here yet</h2>
+    <p>Photos added to {fallbackLabel} will show up in this space.</p>
+    {collectionSlug && <a href="/photography/" class="button" data-button-variant="border">Browse all photos</a>}
+  </div>
+) : (
+  <div class="masonry-grid" style={`--photo-count: ${photos.length};`}>
+    {photos.map((photo, index) => (
+      <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link">
+        <Image
+          src={photo.image}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+          format="avif"
+          quality={70}
+          alt={photo.blurb || `Photograph from ${photo.meta.date ?? fallbackLabel}`}
+          loading={index < 3 ? "eager" : "lazy"}
+          class="masonry__image"
+          onload="this.dataset.state = 'loaded'"
+          onerror="this.dataset.state = 'error'"
+          transition:name={`photo-${photo.slug}`}
+        />
+      </a>
+    ))}
+  </div>
+)}

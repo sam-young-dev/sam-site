@@ -5,7 +5,6 @@
   --button-x-padding: 0.75em;
   --button-y-padding: 0.5em;
   --button-gutter: 0.5ch;
-  --focus-color: var(--color-interactive-fill-default);
 
   display: inline-flex;
   gap: var(--button-gutter);
@@ -22,35 +21,52 @@
   text-decoration: none;
   font-size: var(--size-step-0);
   font-weight: var(--font-weight-bold);
-  transition: filter var(--transition-normal) var(--ease-out), transform var(--transition-fast) var(--ease-out);
+  transition: filter var(--transition-normal) var(--ease-out);
 }
 
-.button:hover {
-  filter: brightness(105%);
+/* Grows the hit area to 44px tall when the visible box is shorter;
+   it never shrinks it, and it adds no width so neighbors stay clear */
+.button::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc((100% - 2.75rem) / 2));
 }
 
-.button:active {
-  transform: scale(var(--press-scale-md));
-  transition-duration: var(--transition-fast);
+/* hover only where a pointer can actually hover, so taps don't leave it stuck */
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    filter: brightness(105%);
+  }
+}
+
+/* feedback on press, not release */
+@media (prefers-reduced-motion: no-preference) {
+  .button {
+    transition:
+      filter var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+
+  .button:active {
+    transform: scale(var(--press-scale-md));
+  }
 }
 
 /* Variant exceptions */
 .button[data-button-variant="secondary"] {
   --button-bg: var(--color-fill-loud);
   --button-text: var(--color-on-loud);
-  --focus-color: var(--text-ink);
   --corner-secondary-color: var(--color-brand-primary);
 }
 
 .button[data-button-variant="brand"] {
   --button-bg: var(--color-brand-primary);
   --button-text: var(--color-brand-light);
-  --focus-color: var(--text-ink);
 }
 
 .button[data-button-variant="border"] {
   --button-bg: transparent;
   --button-text: var(--text-ink);
   --button-border-color: var(--text-ink);
-  --focus-color: var(--text-ink);
 }

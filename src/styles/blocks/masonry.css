@@ -53,9 +53,6 @@ without leaving gaps, the way a Pinterest-style grid does. */
   }
 }
 
-.masonry__image {
-}
-
 /* Hidden until loaded only when JS can reveal it */
 @media (scripting: enabled) {
   .masonry__image {
@@ -66,4 +63,27 @@ without leaving gaps, the way a Pinterest-style grid does. */
   .masonry__image[data-state='loaded'] {
     opacity: 1;
   }
+
+  /* a failed image keeps its reserved box and shows its alt text instead of a hole */
+  .masonry__image[data-state='error'] {
+    opacity: 1;
+    background: var(--color-fill-normal);
+  }
+}
+
+/* EMPTY STATE
+Sized like a filled grid row so adding the first photos doesn't jump the layout. */
+.masonry-empty {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  aspect-ratio: 16 / 7;
+  min-block-size: 14rem;
+  padding: var(--space-md-lg);
+  border: var(--stroke);
+  text-align: center;
+}
+
+.masonry-empty__title {
+  font-size: var(--size-step-3);
 }

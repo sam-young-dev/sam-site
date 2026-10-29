@@ -26,7 +26,7 @@ Personal portfolio site for Sam Young, built with [Astro](https://astro.build). 
 │   ├── data/               # site data, photos, collections, projects
 │   ├── design-tokens/      # design system tokens (JSON)
 │   ├── layouts/            # BaseLayout.astro
-│   ├── lib/                 # client-side helpers (puddle effect)
+│   ├── lib/                 # client-side helpers (contour map)
 │   ├── pages/               # routes: index, about, resume, projects, photography, collections
 │   ├── styles/              # CUBE CSS (compositions, blocks, utilities, global)
 │   └── utils/                # collections/photos helpers

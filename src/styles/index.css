@@ -18,11 +18,10 @@
 @import "./utilities/visually-hidden.css";
 
 @import "./blocks/prose.css";
+@import "./blocks/skip-link.css";
 @import "./blocks/site-head.css";
 @import "./blocks/site-foot.css";
-@import "./blocks/hero.css";
 @import "./blocks/button.css";
-@import "./blocks/masthead.css";
 @import "./blocks/masonry.css";
 @import "./blocks/expand-button.css";
 @import "./blocks/round-button.css";
@@ -36,6 +35,6 @@
 @import "./blocks/collections.css";
 @import "./blocks/collection-detail.css";
 @import "./blocks/about.css";
-@import "./blocks/puddle.css";
+@import "./blocks/contour.css";
 @import "./blocks/home.css";
 @import "./blocks/resume.css";

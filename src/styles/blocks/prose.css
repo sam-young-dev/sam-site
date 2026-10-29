@@ -84,7 +84,7 @@ CUSTOM PROPERTIES AND CONFIGURATION
 
 /* Bump up the line height for paragraphs */
 .prose :is(p) {
-  line-height: 2;
+  line-height: var(--leading-body);
 }
 
 /* Bump down the font weight for headings, dt, and strong */
@@ -102,8 +102,8 @@ CUSTOM PROPERTIES AND CONFIGURATION
   );
 }
 
+/* no italic face is loaded, and font-synthesis is off, so no font-style here */
 .prose :is(blockquote) p {
-  font-style: italic;
   font-weight: var(--font-weight-medium, 500);
 }
 
@@ -153,9 +153,18 @@ CUSTOM PROPERTIES AND CONFIGURATION
   padding-block-end: 0;
 }
 
-.prose :is(a):hover {
-  opacity: 0.7;
-  background-size: 0% var(--stroke-width);
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .prose :is(a) {
+    transition: opacity var(--transition-fast) var(--ease-out);
+  }
+}
+
+/* hover only where a pointer can actually hover, so taps don't leave it dimmed */
+@media (hover: hover) and (pointer: fine) {
+  .prose :is(a):hover {
+    opacity: 0.7;
+    background-size: 0% var(--stroke-width);
+  }
 }
 
 /* End mark / dingbat, placed after the final line of a piece of writing */

@@ -11,11 +11,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 1.8rem;
-  line-height: 2.2rem;
+  font-size: var(--size-step-4);
+  line-height: 1.2;
 }
 
-.hero-content[data-motion='stagger'] > * {
+/* the heading is the LCP element, so it is in place on first paint and only the
+   lines under it stagger in */
+.hero-content[data-motion='stagger'] > :not(.hero-content__heading) {
   opacity: 0;
   transform: translateY(0.5rem);
   animation: hero-content-in var(--transition-slow) var(--ease-out) forwards;
@@ -52,15 +54,9 @@
 
 /* reduced motion: keep the cross-fade, drop the slide */
 @media (prefers-reduced-motion: reduce) {
-  .hero-content[data-motion='stagger'] > * {
+  .hero-content[data-motion='stagger'] > :not(.hero-content__heading) {
     transform: none;
     animation-name: hero-content-fade;
-  }
-
-  .explore-list a,
-  .explore-list a:hover,
-  .explore-list a:active {
-    transform: none;
   }
 }
 
@@ -81,20 +77,33 @@
 .explore-list a {
   display: inline-flex;
   align-items: center;
-  min-block-size: 48px;
-  min-inline-size: 48px;
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
   padding-inline: var(--space-sm);
   margin-inline-start: calc(-1 * var(--space-sm));
   transform-origin: left center;
-  transition: transform var(--transition-normal) var(--ease-out);
 }
 
-.explore-list a:hover {
-  transform: translateX(0.25rem);
-}
+@media (prefers-reduced-motion: no-preference) {
+  .explore-list a {
+    transition: transform var(--transition-normal) var(--ease-out);
+  }
 
-/* feedback on press, not release */
-.explore-list a:active {
-  transform: scale(var(--press-scale-md));
-  transition-duration: var(--transition-fast);
+  /* feedback on press, not release */
+  .explore-list a:active {
+    transform: scale(var(--press-scale-md));
+    transition-duration: var(--transition-fast);
+  }
+
+  /* touch has no hover, a tap would otherwise leave the link nudged */
+  @media (hover: hover) and (pointer: fine) {
+    .explore-list a:hover {
+      transform: translateX(0.25rem);
+    }
+
+    /* keep the nudge while pressed so the link doesn't slide back */
+    .explore-list a:hover:active {
+      transform: translateX(0.25rem) scale(var(--press-scale-md));
+    }
+  }
 }

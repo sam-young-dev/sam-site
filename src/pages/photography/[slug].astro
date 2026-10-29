@@ -40,6 +40,14 @@ export async function getStaticPaths() {
 
 const { photo, prevSlug, nextSlug, collectionNav } = Astro.props;
 const { image, meta, tags, blurb } = photo;
+// a photo with no blurb still gets a description of where it was taken, not a bare "Photograph"
+const imageAlt =
+  blurb ||
+  (meta.location
+    ? `Photograph taken in ${meta.location}`
+    : meta.date
+      ? `Photograph from ${meta.date}`
+      : "Photograph");
 
 const metaItems = [
   { label: "Location", value: meta.location },
@@ -54,8 +62,8 @@ const metaItems = [
 ---
 
 <BaseLayout
-  title={`Photography | ${meta.camera ?? "Photo"} | Sam Young`}
-  description={`A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
+  title={`${blurb || meta.location || meta.camera || "Photo"} | Photography | Sam Young`}
+  description={blurb || `A photo${meta.camera ? ` taken with a ${meta.camera}` : ""}${meta.date ? ` on ${meta.date}` : ""}, from Sam Young's photography gallery.`}
 >
   <a
     id="photo-detail-prev"
@@ -80,6 +88,8 @@ const metaItems = [
   <div class="region wrapper">
     <a id="photo-detail-back" href="/photography/" class="photo-detail__back link-underline press">&larr; Back to gallery</a>
 
+    <h1 class="visually-hidden">{meta.location ?? imageAlt}</h1>
+
     <figure class="photo-detail">
       <div class="photo-detail__media">
         <Image
@@ -88,7 +98,9 @@ const metaItems = [
           sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
           format="avif"
           quality={80}
-          alt={blurb || "Photograph"}
+          alt={imageAlt}
+          loading="eager"
+          fetchpriority="high"
           class="photo-detail__image"
           transition:name={`photo-${photo.slug}`}
         />
@@ -141,7 +153,7 @@ const metaItems = [
       >
         <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
       </button>
-      <img class="photo-lightbox__image" alt={blurb || "Photograph"} />
+      <img class="photo-lightbox__image" alt={imageAlt} />
     </div>
   </div>
 

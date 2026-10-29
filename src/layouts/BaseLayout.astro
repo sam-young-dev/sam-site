@@ -5,7 +5,9 @@ import SiteFooter from '../components/core/SiteFooter.astro';
 import { ClientRouter } from 'astro:transitions';
 
 import cabinetGroteskRegular from '../fonts/CabinetGrotesk-Regular.woff2?url';
+import cabinetGroteskMedium from '../fonts/CabinetGrotesk-Medium.woff2?url';
 import cabinetGroteskBold from '../fonts/CabinetGrotesk-Bold.woff2?url';
+import dmMono from '../fonts/dm-mono-v14-latin-500.woff2?url';
 
 import "virtual:sugarcube.css";
 import "../styles/index.css";
@@ -13,7 +15,7 @@ import "../styles/index.css";
 const {
   title = "Sam Young | Developer, Designer, Artist",
   description = "Personal site of Sam Young, a Nashville-based full-stack software engineer working in React, Angular, Astro, and .NET.",
-  socialImage,
+  socialImage = "/og.png",
   allowRobots,
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -22,10 +24,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskRegular} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskMedium} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskBold} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={dmMono} crossorigin />
     <MetaInfo
       title={title}
       description={description}
@@ -36,6 +40,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <ClientRouter />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <Header />
     <main tabindex="-1" id="main-content">
       <slot />

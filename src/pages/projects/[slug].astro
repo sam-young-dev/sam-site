@@ -111,6 +111,7 @@ const { project } = Astro.props;
                       loading="lazy"
                       class="gallery-image"
                       onload="this.dataset.state = 'loaded'"
+                      onerror="this.dataset.state = 'error'"
                     />
                   </button>
                   <div class="gallery-meta repel">
@@ -148,6 +149,7 @@ const { project } = Astro.props;
                 loading="lazy"
                 class="gallery-image"
                 onload="this.dataset.state = 'loaded'"
+                onerror="this.dataset.state = 'error'"
               />
             </button>
             <div class="gallery-meta repel">

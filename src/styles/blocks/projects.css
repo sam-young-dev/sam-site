@@ -8,7 +8,8 @@
 }
 
 .project-card__link {
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   color: inherit;
   text-decoration: none;
@@ -31,13 +32,14 @@
 /* feedback on press, not release; applies to touch too */
 @media (prefers-reduced-motion: no-preference) {
   .project-card__link:active {
-    transform: scale(var(--press-scale-sm));
+    transform: scale(var(--press-scale-lg));
     transition-duration: var(--transition-fast);
   }
 }
 
 .project-card__image {
   display: block;
+  flex-shrink: 0;
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
@@ -56,6 +58,10 @@
 }
 
 .project-card__body {
+  /* fills the card so the tags can sit on a shared baseline across a row */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding-block-start: var(--space-sm-md);
 }
 
@@ -67,8 +73,10 @@
 }
 
 .project-card__summary {
+  /* the list is .not-prose, so it misses the prose block's wrapping; summaries run long enough to leave orphans */
+  text-wrap: pretty;
   margin-block-start: var(--space-2xs);
-  opacity: 0.8;
+  color: var(--text-quiet);
 }
 
 .project-card__stack {
@@ -76,7 +84,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2xs);
-  margin-block-start: var(--space-sm-md);
+  /* auto pushes the tags to the card bottom; the padding keeps the minimum gap above them */
+  margin-block-start: auto;
+  padding-block-start: var(--space-sm-md);
   padding-left: 0;
 }
 

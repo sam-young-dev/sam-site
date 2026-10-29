@@ -4,6 +4,7 @@ The grown-on-hover underline that global.css gives to unclassed links,
 for links that carry a class. Pair with .press for press feedback.
 */
 .link-underline {
+  position: relative;
   display: inline-block;
   padding-block-end: 0.15em;
   color: inherit;
@@ -22,6 +23,16 @@ for links that carry a class. Pair with .press for press feedback.
   }
 }
 
-.link-underline:hover {
-  background-size: 100% var(--stroke-width);
+/* Grows the hit area to 44px tall without changing the visible size */
+.link-underline::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc((100% - 2.75rem) / 2));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link-underline:hover {
+    background-size: 100% var(--stroke-width);
+  }
 }
