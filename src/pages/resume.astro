@@ -68,12 +68,13 @@ const projects = [
         <h1>Sam Young</h1>
         <p class="resume__title">Senior Software Engineer</p>
         <p class="resume__contact">
-          <a href="tel:6157858891">615-785-8891</a> &middot;&nbsp;
+          <a href="tel:+16157858891">615-785-8891</a>
+          <span aria-hidden="true">&middot;</span>
           <a href="mailto:sam.young@email.com">sam.young@email.com</a>
         </p>
       </div>
 
-      <a class="button" href="/resume.pdf" download="Sam-Young-Resume.pdf">
+      <a class="button resume__download" href="/resume.pdf" download="Sam-Young-Resume.pdf">
         <span class="resume__download-icon" set:html={DownloadIcon} />
         Download PDF
       </a>
@@ -90,7 +91,7 @@ const projects = [
       <section>
         <h2>Experience</h2>
         <p class="resume__employer">
-          <em>InfoWorks, Inc.</em> - <em>Nashville, TN</em>
+          <em>InfoWorks, Inc.</em> &ndash; <em>Nashville, TN</em>
         </p>
         <p>
           Senior Consultant II, 2026 to Present &middot; Senior Consultant I,
@@ -146,7 +147,7 @@ const projects = [
 
       <section>
         <h2>Education</h2>
-        <p>B.A. Computer Science, Minor in Graphic Design - Harding University, 2020</p>
+        <p>B.A. Computer Science, Minor in Graphic Design &ndash; Harding University, 2020</p>
       </section>
     </div>
   </div>

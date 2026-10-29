@@ -4,8 +4,31 @@
   font-size: var(--size-step-2);
 }
 
+/* Row gap is what the extended hit areas below need so wrapped links
+   never overlap each other */
+.resume__contact {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.5ch;
+  row-gap: calc(2.75rem - 1lh);
+}
+
 .resume__contact a {
+  position: relative;
   color: currentColor;
+}
+
+/* Grows the hit area to 44px tall without changing the visible size */
+.resume__contact a::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: calc((1lh - 2.75rem) / 2);
+}
+
+/* Leading icon: trim the icon side by 2px so the label doesn't look pushed right */
+.resume__download {
+  padding-inline-start: calc(var(--button-x-padding) - 2px);
 }
 
 .resume__download-icon {

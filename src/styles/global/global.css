@@ -300,9 +300,13 @@ a:not([class]):hover {
   scroll-margin-block: 5lh;
 }
 
+/* a tint of the ink, so text keeps its own color and stays readable */
 ::selection {
-  color: var(--color-brand-dark);
-  background: var(--color-brand-light);
+  background: color-mix(in oklab, var(--text-ink) 22%, transparent);
+}
+
+.site-foot ::selection {
+  background: color-mix(in oklab, var(--color-amber-200) 28%, transparent);
 }
 
 hr {
