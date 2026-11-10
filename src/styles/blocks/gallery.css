@@ -23,7 +23,12 @@
   width: 100%;
   height: auto;
   border: var(--stroke-solid);
-  transition: opacity var(--transition-slow) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-image {
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
 }
 
 /* Screen recordings. global.css forces video to 16/9; the markup sets the

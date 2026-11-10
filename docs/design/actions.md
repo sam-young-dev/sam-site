@@ -59,7 +59,9 @@ It floats over photography, so it is the one element with a shadow and a `--back
 
 ```html
 <!-- Correct: projects/[slug].astro -->
-<button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">&times;</button>
+<button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">
+  <span class="image-viewer__icon" set:html={CloseIcon} />
+</button>
 
 <!-- Incorrect: unlabeled, and a custom circle instead of the block -->
 <button class="close" style="border-radius: 50%">×</button>

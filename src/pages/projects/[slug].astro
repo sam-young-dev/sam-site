@@ -3,6 +3,11 @@ import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { projects } from "../../data/projects";
 import ExpandButton from "../../components/core/ExpandButton.astro";
+import ZoomInIcon from "../../assets/zoom-in.svg?raw";
+import ZoomOutIcon from "../../assets/zoom-out.svg?raw";
+import ExpandIcon from "../../assets/expand.svg?raw";
+import CollapseIcon from "../../assets/collapse.svg?raw";
+import CloseIcon from "../../assets/close.svg?raw";
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -65,7 +70,7 @@ const { project } = Astro.props;
         )}
         {project.links.repo && (
           <a
-            class="button"
+            class="button project-detail__repo"
             data-button-variant="secondary"
             href={project.links.repo}
             target="_blank"
@@ -188,12 +193,114 @@ const { project } = Astro.props;
   <div class="region"></div>
 
   <dialog class="image-viewer" aria-label="Expanded image view">
-    <button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">&times;</button>
-    <img class="image-viewer__image" alt="" />
+    <div class="image-viewer__stage" data-zoomed="false">
+      <img class="image-viewer__image" alt="" draggable="false" />
+      <div class="image-viewer__toolbar cluster">
+        <button type="button" class="image-viewer__zoom-out round-button" aria-label="Zoom out" disabled>
+          <span class="image-viewer__icon" set:html={ZoomOutIcon} />
+        </button>
+        <button type="button" class="image-viewer__zoom-in round-button" aria-label="Zoom in">
+          <span class="image-viewer__icon" set:html={ZoomInIcon} />
+        </button>
+        <button type="button" class="image-viewer__fullscreen round-button" aria-label="Enter fullscreen" hidden>
+          <span class="image-viewer__icon" data-icon="enter" set:html={ExpandIcon} />
+          <span class="image-viewer__icon" data-icon="exit" set:html={CollapseIcon} />
+        </button>
+        <button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">
+          <span class="image-viewer__icon" set:html={CloseIcon} />
+        </button>
+      </div>
+    </div>
   </dialog>
 </BaseLayout>
 
 <script>
+  import { createImageZoom } from "../../lib/image-zoom.js";
+
+  type Zoom = ReturnType<typeof createImageZoom>;
+  const zooms = new WeakMap<HTMLDialogElement, Zoom>();
+
+  // Older Safari only has the prefixed Fullscreen API; iPhone Safari has
+  // neither for non-video elements, so the button stays hidden there
+  const doc = document as Document & {
+    webkitFullscreenElement?: Element | null;
+    webkitFullscreenEnabled?: boolean;
+    webkitExitFullscreen?: () => void;
+  };
+  const fullscreenElement = () => doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+  const fullscreenEnabled = () => Boolean(doc.fullscreenEnabled || doc.webkitFullscreenEnabled);
+
+  function toggleFullscreen(stage: HTMLElement) {
+    if (fullscreenElement()) {
+      (doc.exitFullscreen ?? doc.webkitExitFullscreen)?.call(doc);
+      return;
+    }
+    const el = stage as HTMLElement & { webkitRequestFullscreen?: () => void };
+    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else el.webkitRequestFullscreen?.();
+  }
+
+  function syncFullscreenButton() {
+    const button = document.querySelector<HTMLButtonElement>(".image-viewer__fullscreen");
+    if (!button) return;
+    const active = Boolean(fullscreenElement()?.closest(".image-viewer"));
+    button.dataset.state = active ? "exit" : "enter";
+    button.setAttribute("aria-label", active ? "Exit fullscreen" : "Enter fullscreen");
+  }
+  document.addEventListener("fullscreenchange", syncFullscreenButton);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenButton);
+
+  // Set up once per dialog; ClientRouter swaps in a fresh one on each navigation
+  function getZoom(dialog: HTMLDialogElement) {
+    let zoom = zooms.get(dialog);
+    if (zoom) return zoom;
+    const stage = dialog.querySelector<HTMLElement>(".image-viewer__stage")!;
+    const image = dialog.querySelector<HTMLImageElement>(".image-viewer__image")!;
+    const zoomIn = dialog.querySelector<HTMLButtonElement>(".image-viewer__zoom-in")!;
+    const zoomOut = dialog.querySelector<HTMLButtonElement>(".image-viewer__zoom-out")!;
+    const fullscreen = dialog.querySelector<HTMLButtonElement>(".image-viewer__fullscreen")!;
+
+    zoom = createImageZoom(stage, image, {
+      onChange(scale) {
+        zoomOut.disabled = scale <= 1;
+        zoomIn.disabled = scale >= 4;
+      },
+      onDismiss: () => dialog.close(),
+    });
+
+    fullscreen.hidden = !fullscreenEnabled();
+    zoomIn.addEventListener("click", () => zooms.get(dialog)?.zoomIn());
+    zoomOut.addEventListener("click", () => zooms.get(dialog)?.zoomOut());
+    fullscreen.addEventListener("click", () => toggleFullscreen(stage));
+
+    dialog.addEventListener("keydown", (e) => {
+      const z = zooms.get(dialog);
+      if (!z || e.metaKey || e.ctrlKey || e.altKey) return;
+      const pans: Record<string, [number, number]> = {
+        ArrowLeft: [1, 0],
+        ArrowRight: [-1, 0],
+        ArrowUp: [0, 1],
+        ArrowDown: [0, -1],
+      };
+      if (e.key === "+" || e.key === "=") z.zoomIn();
+      else if (e.key === "-") z.zoomOut();
+      else if (e.key === "0") z.reset();
+      else if (e.key === "f") toggleFullscreen(stage);
+      else if (!(e.key in pans && z.panBy(...pans[e.key]))) return;
+      e.preventDefault();
+    });
+
+    dialog.addEventListener("close", () => {
+      if (fullscreenElement()?.closest(".image-viewer")) {
+        (doc.exitFullscreen ?? doc.webkitExitFullscreen)?.call(doc);
+      }
+    });
+
+    zooms.set(dialog, zoom);
+    syncFullscreenButton();
+    return zoom;
+  }
+
   // Delegated on document so it survives ClientRouter page swaps; the dialog
   // is looked up at click time since it's replaced on each navigation.
   function largestSource(img: HTMLImageElement) {
@@ -213,14 +320,27 @@ const { project } = Astro.props;
       const thumb = zoom.closest("figure")?.querySelector("img");
       const full = dialog.querySelector<HTMLImageElement>(".image-viewer__image");
       if (!thumb || !full) return;
-      full.src = largestSource(thumb);
+      // The browser keeps painting the previous image until the new one
+      // arrives, so hide it until this one has loaded
+      const src = largestSource(thumb);
+      const viewer = getZoom(dialog);
+      viewer.reset();
+      if (full.getAttribute("src") !== src || !full.complete) {
+        full.dataset.state = "loading";
+        full.onload = full.onerror = () => {
+          full.dataset.state = "loaded";
+          // Bounds depend on the photo's real proportions
+          viewer.reset();
+        };
+        full.src = src;
+      }
       full.alt = thumb.alt;
       dialog.showModal();
       return;
     }
 
-    // Backdrop (the dialog element itself) or close button dismisses
-    if (target === dialog || target.closest(".image-viewer__close")) {
+    // A tap on the empty area around the photo is handled by the zoom module
+    if (target.closest(".image-viewer__close")) {
       dialog.close();
     }
   });

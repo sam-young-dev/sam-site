@@ -49,14 +49,11 @@ Animate only `transform`, `opacity`, `filter`, `color` and `background-size`. Ne
 
 | Token | Scale | Use |
 | --- | --- | --- |
-| `--press-scale-sm` | 0.985 | large surfaces: gallery tiles, masonry photos, collection and about cards |
+| `--press-scale-sm` | 0.985 | large surfaces: gallery tiles, masonry photos, project, collection and about cards |
 | `--press-scale-md` | 0.97 | text-sized targets: buttons, links, nav, expand-button |
 | `--press-scale-lg` | 0.96 | small round controls: `.round-button`, photo nav |
 
 Nothing goes below 0.95; it reads as exaggerated. Why three steps: a bigger surface moves more pixels at the same scale, so it needs a smaller change.
-
-Exception today: `.project-card__link` uses `--press-scale-lg` on a large card. Follow the table for new work.
-
 ## Hover effects in use
 
 - Buttons: `filter: brightness(105%)`.
