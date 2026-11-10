@@ -1,5 +1,18 @@
 import type { ImageMetadata } from "astro";
 
+import keyCreativeLogo from "../assets/projects/key-creative/logo.png";
+import keyCreativeMoodboardPlayful from "../assets/projects/key-creative/moodboard-playful.png";
+import keyCreativeMoodboardBold from "../assets/projects/key-creative/moodboard-bold.png";
+import keyCreativeConceptChosen from "../assets/projects/key-creative/concept-chosen.png";
+import keyCreativeConceptPinkScallop from "../assets/projects/key-creative/concept-pink-scallop.png";
+import keyCreativeConceptEarth from "../assets/projects/key-creative/concept-earth.png";
+import keyCreativeConceptPinkVertical from "../assets/projects/key-creative/concept-pink-vertical.png";
+import keyCreativeSiteIntro from "../assets/projects/key-creative/site-intro.png";
+import keyCreativeSiteIntroNarrow from "../assets/projects/key-creative/site-intro-narrow.png";
+import keyCreativeSiteBrands from "../assets/projects/key-creative/site-brands.png";
+import keyCreativeSiteContact from "../assets/projects/key-creative/site-contact.png";
+import keyCreativeLighthouse from "../assets/projects/key-creative/lighthouse.png";
+
 import hyperliteHome from "../assets/projects/hyperlite/home.png";
 import hyperliteCategory from "../assets/projects/hyperlite/category.png";
 import hyperliteProduct from "../assets/projects/hyperlite/product.png";
@@ -44,6 +57,17 @@ export type ProjectContentBlock =
   | { type: "text"; html: string }
   | { type: "image"; image: ProjectImage }
   | { type: "gallery"; images: ProjectImage[]; caption?: string }
+  | {
+      type: "video";
+      /** Path under public/, e.g. "/videos/name.webm" */
+      src: string;
+      poster: string;
+      width: number;
+      height: number;
+      /** Describes what the video shows, for screen readers */
+      label: string;
+      caption?: string;
+    }
   | { type: "placeholder"; label: string; caption?: string };
 
 export interface Project {
@@ -62,6 +86,203 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    slug: "key-creative-management",
+    title: "Key Creative Management",
+    summary:
+      "A freelance brand and website build for a creator management agency, taken from a logo to a launched site with custom scroll animations, a CMS the client edits themselves, built-in analytics, and a perfect Lighthouse score.",
+    year: "2026",
+    stack: [
+      "Astro",
+      "Keystatic",
+      "Sugarcube",
+      "CUBE CSS",
+      "Netlify",
+      "Cloudflare Web Analytics",
+    ],
+    responsibilities: [
+      "Freelance engagement, from moodboards to launch",
+      "Brand direction built out from the logo: color, type, and a star motif used across the site",
+      "Home page design explorations and client reviews",
+      "Custom scroll-triggered animations and a draggable brand logo marquee",
+      "Keystatic CMS setup so the client can edit copy and logos without a developer",
+      "Cloudflare Web Analytics and performance work to a perfect Lighthouse score",
+    ],
+    links: {
+      live: "https://keycreativemgmt.com/",
+    },
+    content: [
+      {
+        type: "text",
+        html: "Key Creative Management is an agency that manages creators and influencers and connects them with brand partnerships. They came to me with a logo and needed everything around it: a look for the brand, a website, and a way to keep the site up to date on their own. The site has one job. A creator lands on it, decides whether the agency is credible, and sends an email. Everything below was built to support that.",
+      },
+      { type: "heading", text: "Starting from a logo" },
+      {
+        type: "text",
+        html: "The logo was the only fixed piece: a flowing, oversized K in soft blue with a four-point sparkle tucked beside it. Before designing any pages, I pulled the brand out of that mark. The blue and the coral of the sparkle became the core palette, and the sparkle itself became the motif that ties the whole site together.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeLogo,
+          alt: "Key Creative Management logo: a large flowing blue K with a coral four-point sparkle beside it, above the name in coral.",
+          caption: "The logo, and the source of the site's color and star motif.",
+        },
+      },
+      { type: "heading", text: "Moodboards" },
+      {
+        type: "text",
+        html: "Next, I put together two moodboards to find a direction with the client. One leaned playful: rounded edges, pastel colors, organic shapes, squiggly lines, and quirky movement. The other leaned bold: harsh color combinations, strong contrast, straight lines, and big type. Talking through what the client liked on each board narrowed things down quickly. They wanted the warmth of the playful board with some of the confidence of the bold one.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeMoodboardPlayful,
+            alt: "Moodboard of playful websites with sticky notes calling out rounded edges, fun pastel colors, organic elements, squiggly lines, and quirky movement.",
+            caption: "Playful",
+          },
+          {
+            src: keyCreativeMoodboardBold,
+            alt: "Moodboard of bold websites with sticky notes calling out harsh color combinations, straight lines, strong contrast, and big type.",
+            caption: "Bold",
+          },
+        ],
+        caption: "Two moodboards used to find the direction with the client.",
+      },
+      { type: "heading", text: "Exploring the home page" },
+      {
+        type: "text",
+        html: "From there I designed full home page concepts, each built from the same pieces in a different way. The logo is cropped big into the top corner, a row of sparkles divides the sections, a large sparkle pair anchors the intro, logos of the brands they work with scroll in rows, and the contact heading sits half on top of a solid color band. Between concepts I varied the palette, the type, and the details: outlined stars on pink, an earthy slate and sand palette, a vertical wordmark, and a scalloped border around the contact section.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeConceptPinkScallop,
+            alt: "Home page concept on light pink with condensed blue and pink type, outlined star dividers, and a scalloped star border around the contact section.",
+          },
+          {
+            src: keyCreativeConceptEarth,
+            alt: "Home page concept in an earthy palette of slate blue, sand, and burnt orange on cream.",
+          },
+          {
+            src: keyCreativeConceptPinkVertical,
+            alt: "Home page concept on pink with the Key Creative wordmark set vertically and a large @ symbol above a rounded contact band.",
+          },
+          {
+            src: keyCreativeConceptChosen,
+            alt: "Home page concept in blue and coral on cream with a solid star divider, large blue and coral sparkles, a brand logo marquee, and a blue contact band.",
+          },
+        ],
+        caption:
+          "Home page concepts. The client chose the last one, blue and coral on cream, which stays closest to the logo.",
+      },
+      {
+        type: "text",
+        html: "The client picked the blue and coral on cream. It stays truest to the logo, and the cream background keeps it soft without washing out the colors. With the direction set, I turned the concept into design tokens for color, type, and spacing so the build would match the design exactly and stay consistent as it grew.",
+      },
+      { type: "heading", text: "The finished site" },
+      {
+        type: "text",
+        html: "The build stays close to the approved concept, with real copy in place of the placeholder lines. The intro leads with the agency's tagline, \"A different kind of management,\" and a short list of what creators get, with the sparkle reused as bullet points. Below that, a marquee of real brand logos does the work of proving credibility, and the page ends with one clear way to get in touch.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeSiteIntro,
+            alt: "Live site intro with a blue star border, the heading A different kind of management in coral, and a list of what creators get with sparkle bullets beside a large blue sparkle.",
+            caption: "Desktop",
+          },
+          {
+            src: keyCreativeSiteIntroNarrow,
+            alt: "The same intro section at a narrower width, with the large sparkles tucked beside the list.",
+            caption: "Narrower viewport",
+          },
+        ],
+        caption: "The intro section, with the sparkle reused as list bullets.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeSiteBrands,
+          alt: "Brands we work with heading framed by two coral sparkles, a pause logos button, and three rows of brand logos including Amazon, Anthropologie, Birkenstock, Free People, L'Oreal, Macy's, Nordstrom, Target, and Wayfair.",
+          caption: "Three rows of brand logos, each moving at its own pace.",
+        },
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeSiteContact,
+          alt: "Contact section with the heading Let's Chat! sitting on top of a blue band that holds the email address, and a footer with social links.",
+          caption: "The contact heading sits half on top of the blue band, straight from the concept.",
+        },
+      },
+      { type: "heading", text: "Animations triggered on scroll" },
+      {
+        type: "text",
+        html: "The playful moodboard called for movement, so the page comes alive as you scroll. When the page loads, the logo and name rise into place and the sparkle spins in beside the K. The row of sparkles that divides the sections pops in one star at a time when it scrolls into view. The large sparkle pair scales in as you reach it, and the \"Let's Chat!\" heading rises up onto the blue band. All of it is short and eases out, so it adds personality without slowing anyone down.",
+      },
+      {
+        type: "video",
+        src: "/videos/key-creative-scroll.webm",
+        poster: "/videos/key-creative-scroll-poster.webp",
+        width: 1280,
+        height: 800,
+        label:
+          "Screen recording of the Key Creative Management home page: the logo sparkle spins in, the star divider appears one star at a time, the large sparkles scale in, the brand logo rows are slowed by hovering and then dragged and flung, and the Let's Chat heading rises onto the blue band.",
+        caption:
+          "A scroll through the live site: the load animation, scroll-triggered reveals, and dragging the logo marquee.",
+      },
+      {
+        type: "text",
+        html: "The brand logo marquee is the most involved piece. Instead of a plain CSS loop, it runs on a small physics model. Hovering eases the row to a stop so you can read a logo, and letting go eases it back up to speed. You can grab a row and drag it, and when you let go it keeps the speed of your throw before settling back into its normal pace. Each row moves at its own speed and direction, stops animating when it is off screen, and stays seamless as the window resizes.",
+      },
+      {
+        type: "text",
+        html: "Accessibility was part of the build from the start. Each reveal waits for an IntersectionObserver to see the element on screen, and if JavaScript never runs, everything is simply visible. A pause button stops the logos for anyone who finds the movement distracting. For visitors who have reduced motion turned on in their system settings, the reveals only fade, the logo rows stop moving, and the rows become regions you can scroll through with a keyboard instead.",
+      },
+      { type: "heading", text: "Copy the client can edit" },
+      {
+        type: "text",
+        html: 'I set up <a href="https://keystatic.com/" target="_blank" rel="noopener noreferrer">Keystatic</a> so the client can change the website without me. They sign in at /admin and get a simple editor for the name, tagline, the list of points, headings, contact email, and the site description used by search engines. They can also add, remove, and reorder brand logos by uploading a file and giving it a name.',
+      },
+      {
+        type: "text",
+        html: "Keystatic stores the content as files in the site's GitHub repository, so every save is a commit and every change has a history. Each commit triggers a fresh build on Netlify, and the change goes live on its own shortly after. The pages are still prerendered static HTML; only the admin runs on demand as serverless functions. This paid off during development too. The client made their own copy changes while I worked on the design and code, instead of sending edits back and forth, and they will keep doing so after launch with no developer in the loop.",
+      },
+      { type: "heading", text: "Built-in analytics" },
+      {
+        type: "text",
+        html: "To show the client how the site is doing, I added Cloudflare Web Analytics. It is privacy-first and doesn't use cookies, so there is no cookie banner getting in the way, and it reports visits, referrers, and real Core Web Vitals from real visitors. It only loads on production builds so local testing isn't counted. The script is also injected after the page loads, during idle time, so a third-party request never sits in the way of the first paint.",
+      },
+      { type: "heading", text: "A perfect Lighthouse score" },
+      {
+        type: "text",
+        html: "The site scores 100 in all four Lighthouse categories: performance, accessibility, best practices, and SEO. Pages are static HTML with only a small script for the animations, fonts are self-hosted, brand logos are almost all lightweight SVGs, and every animation sticks to transform and opacity so nothing triggers layout work while scrolling.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeLighthouse,
+          alt: "Lighthouse scores of 100 for performance, accessibility, best practices, and SEO.",
+          caption: "Lighthouse: 100 across performance, accessibility, best practices, and SEO.",
+        },
+      },
+      { type: "heading", text: "Results: leads and new business" },
+      {
+        type: "placeholder",
+        label: "Results coming soon",
+        caption:
+          "How the site brought in client leads and helped generate new business.",
+      },
+    ],
+    cover: {
+      src: keyCreativeSiteIntro,
+      alt: "Key Creative Management site intro with a blue star border, the heading A different kind of management, and a large blue sparkle.",
+    },
+  },
   {
     slug: "healthcare-compliance-platform",
     title: "Healthcare Compliance Platform",

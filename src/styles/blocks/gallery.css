@@ -26,6 +26,12 @@
   transition: opacity var(--transition-slow) var(--ease-out);
 }
 
+/* Screen recordings. global.css forces video to 16/9; the markup sets the
+   recording's real aspect-ratio inline so the box fits before load */
+.gallery-video {
+  border: var(--stroke-solid);
+}
+
 @media (scripting: enabled) {
   .gallery-image {
     opacity: 0;

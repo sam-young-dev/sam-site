@@ -127,6 +127,26 @@ const { project } = Astro.props;
               <figcaption class="gallery-caption">{block.caption}</figcaption>
             )}
           </figure>
+        ) : block.type === "video" ? (
+          <figure class="gallery-item project-detail__gallery">
+            <video
+              class="gallery-video"
+              src={block.src}
+              poster={block.poster}
+              width={block.width}
+              height={block.height}
+              style={`aspect-ratio: ${block.width} / ${block.height}`}
+              aria-label={block.label}
+              controls
+              muted
+              loop
+              playsinline
+              preload="none"
+            ></video>
+            {block.caption && (
+              <figcaption class="gallery-caption">{block.caption}</figcaption>
+            )}
+          </figure>
         ) : block.type === "placeholder" ? (
           <figure class="gallery-item">
             <div class="gallery-placeholder" role="img" aria-label={block.label}>
