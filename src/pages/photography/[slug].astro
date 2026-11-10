@@ -5,7 +5,7 @@ import { getPhotos } from "../../utils/photos";
 import { getCollections, slugifyTag } from "../../utils/collections";
 import ArrowIcon from "../../assets/arrow-down.svg?raw";
 import ExpandButton from "../../components/core/ExpandButton.astro";
-import CloseIcon from "../../assets/close.svg?raw";
+import ZoomStage from "../../components/core/ZoomStage.astro";
 
 export async function getStaticPaths() {
   const photos = await getPhotos();
@@ -145,15 +145,7 @@ const metaItems = [
       aria-label="Full screen photo view"
       transition:persist
     >
-      <button
-        type="button"
-        id="photo-lightbox-close"
-        class="photo-lightbox__close round-button"
-        aria-label="Close full screen view"
-      >
-        <span class="photo-lightbox__close-icon" set:html={CloseIcon} />
-      </button>
-      <img class="photo-lightbox__image" alt={imageAlt} />
+      <ZoomStage closeId="photo-lightbox-close" closeLabel="Close full screen view" imageAlt={imageAlt} />
     </div>
   </div>
 
@@ -178,7 +170,8 @@ const metaItems = [
     const expandBtn = document.getElementById("photo-detail-expand");
     const lightbox = document.getElementById("photo-lightbox");
     const lightboxClose = document.getElementById("photo-lightbox-close");
-    const lightboxImage = lightbox?.querySelector(".photo-lightbox__image");
+    const lightboxImage = lightbox?.querySelector(".zoom-stage__image");
+    const lightboxFrame = lightbox?.querySelector(".zoom-stage__frame");
     const mainImage = document.querySelector(".photo-detail__image");
     const prevLinkEl = document.getElementById("photo-detail-prev");
     const nextLinkEl = document.getElementById("photo-detail-next");
@@ -235,6 +228,9 @@ const metaItems = [
 
     function syncLightboxImage() {
       if (!lightboxImage || !mainImage) return;
+      // Each photo starts unzoomed. Set up by photo-gestures.js, so absent
+      // for the moment before that module runs, when nothing is zoomed anyway.
+      lightbox._zoomStage?.reset();
       lightboxImage.removeAttribute("srcset");
       lightboxImage.removeAttribute("sizes");
       lightboxImage.src = getLargestCandidate(mainImage);
@@ -255,7 +251,7 @@ const metaItems = [
     // Opens/closes from (and back to) the on-page photo: offset and scale the
     // lightbox image to where the inline photo sits, so it grows out of it.
     function setLightboxOrigin() {
-      if (!lightboxImage || !mainImage) return;
+      if (!lightboxFrame || !mainImage) return;
       const src = mainImage.getBoundingClientRect();
       const ratio = (mainImage.naturalWidth || src.width) / (mainImage.naturalHeight || src.height || 1);
       const pad = parseFloat(getComputedStyle(lightbox).paddingLeft) || 0;
@@ -265,9 +261,9 @@ const metaItems = [
       const scale = src.width && w ? Math.min(Math.max(src.width / w, 0.2), 1) : 0.96;
       const dx = src.left + src.width / 2 - window.innerWidth / 2;
       const dy = src.top + src.height / 2 - window.innerHeight / 2;
-      lightboxImage.style.setProperty("--from-x", dx + "px");
-      lightboxImage.style.setProperty("--from-y", dy + "px");
-      lightboxImage.style.setProperty("--from-scale", String(scale));
+      lightboxFrame.style.setProperty("--from-x", dx + "px");
+      lightboxFrame.style.setProperty("--from-y", dy + "px");
+      lightboxFrame.style.setProperty("--from-scale", String(scale));
     }
 
     function openLightbox({ animate = true } = {}) {
@@ -288,6 +284,8 @@ const metaItems = [
 
     function closeLightbox() {
       if (!lightbox) return;
+      // Unzoom and leave fullscreen first, so it shrinks back into the page photo
+      lightbox._zoomStage?.close();
       setLightboxOrigin();
       delete lightbox.dataset.state;
       document.body.style.overflow = "";
@@ -345,23 +343,10 @@ const metaItems = [
         }
       };
       lightbox.addEventListener("transitionend", lightbox._transitionendHandler);
-
-      if (lightbox._backdropClickHandler) {
-        lightbox.removeEventListener("click", lightbox._backdropClickHandler);
-      }
-      lightbox._backdropClickHandler = (e) => {
-        if (e.target === lightbox) closeLightbox();
-      };
-      lightbox.addEventListener("click", lightbox._backdropClickHandler);
     }
 
-    if (lightboxClose) {
-      if (lightboxClose._clickHandler) {
-        lightboxClose.removeEventListener("click", lightboxClose._clickHandler);
-      }
-      lightboxClose._clickHandler = closeLightbox;
-      lightboxClose.addEventListener("click", lightboxClose._clickHandler);
-    }
+    // The close button and a tap beside the photo are handled by the zoom
+    // stage (photo-gestures.js), which calls window.__photoLightbox.close().
 
     // Astro's ClientRouter swaps page content without reloading, but `document`
     // itself persists across navigations | re-adding this listener on every
@@ -374,9 +359,16 @@ const metaItems = [
         if (e.key === "Escape") {
           closeLightbox();
         } else if (e.key === "Tab") {
-          // The close button is the only focusable control in the dialog.
+          // Keep focus cycling through the lightbox's own controls
+          const controls = [...lightbox.querySelectorAll("button")].filter(
+            (button) => !button.hidden && !button.disabled,
+          );
+          if (!controls.length) return;
+          const at = controls.indexOf(document.activeElement);
+          const step = e.shiftKey ? -1 : 1;
+          const nextAt = at === -1 ? 0 : (at + step + controls.length) % controls.length;
           e.preventDefault();
-          lightboxClose?.focus();
+          controls[nextAt].focus();
         }
         return;
       }

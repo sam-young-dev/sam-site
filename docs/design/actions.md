@@ -58,14 +58,22 @@ Use for icon-only circular controls: lightbox close, previous and next photo. Si
 It floats over photography, so it is the one element with a shadow and a `--background-light` fill. Always give it an `aria-label`.
 
 ```html
-<!-- Correct: projects/[slug].astro -->
-<button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">
-  <span class="image-viewer__icon" set:html={CloseIcon} />
+<!-- Correct: components/core/ZoomStage.astro -->
+<button type="button" class="round-button" data-action="close" aria-label={closeLabel}>
+  <span class="zoom-stage__icon" set:html={CloseIcon} />
 </button>
 
 <!-- Incorrect: unlabeled, and a custom circle instead of the block -->
 <button class="close" style="border-radius: 50%">×</button>
 ```
+
+## Full-screen image viewer
+
+Any overlay that shows one image large uses `<ZoomStage />` (`components/core/ZoomStage.astro`), wired with `setupZoomStage()` from `src/lib/zoom-stage.js`. It brings zoom and pan, fullscreen, the round-button toolbar (zoom out, zoom in, fullscreen, close) and, with `nav`, previous/next buttons. Its CSS is the `zoom-stage` block. The project page puts it in a `<dialog class="image-viewer">`; the photography page puts it in `.photo-lightbox`. Do not build a second toolbar or zoom handler.
+
+A disabled round button inside it (zoom out at 1×, previous on a group's first image) inverts: `--scrim` fill, `--stroke-solid` ring, `--color-decorative-stroke` icon, no shadow. Why: the first attempt, `--color-fill-normal` on the cream disc, was too close to the enabled look to read as disabled.
+
+Previous/next on the project page step through one gallery group (`.gallery-grid`) and stop at its ends. They never jump to an image in another group, and a standalone image shows no arrows.
 
 ## Expand button
 

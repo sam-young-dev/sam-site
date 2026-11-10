@@ -67,7 +67,7 @@ Nothing goes below 0.95; it reads as exaggerated. Why three steps: a bigger surf
 - **Images** fade in when loaded: `opacity: 0` with `transition: opacity var(--transition-slow) var(--ease-out)`, revealed by `[data-state="loaded"]`. Wrap it in `@media (scripting: enabled)` so no-JS users still see the image. `img[data-state="error"]` stays visible.
 - **Stagger**: children get `--i` (1, 2, 3) and `animation-delay: calc(var(--i, 0) * 60ms)`, `--transition-slow`, `translateY(0.5rem)` to none. The LCP element (the h1) is never staggered. Reduced motion keeps the fade and drops the slide.
 - **Video** (`.gallery-video`, the `video` block in `projects.ts`): never autoplays. It ships `controls`, `muted`, `playsinline`, `preload="none"` and a poster, so motion only starts when the reader presses play. Why: autoplaying video is decorative motion and ignores `prefers-reduced-motion`.
-- **Overlays** (`dialog`, lightbox): fade the backdrop and settle the image from `scale(0.96)` over `--transition-slow`; use `@starting-style` and `allow-discrete` on `display` and `overlay` so the exit animates too.
+- **Overlays** (`dialog`, lightbox): fade the backdrop and settle the image from `scale(0.96)` over `--transition-slow`; use `@starting-style` and `allow-discrete` on `display` and `overlay` so the exit animates too. Put the entrance transform on `.zoom-stage__frame`, never the image: the image's own transform carries zoom and pan.
 
 ## Should this animate?
 

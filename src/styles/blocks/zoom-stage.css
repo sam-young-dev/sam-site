@@ -1,0 +1,144 @@
+/* The full-screen photo surface shared by .image-viewer (projects) and
+   .photo-lightbox (photography): zoom, pan, toolbar, optional prev/next.
+   The stage is what goes fullscreen (the Fullscreen API refuses <dialog>),
+   so it holds the controls too. The frame carries each viewer's entrance
+   transform; the image's own transform carries zoom and pan. */
+.zoom-stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Pinch and drag are handled in image-zoom.js, not by the browser */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.zoom-stage:fullscreen {
+  background: var(--scrim);
+}
+
+.zoom-stage__frame {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fills the stage; object-fit keeps the proportions and letterboxes */
+.zoom-stage__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 0 0;
+  cursor: zoom-in;
+  -webkit-user-drag: none;
+}
+
+.zoom-stage[data-zoomed='true'] .zoom-stage__image {
+  cursor: grab;
+}
+
+.zoom-stage[data-dragging] .zoom-stage__image {
+  cursor: grabbing;
+}
+
+/* Hides the previous image while the next one loads, so it can't flash */
+.zoom-stage__image[data-state='loading'] {
+  visibility: hidden;
+}
+
+/* Button, key and click zooms glide; wheel, pinch and drag follow input 1:1 */
+@media (prefers-reduced-motion: no-preference) {
+  .zoom-stage__image[data-animate] {
+    transition: transform var(--transition-slow) var(--ease-out);
+  }
+}
+
+.zoom-stage__toolbar {
+  --cluster-gap: var(--space-xs);
+  --cluster-horizontal-alignment: flex-end;
+  position: absolute;
+  top: max(var(--space-sm-md), env(safe-area-inset-top));
+  right: max(var(--space-sm-md), env(safe-area-inset-right));
+  /* the stage is its own stacking context, so this only has to clear the image */
+  z-index: 1;
+}
+
+.zoom-stage .round-button {
+  --round-button-size: 2.75rem;
+}
+
+/* .round-button's display: flex would otherwise beat the hidden attribute */
+.zoom-stage .round-button[hidden] {
+  display: none;
+}
+
+/* Disabled inverts the button: a dark scrim disc with a hairline ring and a
+   dim icon, no lift. Enabled ones are cream discs with a shadow, so the
+   difference reads at a glance, over the dark backdrop or over a photo. */
+.zoom-stage .round-button:disabled {
+  cursor: not-allowed;
+  border: var(--stroke-solid);
+  background: var(--scrim);
+  color: var(--color-decorative-stroke);
+  box-shadow: none;
+  filter: none;
+  transform: none;
+}
+
+.zoom-stage__icon {
+  display: flex;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.zoom-stage__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+[data-action='fullscreen']:not([data-state='exit']) [data-icon='exit'],
+[data-action='fullscreen'][data-state='exit'] [data-icon='enter'] {
+  display: none;
+}
+
+/* Prev/next dock to the bottom corners on phones, where thumbs are, and
+   float at mid-height once there's room beside the photo */
+.zoom-stage__nav {
+  position: absolute;
+  bottom: max(var(--space-sm-md), env(safe-area-inset-bottom));
+  z-index: 1;
+}
+
+.zoom-stage .zoom-stage__nav {
+  --round-button-size: 3.25rem;
+}
+
+.zoom-stage__nav[data-action='prev'] {
+  left: max(var(--space-sm-md), env(safe-area-inset-left));
+}
+
+.zoom-stage__nav[data-action='next'] {
+  right: max(var(--space-sm-md), env(safe-area-inset-right));
+}
+
+.zoom-stage__nav[data-action='prev'] .zoom-stage__icon {
+  transform: rotate(90deg);
+}
+
+.zoom-stage__nav[data-action='next'] .zoom-stage__icon {
+  transform: rotate(-90deg);
+}
+
+@media (min-width: 48rem) {
+  .zoom-stage .zoom-stage__nav {
+    --round-button-size: var(--space-lg-xl, 3rem);
+  }
+
+  .zoom-stage__nav {
+    top: 50%;
+    bottom: auto;
+    translate: 0 -50%;
+  }
+}

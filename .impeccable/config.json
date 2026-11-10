@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-10-29T18:03:02.710Z",
         "reason": "assistant: false positive, .image-viewer__image src is assigned by the click handler before showModal()"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/core/ZoomStage.astro"
+        ],
+        "createdAt": "2026-11-10T21:47:05.775Z",
+        "reason": "Claude: viewer img src is assigned by script when the viewer opens; it is never rendered visible without one"
       }
     ]
   }

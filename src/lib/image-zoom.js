@@ -9,15 +9,16 @@ const STEP = 2;
 const KEY_PAN = 80;
 const TAP_SLOP = 6;
 const DOUBLE_TAP_MS = 300;
+const SWIPE_DISTANCE = 50;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 /**
  * @param {HTMLElement} stage the element the image fills; receives the gestures
  * @param {HTMLImageElement} image
- * @param {{ onChange?: (scale: number) => void, onDismiss?: () => void }} options
+ * @param {{ onChange?: (scale: number) => void, onDismiss?: () => void, onSwipe?: (direction: "prev" | "next") => void }} options
  */
-export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
+export function createImageZoom(stage, image, { onChange, onDismiss, onSwipe } = {}) {
   let scale = 1;
   let x = 0;
   let y = 0;
@@ -26,6 +27,7 @@ export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
   let pan = null;
   let pinch = null;
   let moved = false;
+  let pinched = false;
   let lastTap = null;
 
   function layout() {
@@ -100,6 +102,9 @@ export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
       qy: ((a.y + b.y) / 2 - rect.top - y) / scale,
     };
     pan = null;
+    pinched = true;
+    // Lets other gestures on the stage (drag to dismiss) stand down
+    stage.dataset.pinching = "";
   }
 
   stage.addEventListener("pointerdown", (e) => {
@@ -108,6 +113,7 @@ export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pointers.size === 1) {
       moved = false;
+      pinched = false;
       startPan(pointers.get(e.pointerId));
     } else if (pointers.size === 2) {
       moved = true;
@@ -147,15 +153,33 @@ export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
   function release(e) {
     if (!pointers.delete(e.pointerId)) return;
     if (pinch) {
-      if (pointers.size < 2) pinch = null;
+      if (pointers.size < 2) {
+        pinch = null;
+        delete stage.dataset.pinching;
+      }
       // One finger left after a pinch: carry on panning from where it is
       if (pointers.size === 1) startPan([...pointers.values()][0]);
       return;
     }
     if (pointers.size > 0) return;
+    const dx = pan ? e.clientX - pan.startX : 0;
+    const dy = pan ? e.clientY - pan.startY : 0;
     pan = null;
     delete stage.dataset.dragging;
-    if (moved || e.type === "pointercancel") return;
+    if (e.type === "pointercancel") return;
+
+    // A sideways flick on an unzoomed photo moves to the neighbouring one
+    if (moved) {
+      const isSwipe =
+        onSwipe &&
+        !pinched &&
+        scale === 1 &&
+        e.pointerType !== "mouse" &&
+        Math.abs(dx) > SWIPE_DISTANCE &&
+        Math.abs(dx) > Math.abs(dy) * 1.5;
+      if (isSwipe) onSwipe(dx < 0 ? "next" : "prev");
+      return;
+    }
 
     const onPhoto = isOnPhoto(e.clientX, e.clientY);
     if (e.pointerType === "mouse") {
@@ -230,6 +254,12 @@ export function createImageZoom(stage, image, { onChange, onDismiss } = {}) {
       pointers.clear();
       pan = pinch = lastTap = null;
       delete stage.dataset.dragging;
+      delete stage.dataset.pinching;
+      commit(false);
+      size = layout();
+    },
+    /** Re-fits the current zoom to the image's real proportions once it loads. */
+    refresh() {
       commit(false);
       size = layout();
     },

@@ -1,4 +1,5 @@
 import { project, spring, createVelocityTracker } from "./gestures.js";
+import { setupZoomStage } from "./zoom-stage.js";
 
 const HYSTERESIS = 10;
 
@@ -107,19 +108,35 @@ function setupSwipe() {
   );
 }
 
-// Drag the lightbox image down (or up) to dismiss. The scrim fades as you drag.
+// Zoom, pan, fullscreen and the toolbar. The lightbox node is persisted
+// across navigations, so this runs once for the whole session.
+function setupLightboxZoom() {
+  const lightbox = document.getElementById("photo-lightbox");
+  const stage = lightbox?.querySelector(".zoom-stage");
+  if (!stage || lightbox._zoomStage) return;
+  lightbox._zoomStage = setupZoomStage(stage, {
+    onClose: () => window.__photoLightbox?.close(),
+  });
+}
+
+// Drag the unzoomed photo down (or up) to dismiss. The scrim fades as you
+// drag. Listens on the stage because the zoom module captures the pointer
+// there; stands down while the photo is zoomed or being pinched.
 function setupDismiss() {
   const lightbox = document.getElementById("photo-lightbox");
-  const image = lightbox?.querySelector(".photo-lightbox__image");
+  const stage = lightbox?.querySelector(".zoom-stage");
+  const image = stage?.querySelector(".zoom-stage__image");
   if (!lightbox || !image || lightbox.dataset.dismissReady) return;
   lightbox.dataset.dismissReady = "1";
 
   const tracker = createVelocityTracker();
+  let pointerId = null;
   let startY = 0;
   let y = 0;
-  let dragging = false;
   let moved = false;
   let cancelSpring = () => {};
+
+  const blocked = () => stage.dataset.zoomed === "true" || "pinching" in stage.dataset;
 
   const render = (value) => {
     y = value;
@@ -135,9 +152,10 @@ function setupDismiss() {
     y = 0;
   };
 
-  image.addEventListener("pointerdown", (e) => {
+  stage.addEventListener("pointerdown", (e) => {
+    if (pointerId !== null || blocked() || e.target.closest("button")) return;
     cancelSpring();
-    dragging = true;
+    pointerId = e.pointerId;
     moved = false;
     startY = e.clientY - y;
     tracker.reset();
@@ -145,21 +163,26 @@ function setupDismiss() {
     lightbox.style.transition = "none";
   });
 
-  image.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
+  stage.addEventListener("pointermove", (e) => {
+    if (e.pointerId !== pointerId) return;
+    // A second finger turned this into a pinch: put the photo back
+    if (blocked()) {
+      pointerId = null;
+      cancelSpring = spring({ from: y, to: 0, onUpdate: render, onDone: reset });
+      return;
+    }
     const dy = e.clientY - startY;
     if (!moved) {
       if (Math.abs(dy - y) < HYSTERESIS) return;
       moved = true;
-      image.setPointerCapture(e.pointerId);
     }
     tracker.add(e.clientX, e.clientY);
     render(dy);
   });
 
-  const end = () => {
-    if (!dragging) return;
-    dragging = false;
+  const end = (e) => {
+    if (e.pointerId !== pointerId) return;
+    pointerId = null;
     if (!moved) {
       lightbox.style.transition = "";
       return;
@@ -184,13 +207,12 @@ function setupDismiss() {
       cancelSpring = spring({ from: y, to: 0, velocity, onUpdate: render, onDone: reset });
     }
   };
-  image.addEventListener("pointerup", end);
-  image.addEventListener("pointercancel", end);
-  // Clicking the image itself must not fall through to the backdrop-close handler.
-  image.addEventListener("click", (e) => e.stopPropagation());
+  stage.addEventListener("pointerup", end);
+  stage.addEventListener("pointercancel", end);
 }
 
 document.addEventListener("astro:page-load", () => {
   setupSwipe();
+  setupLightboxZoom();
   setupDismiss();
 });
