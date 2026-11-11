@@ -1,6 +1,7 @@
 import type { ImageMetadata } from "astro";
 
-import keyCreativeLogo from "../assets/projects/key-creative/logo.png";
+import keyCreativeLogoVectorize from "../assets/projects/key-creative/logo-vectorize-affinity.png";
+import keyCreativeHero from "../assets/projects/key-creative/hero.png";
 import keyCreativeMoodboardPlayful from "../assets/projects/key-creative/moodboard-playful.png";
 import keyCreativeMoodboardBold from "../assets/projects/key-creative/moodboard-bold.png";
 import keyCreativeConceptChosen from "../assets/projects/key-creative/concept-chosen.png";
@@ -103,7 +104,7 @@ export const projects: Project[] = [
     responsibilities: [
       "Freelance engagement, from moodboards to launch",
       "Brand direction built out from the logo: color, type, and a star motif used across the site",
-      "Home page design explorations and client reviews",
+      "Home page prototypes in Penpot, signed off by the client before any code was written",
       "Custom scroll-triggered animations and a draggable brand logo marquee",
       "Keystatic CMS setup so the client can edit copy and logos without a developer",
       "Cloudflare Web Analytics and performance work to a perfect Lighthouse score",
@@ -114,19 +115,24 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "Key Creative Management is an agency that manages creators and influencers and connects them with brand partnerships. They came to me with a logo and needed everything around it: a look for the brand, a website, and a way to keep the site up to date on their own. The site has one job. A creator lands on it, decides whether the agency is credible, and sends an email. Everything below was built to support that.",
+        html: "Key Creative Management is an agency that manages creators and influencers and connects them with brand partnerships. They came to me with a logo and needed everything around it: a look for the brand, a website, and a way to keep the site up to date on their own. The site has one job. A creator lands on it, decides whether the agency is credible, and sends an email. Every decision below comes back to that email.",
       },
       { type: "heading", text: "Starting from a logo" },
       {
         type: "text",
-        html: "The logo was the only fixed piece: a flowing, oversized K in soft blue with a four-point sparkle tucked beside it. Before designing any pages, I pulled the brand out of that mark. The blue and the coral of the sparkle became the core palette, and the sparkle itself became the motif that ties the whole site together.",
+        html: "The logo was the only fixed piece: a flowing, oversized K in soft blue with a four-point sparkle tucked beside it. Before designing any pages, I pulled the brand out of that mark. The blue of the K and the coral of the sparkle became the palette, and the sparkle turned into a motif I reused all over the site.",
+      },
+      { type: "heading", text: "Vectorizing the logo" },
+      {
+        type: "text",
+        html: "The logo arrived as a PNG, which only holds up at the size it was exported at and has its colors baked in. Scaled up for a hero, it goes soft and blurry. So I rebuilt it as vector shapes in Affinity, with the K and the sparkle as separate paths. As a vector, the logo stays sharp at any size, from a favicon to a crop that fills the top of the page, and each shape’s color can be changed in one click. Most of the brand depends on this. The K gets cropped big into the corner of the site, and the sparkle gets pulled out on its own, recolored, and reused as dividers, bullets, and accents.",
       },
       {
         type: "image",
         image: {
-          src: keyCreativeLogo,
-          alt: "Key Creative Management logo: a large flowing blue K with a coral four-point sparkle beside it, above the name in coral.",
-          caption: "The logo, and the source of the site’s color and star motif.",
+          src: keyCreativeLogoVectorize,
+          alt: "The Key Creative logo rebuilt as a group of vector shapes in Affinity, with the blue K and coral sparkle selected inside a bounding box.",
+          caption: "The logo rebuilt as editable vector shapes in Affinity.",
         },
       },
       { type: "heading", text: "Moodboards" },
@@ -153,7 +159,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Exploring the home page" },
       {
         type: "text",
-        html: "From there I designed full home page concepts, each built from the same pieces in a different way. The logo is cropped big into the top corner, a row of sparkles divides the sections, a large sparkle pair anchors the intro, logos of the brands they work with scroll in rows, and the contact heading sits half on top of a solid color band. Between concepts I varied the palette, the type, and the details: outlined stars on pink, an earthy slate and sand palette, a vertical wordmark, and a scalloped border around the contact section.",
+        html: "Before writing any code, I prototyped full home page concepts in Penpot. Each one uses the same pieces arranged a different way. The logo is cropped big into the top corner, a row of sparkles divides the sections, a large sparkle pair anchors the intro, logos of the brands they work with scroll in rows, and the contact heading sits half on top of a solid color band. Between concepts I varied the palette, the type, and the details: outlined stars on pink, an earthy slate and sand palette, a vertical wordmark, and a scalloped border around the contact section.",
       },
       {
         type: "gallery",
@@ -176,16 +182,24 @@ export const projects: Project[] = [
           },
         ],
         caption:
-          "Home page concepts. The client chose the last one, blue and coral on cream, which stays closest to the logo.",
+          "Home page prototypes in Penpot. The client chose the last one, blue and coral on cream.",
       },
       {
         type: "text",
-        html: "The client picked the blue and coral on cream. It stays truest to the logo, and the cream background keeps it soft without washing out the colors. With the direction set, I turned the concept into design tokens for color, type, and spacing so the build would match the design exactly and stay consistent as it grew.",
+        html: "The client picked the blue and coral on cream. It stays truest to the logo, and the cream background keeps it soft without washing out the colors. I didn’t start building until they signed off on that design in Penpot. Changing a prototype takes minutes, and changing a built page takes a lot longer, so the back and forth happened where it was cheap. Once they approved it, I turned the prototype into design tokens for color, type, and spacing, so the code pulls from the same values as the design.",
       },
       { type: "heading", text: "The finished site" },
       {
         type: "text",
-        html: "The build stays close to the approved concept, with real copy in place of the placeholder lines. The intro leads with the agency’s tagline, “A different kind of management,” and a short list of what creators get, with the sparkle reused as bullet points. Below that, a marquee of real brand logos does the work of proving credibility, and the page ends with one clear way to get in touch.",
+        html: "The build matches the approved prototype, with real copy in place of the placeholder lines. The intro leads with the agency’s tagline, “A different kind of management,” and a short list of what creators get, with the sparkle reused as bullet points. Below that, a marquee of real brand logos does the work of proving credibility, and the page ends with one clear way to get in touch.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeHero,
+          alt: "Live site hero on cream with the vector K cropped large into the top left corner, the coral sparkle beside it, and Key Creative Management in coral below.",
+          caption: "The hero, the first thing a visitor sees, with the vector logo cropped big into the corner.",
+        },
       },
       {
         type: "gallery",
@@ -222,7 +236,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Animations triggered on scroll" },
       {
         type: "text",
-        html: "The playful moodboard called for movement, so the page comes alive as you scroll. When the page loads, the logo and name rise into place and the sparkle spins in beside the K. The row of sparkles that divides the sections pops in one star at a time when it scrolls into view. The large sparkle pair scales in as you reach it, and the “Let’s Chat!” heading rises up onto the blue band. All of it is short and eases out, so it adds personality without slowing anyone down.",
+        html: "The playful moodboard called for movement, so the page animates as you scroll. When the page loads, the logo and name rise into place and the sparkle spins in beside the K. The row of sparkles that divides the sections pops in one star at a time when it scrolls into view. The large sparkle pair scales in as you reach it, and the “Let’s Chat!” heading rises up onto the blue band. Every animation is short and eases out, so nobody has to wait for one to finish before reading.",
       },
       {
         type: "video",
@@ -237,11 +251,15 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "The brand logo marquee is the most involved piece. Instead of a plain CSS loop, it runs on a small physics model. Hovering eases the row to a stop so you can read a logo, and letting go eases it back up to speed. You can grab a row and drag it, and when you let go it keeps the speed of your throw before settling back into its normal pace. Each row moves at its own speed and direction, stops animating when it is off screen, and stays seamless as the window resizes.",
+        html: '<a href="https://keycreativemgmt.com/" target="_blank" rel="noopener noreferrer">Try it yourself on the live site</a>. Scroll down slowly, then grab a row of brand logos and throw it.',
       },
       {
         type: "text",
-        html: "Accessibility was part of the build from the start. Each reveal waits for an IntersectionObserver to see the element on screen, and if JavaScript never runs, everything is simply visible. A pause button stops the logos for anyone who finds the movement distracting. For visitors who have reduced motion turned on in their system settings, the reveals only fade, the logo rows stop moving, and the rows become regions you can scroll through with a keyboard instead.",
+        html: "The brand logo marquee is the most involved piece. Instead of a plain CSS loop, it runs on a small physics model. Hovering eases the row to a stop so you can read a logo, and letting go eases it back up to speed. You can grab a row and drag it, and when you let go it keeps the speed of your throw before settling back into its normal pace. Each row moves at its own speed and direction, stops animating when it is off screen, and keeps the loop free of gaps when the window resizes.",
+      },
+      {
+        type: "text",
+        html: "I didn’t want the motion to cost anyone access to the page. Each reveal waits for an IntersectionObserver to see the element on screen, and if JavaScript never runs, everything is simply visible. A pause button stops the logos for anyone who finds the movement distracting. For visitors who have reduced motion turned on in their system settings, the reveals only fade, the logo rows stop moving, and the rows become regions you can scroll through with a keyboard instead.",
       },
       { type: "heading", text: "Copy the client can edit" },
       {
@@ -255,7 +273,7 @@ export const projects: Project[] = [
       { type: "heading", text: "Built-in analytics" },
       {
         type: "text",
-        html: "To show the client how the site is doing, I added Cloudflare Web Analytics. It is privacy-first and doesn’t use cookies, so there is no cookie banner getting in the way, and it reports visits, referrers, and real Core Web Vitals from real visitors. It only loads on production builds so local testing isn’t counted. The script is also injected after the page loads, during idle time, so a third-party request never sits in the way of the first paint.",
+        html: "To show the client how the site is doing, I added Cloudflare Web Analytics. It doesn’t set cookies, so the site needs no cookie banner, and it still reports visits, referrers, and Core Web Vitals measured on visitors’ own devices. It only loads on production builds, so my local testing never shows up in the numbers. The script is also injected after the page loads, during idle time, so a third-party request never sits in the way of the first paint.",
       },
       { type: "heading", text: "A perfect Lighthouse score" },
       {
