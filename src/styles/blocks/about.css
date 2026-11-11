@@ -69,9 +69,19 @@ on the date's first line instead of the body text's. */
 /* FEATURED PHOTOS
 Photography accents ahead of the photography paragraph. */
 
+.about-photos {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 40rem) {
+  .about-photos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .about-photo-link {
   display: block;
-  flex-grow: 0;
   overflow: hidden;
   transition: transform var(--transition-normal) var(--ease-out);
 }
