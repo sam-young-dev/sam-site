@@ -53,6 +53,8 @@ What are the children doing?
 
 If none fit, write a block with a CSS grid (as `.project-list` and `.masonry-grid` do). Do not stack extra `display: flex` rules onto a composition's element.
 
+To highlight one project (the home page), render `<ProjectCard layout="feature" />` inside `<ul class="project-list not-prose" data-list-layout="feature">`. The list spans one full-width column, and from `48rem` the card puts its cover (3fr) beside the text (2fr). Every other project card uses `<ProjectCard />` with no layout. A below-the-fold `<PhotoGrid />` takes `priority={false}` so none of its images load eagerly.
+
 ## Page skeleton
 
 Every page is `BaseLayout` plus sections shaped `wrapper region`. Add `prose` when the content is running text, and `flow` for the rhythm.

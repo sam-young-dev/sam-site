@@ -6,9 +6,11 @@ interface Props {
   photos: Photo[];
   fallbackLabel?: string;
   collectionSlug?: string;
+  /** false when the grid sits below the fold (home page): every image lazy-loads and fades in */
+  priority?: boolean;
 }
 
-const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
+const { photos, fallbackLabel = "the gallery", collectionSlug, priority = true } = Astro.props;
 ---
 
 {photos.length === 0 ? (
@@ -28,9 +30,9 @@ const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
           format="avif"
           quality={70}
           alt={photo.blurb || `Photograph from ${photo.meta.date ?? fallbackLabel}`}
-          loading={index < 3 ? "eager" : "lazy"}
-          fetchpriority={index === 0 ? "high" : undefined}
-          data-priority={index < 3 ? "" : undefined}
+          loading={priority && index < 3 ? "eager" : "lazy"}
+          fetchpriority={priority && index === 0 ? "high" : undefined}
+          data-priority={priority && index < 3 ? "" : undefined}
           class="masonry__image"
           onload="this.dataset.state = 'loaded'"
           onerror="this.dataset.state = 'error'"

@@ -9,6 +9,10 @@ export interface PhotoData {
 // practice: an empty blurb/tags list or a missing entry falls back to
 // automatic-only metadata, so dropping in a new JPEG without an entry
 // here still builds fine.
+// Shown on the home page, in this order. All 3:2 landscapes so the
+// three masonry columns line up into one even row.
+export const featuredPhotoSlugs = ["dscf9241", "dscf9704", "dscf8589"];
+
 export const photoData: Record<string, PhotoData> = {
   // DSCF7203_Original.jpeg
   dscf7203_original: {
