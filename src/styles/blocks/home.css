@@ -1,12 +1,14 @@
 .hero-content-container {
   max-width: var(--wrapper-max-width);
   margin-inline: auto;
-  padding-inline: var(--wrapper-padding-inline);
+  padding-left: max(var(--wrapper-padding-inline), env(safe-area-inset-left));
+  padding-right: max(var(--wrapper-padding-inline), env(safe-area-inset-right));
 }
 
 .hero-content {
   position: relative;
-  block-size: 85dvb;
+  /* svb, not dvb: the hero must not resize as the mobile URL bar collapses mid-scroll */
+  block-size: 85svb;
   pointer-events: none;
   display: flex;
   flex-direction: column;

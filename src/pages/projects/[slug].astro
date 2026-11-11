@@ -20,7 +20,7 @@ const { project } = Astro.props;
   description={project.summary}
 >
   <div class="wrapper region">
-    <a href="/projects/" class="project-detail__back link-underline press">&larr; Back to projects</a>
+    <a href="/projects/" class="project-detail__back link-underline press"><span aria-hidden="true">&larr;</span> Back to projects</a>
 
     <header class="project-detail__header">
       <h1>{project.title}</h1>
@@ -62,6 +62,7 @@ const { project } = Astro.props;
             rel="noopener noreferrer"
           >
             View live site
+            <span class="visually-hidden">(opens in new tab)</span>
           </a>
         )}
         {project.links.repo && (
@@ -83,6 +84,7 @@ const { project } = Astro.props;
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
             </svg>
             View source
+            <span class="visually-hidden">(opens in new tab)</span>
           </a>
         )}
       </div>
@@ -105,7 +107,7 @@ const { project } = Astro.props;
                     <Image
                       src={image.src}
                       widths={[500, 900, 1400, 2000]}
-                      sizes="(min-width: 48rem) 80vw, 100vw"
+                      sizes="(min-width: 48rem) 40vw, 100vw"
                       format="avif"
                       quality={85}
                       alt={image.alt}
@@ -115,12 +117,12 @@ const { project } = Astro.props;
                       onerror="this.dataset.state = 'error'"
                     />
                   </button>
-                  <div class="gallery-meta repel">
+                  <figcaption class="gallery-meta repel">
                     {image.caption && (
-                      <figcaption class="gallery-caption">{image.caption}</figcaption>
+                      <span class="gallery-caption">{image.caption}</span>
                     )}
                     <ExpandButton decorative />
-                  </div>
+                  </figcaption>
                 </figure>
               ))}
             </div>
@@ -173,12 +175,12 @@ const { project } = Astro.props;
                 onerror="this.dataset.state = 'error'"
               />
             </button>
-            <div class="gallery-meta repel">
+            <figcaption class="gallery-meta repel">
               {block.image.caption && (
-                <figcaption class="gallery-caption">{block.image.caption}</figcaption>
+                <span class="gallery-caption">{block.image.caption}</span>
               )}
               <ExpandButton decorative />
-            </div>
+            </figcaption>
           </figure>
         )
       )}
@@ -211,24 +213,45 @@ const { project } = Astro.props;
       : img.currentSrc || img.src;
   }
 
+  // Bumped on every show(), so a slow full-size download for a photo the
+  // reader has already moved past doesn't replace the current one
+  let showing = 0;
+
   function show(viewer: Viewer, thumb: HTMLImageElement) {
     const full = viewer.image as HTMLImageElement;
+    const id = ++showing;
     viewer.reset();
     viewer.setNav({ prev: index > 0, next: index < group.length - 1 });
+    full.alt = thumb.alt;
+
+    const src = largestSource(thumb);
+    if (full.getAttribute("src") === src && full.complete) return;
+
     // The browser keeps painting the previous image until the new one
     // arrives, so hide it until this one has loaded
-    const src = largestSource(thumb);
-    if (full.getAttribute("src") !== src || !full.complete) {
-      full.dataset.state = "loading";
-      full.onload = full.onerror = () => {
-        full.dataset.state = "loaded";
-        // Zoom bounds depend on the photo's real proportions; keep any zoom
-        // the reader started while it loaded
-        viewer.refresh();
-      };
-      full.src = src;
-    }
-    full.alt = thumb.alt;
+    full.dataset.state = "loading";
+    full.onload = full.onerror = () => {
+      full.dataset.state = "loaded";
+      // Zoom bounds depend on the photo's real proportions; keep any zoom
+      // the reader started while it loaded
+      viewer.refresh();
+    };
+
+    // Show the on-page size first: it's already cached, so the viewer is
+    // never blank on a slow connection. The full size replaces it once
+    // decoded; the swap is seamless because the old src paints until then
+    const preview = thumb.complete && thumb.naturalWidth ? thumb.currentSrc : "";
+    full.src = preview || src;
+    if (!preview || preview === src) return;
+
+    const large = new Image();
+    large.src = src;
+    large
+      .decode()
+      .catch(() => {})
+      .then(() => {
+        if (id === showing && large.naturalWidth) full.src = src;
+      });
   }
 
   // Set up once per dialog; ClientRouter swaps in a fresh one on each navigation

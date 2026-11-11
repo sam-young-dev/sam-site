@@ -7,7 +7,8 @@ Motion confirms input or eases a change of state. It is short, uses ease-out, an
 | Token | Value | Use |
 | --- | --- | --- |
 | `--transition-fast` | 75ms | press scale (`:active`) |
-| `--transition-normal` | 150ms | hover: color, filter, underline growth, card scale |
+| `--transition-normal` | 150ms | hover: color, filter, underline growth, card image scale |
+| `--transition-medium` | 200ms | zoom steps in the image viewer (`.zoom-stage__image[data-animate]`), a frequent action that 300ms made sluggish |
 | `--transition-slow` | 300ms | appearances: image fade-in, overlays, lightbox, stagger |
 | `--ease-out` | `cubic-bezier(0, 0, 0.2, 1)` | every transition (38 uses) |
 
@@ -59,12 +60,12 @@ Nothing goes below 0.95; it reads as exaggerated. Why three steps: a bigger surf
 - Buttons: `filter: brightness(105%)`.
 - Text controls: color shifts from `--text-quiet` to `--text-ink`.
 - Links: underline grows from 0 to 100% (`background-size`), 150ms.
-- Project cards: `scale(101%)` on hover and on `:focus-visible`.
+- Project cards: the cover image scales to `1.02` inside `.project-card__media` (which clips it) on hover and `:focus-within`. The text never scales, so it stays crisp. The whole card takes `--press-scale-sm` on `:active`.
 - List links (`.explore-list a`): `translateX(0.25rem)`. Keep the nudge in the `:hover:active` rule so the link doesn't slide back while pressed.
 
 ## Appearing content
 
-- **Images** fade in when loaded: `opacity: 0` with `transition: opacity var(--transition-slow) var(--ease-out)`, revealed by `[data-state="loaded"]`. Wrap it in `@media (scripting: enabled)` so no-JS users still see the image. `img[data-state="error"]` stays visible.
+- **Images** fade in when loaded: `opacity: 0` with `transition: opacity var(--transition-slow) var(--ease-out)`, revealed by `[data-state="loaded"]`. Wrap it in `@media (scripting: enabled)` so no-JS users still see the image. `img[data-state="error"]` stays visible. Exception: the first row of project cards (`data-priority`) skips the fade, because it is the page's largest paint.
 - **Stagger**: children get `--i` (1, 2, 3) and `animation-delay: calc(var(--i, 0) * 60ms)`, `--transition-slow`, `translateY(0.5rem)` to none. The LCP element (the h1) is never staggered. Reduced motion keeps the fade and drops the slide.
 - **Video** (`.gallery-video`, the `video` block in `projects.ts`): never autoplays. It ships `controls`, `muted`, `playsinline`, `preload="none"` and a poster, so motion only starts when the reader presses play. Why: autoplaying video is decorative motion and ignores `prefers-reduced-motion`.
 - **Overlays** (`dialog`, lightbox): fade the backdrop and settle the image from `scale(0.96)` over `--transition-slow`; use `@starting-style` and `allow-discrete` on `display` and `overlay` so the exit animates too. Put the entrance transform on `.zoom-stage__frame`, never the image: the image's own transform carries zoom and pan.

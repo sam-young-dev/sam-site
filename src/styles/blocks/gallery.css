@@ -22,7 +22,6 @@
   display: block;
   width: 100%;
   height: auto;
-  border: var(--stroke-solid);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -47,12 +46,13 @@
   }
 }
 
-/* Whole image is the expand trigger; the cursor signals it */
+/* Whole image is the expand trigger; the cursor signals it. The stroke sits
+   here, not on the image, so the image's hover scale can't push it past the clip */
 .gallery-zoom {
   display: block;
   width: 100%;
   padding: 0;
-  border: 0;
+  border: var(--stroke-solid);
   background: none;
   color: inherit;
   cursor: zoom-in;
@@ -93,7 +93,8 @@
   }
 }
 
-/* Caption on the left, expand hint on the right, both below the image */
+/* The figure's <figcaption>: caption on the left, expand hint on the right,
+   both below the image */
 .gallery-meta {
   --repel-vertical-alignment: baseline;
   --repel-gap: var(--space-xs);

@@ -14,6 +14,12 @@ html {
   touch-action: manipulation;
 }
 
+/* a long-press on a control shouldn't select its label; content text stays selectable */
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 body {
   background: var(--background-light);
   color: var(--text-ink);

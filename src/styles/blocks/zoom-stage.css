@@ -51,7 +51,7 @@
 /* Button, key and click zooms glide; wheel, pinch and drag follow input 1:1 */
 @media (prefers-reduced-motion: no-preference) {
   .zoom-stage__image[data-animate] {
-    transition: transform var(--transition-slow) var(--ease-out);
+    transition: transform var(--transition-medium) var(--ease-out);
   }
 }
 
@@ -133,7 +133,8 @@
 
 @media (min-width: 48rem) {
   .zoom-stage .zoom-stage__nav {
-    --round-button-size: var(--space-lg-xl, 3rem);
+    /* A fixed size: a fluid space token here dropped to ~38px on tablets */
+    --round-button-size: 3rem;
   }
 
   .zoom-stage__nav {

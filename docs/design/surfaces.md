@@ -48,7 +48,7 @@ Inside an element that is already its own stacking context, use `1`. The compile
 
 Every interactive element shows `:focus-visible`: `2px solid var(--focus-color)`, offset `var(--focus-offset)` (0.2lh). `--focus-color` is black. On a dark surface, set `--focus-color: white` on the surface (the footer, lightbox and image viewer do).
 
-Never write `outline: none` on an interactive element. `:focus` without `-visible` is reset globally, so mouse clicks show no ring and keyboard users always do. If a fill swallows the ring, change `outline-color` or `outline-offset` as `.skip-link:focus-visible` does.
+Never write `outline: none` on an interactive element. `:focus` without `-visible` is reset globally, so mouse clicks show no ring and keyboard users always do. If a fill swallows the ring, change `outline-color` or `outline-offset` as `.skip-link:focus-visible` does. The one place the ring moves rather than disappears is `.project-card__link`: the title link stretches over the card with `::after`, so the ring is drawn on that `::after` to outline the whole card.
 
 ## Is this the right surface treatment?
 

@@ -7,62 +7,85 @@
   padding-left: 0;
 }
 
-.project-card__link {
+.project-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+}
+
+.project-card__link {
   color: inherit;
   text-decoration: none;
+}
+
+/* Stretches the title link over the whole card, so the card is the hit area */
+.project-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* The ring moves from the title to the card-sized ::after, so it outlines
+   the whole card the link covers instead of just the title text */
+.project-card__link:focus-visible {
+  outline: 0;
+}
+
+.project-card__link:focus-visible::after {
+  outline: 2px solid var(--focus-color);
+  outline-offset: var(--focus-offset, 0.2lh);
+}
+
+/* Clips the image's hover scale to the frame */
+.project-card__media {
   overflow: hidden;
 }
 
+/* Only the image scales on hover and focus, so the text stays crisp */
 @media (prefers-reduced-motion: no-preference) {
-  .project-card__link {
-    transition: transform var(--transition-normal) var(--ease-out);
+  .project-card {
+    transition: transform var(--transition-fast) var(--ease-out);
   }
 
-  .project-card__link:focus-visible {
-    transform: scale(101%);
+  .project-card__image {
+    transition:
+      opacity var(--transition-slow) var(--ease-out),
+      transform var(--transition-normal) var(--ease-out);
+  }
+
+  .project-card:focus-within .project-card__image {
+    transform: scale(1.02);
+  }
+
+  /* feedback on press, not release; applies to touch too. A card is a large
+     surface, so it takes the small scale */
+  .project-card:active {
+    transform: scale(var(--press-scale-sm));
   }
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .project-card__link:hover {
-    transform: scale(101%);
-  }
-}
-
-/* feedback on press, not release; applies to touch too. A card is a large
-   surface, so it takes the small scale */
-@media (prefers-reduced-motion: no-preference) {
-  .project-card__link:active {
-    transform: scale(var(--press-scale-sm));
-    transition-duration: var(--transition-fast);
+  .project-card:hover .project-card__image {
+    transform: scale(1.02);
   }
 }
 
 .project-card__image {
   display: block;
-  flex-shrink: 0;
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
-/* Hidden until loaded only when JS can reveal it */
+/* Hidden until loaded only when JS can reveal it. The first row
+   ([data-priority]) is the page's largest paint, so it shows at once */
 @media (scripting: enabled) {
-  .project-card__image {
+  .project-card__image:not([data-priority]) {
     opacity: 0;
   }
 
   .project-card__image[data-state='loaded'] {
     opacity: 1;
-  }
-}
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .project-card__image {
-    transition: opacity var(--transition-slow) var(--ease-out);
   }
 }
 
