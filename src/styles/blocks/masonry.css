@@ -53,9 +53,10 @@ without leaving gaps, the way a Pinterest-style grid does. */
   }
 }
 
-/* Hidden until loaded only when JS can reveal it */
+/* Hidden until loaded only when JS can reveal it. The first row
+   ([data-priority]) is the page's largest paint, so it shows at once */
 @media (scripting: enabled) {
-  .masonry__image {
+  .masonry__image:not([data-priority]) {
     opacity: 0;
     transition: opacity var(--transition-slow) var(--ease-out);
   }

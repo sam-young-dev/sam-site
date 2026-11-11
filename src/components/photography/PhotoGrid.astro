@@ -23,12 +23,14 @@ const { photos, fallbackLabel = "the gallery", collectionSlug } = Astro.props;
       <a href={`/photography/${photo.slug}/${collectionSlug ? `?from=${collectionSlug}` : ""}`} class="masonry__link">
         <Image
           src={photo.image}
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+          widths={[480, 650, 800, 1200]}
+          sizes="(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, calc(100vw - 2.75rem)"
           format="avif"
           quality={70}
           alt={photo.blurb || `Photograph from ${photo.meta.date ?? fallbackLabel}`}
           loading={index < 3 ? "eager" : "lazy"}
+          fetchpriority={index === 0 ? "high" : undefined}
+          data-priority={index < 3 ? "" : undefined}
           class="masonry__image"
           onload="this.dataset.state = 'loaded'"
           onerror="this.dataset.state = 'error'"
