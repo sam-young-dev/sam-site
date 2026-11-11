@@ -69,8 +69,15 @@
   border-radius: var(--radius-pill, 999px);
 }
 
-.site-head__brand a:not(:hover) {
+.site-head__brand a {
   text-decoration: none;
+}
+
+/* hover only where a pointer can actually hover, so a tap doesn't leave the underline stuck */
+@media (hover: hover) and (pointer: fine) {
+  .site-head__brand a:hover {
+    text-decoration: underline;
+  }
 }
 
 .site-head__brand-link {

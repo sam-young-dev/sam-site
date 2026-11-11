@@ -57,6 +57,12 @@
   margin-top: var(--space-md-lg);
 }
 
+/* A leading icon reads as extra padding on its side; trim it so the
+   label looks centered */
+.project-detail__repo {
+  padding-inline-start: calc(var(--button-x-padding) - 0.125em);
+}
+
 .project-detail__content {
   --flow-space: var(--space-md);
 }

@@ -22,8 +22,18 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-image {
+    transition: opacity var(--transition-slow) var(--ease-out);
+  }
+}
+
+/* Screen recordings. global.css forces video to 16/9; the markup sets the
+   recording's real aspect-ratio inline so the box fits before load */
+.gallery-video {
   border: var(--stroke-solid);
-  transition: opacity var(--transition-slow) var(--ease-out);
 }
 
 @media (scripting: enabled) {
@@ -36,12 +46,13 @@
   }
 }
 
-/* Whole image is the expand trigger; the cursor signals it */
+/* Whole image is the expand trigger; the cursor signals it. The stroke sits
+   here, not on the image, so the image's hover scale can't push it past the clip */
 .gallery-zoom {
   display: block;
   width: 100%;
   padding: 0;
-  border: 0;
+  border: var(--stroke-solid);
   background: none;
   color: inherit;
   cursor: zoom-in;
@@ -82,7 +93,8 @@
   }
 }
 
-/* Caption on the left, expand hint on the right, both below the image */
+/* The figure's <figcaption>: caption on the left, expand hint on the right,
+   both below the image */
 .gallery-meta {
   --repel-vertical-alignment: baseline;
   --repel-gap: var(--space-xs);

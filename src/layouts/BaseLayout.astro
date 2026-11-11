@@ -24,7 +24,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- viewport-fit=cover paints under the notch and home indicator; without it every env(safe-area-inset-*) is 0 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskRegular} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={cabinetGroteskMedium} crossorigin />

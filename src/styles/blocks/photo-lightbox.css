@@ -1,3 +1,4 @@
+/* Photography lightbox: a persisted overlay around a .zoom-stage */
 .photo-lightbox {
   display: none;
   position: fixed;
@@ -5,9 +6,6 @@
   --focus-color: white;
   /* Above .site-head so the overlay isn't tucked under the fixed header. */
   z-index: var(--z-modal);
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-md-lg);
   background: var(--scrim);
   opacity: 0;
 }
@@ -22,48 +20,23 @@
   opacity: 1;
 }
 
-.photo-lightbox__image {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
+/* Start from the on-page photo's position (set from JS) and grow out of it;
+   falls back to a slight scale. On the frame, because the image's own
+   transform carries zoom and pan. */
+.photo-lightbox .zoom-stage__frame {
   opacity: 0;
-  /* start from the on-page photo's position (set from JS); falls back to a slight scale */
   transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(var(--from-scale, 0.96));
-  touch-action: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .photo-lightbox__image {
+  .photo-lightbox .zoom-stage__frame {
     transition:
       opacity var(--transition-slow) var(--ease-out),
       transform var(--transition-slow) var(--ease-out);
   }
 }
 
-.photo-lightbox[data-state='open'] .photo-lightbox__image {
+.photo-lightbox[data-state='open'] .zoom-stage__frame {
   opacity: 1;
   transform: none;
-}
-
-.photo-lightbox__close {
-  --round-button-size: 2.75rem;
-  position: fixed;
-  top: var(--space-sm-md);
-  right: var(--space-sm-md);
-  /* the lightbox is its own stacking context, so this only has to clear the image */
-  z-index: 1;
-}
-
-.photo-lightbox__close-icon {
-  display: flex;
-  width: 1.15rem;
-  height: 1.15rem;
-}
-
-.photo-lightbox__close-icon svg {
-  width: 100%;
-  height: 100%;
 }

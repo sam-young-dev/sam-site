@@ -1,5 +1,19 @@
 import type { ImageMetadata } from "astro";
 
+import keyCreativeLogoVectorize from "../assets/projects/key-creative/logo-vectorize-affinity.png";
+import keyCreativeHero from "../assets/projects/key-creative/hero.png";
+import keyCreativeMoodboardPlayful from "../assets/projects/key-creative/moodboard-playful.png";
+import keyCreativeMoodboardBold from "../assets/projects/key-creative/moodboard-bold.png";
+import keyCreativeConceptChosen from "../assets/projects/key-creative/concept-chosen.png";
+import keyCreativeConceptPinkScallop from "../assets/projects/key-creative/concept-pink-scallop.png";
+import keyCreativeConceptEarth from "../assets/projects/key-creative/concept-earth.png";
+import keyCreativeConceptPinkVertical from "../assets/projects/key-creative/concept-pink-vertical.png";
+import keyCreativeSiteIntro from "../assets/projects/key-creative/site-intro.png";
+import keyCreativeSiteIntroNarrow from "../assets/projects/key-creative/site-intro-narrow.png";
+import keyCreativeSiteBrands from "../assets/projects/key-creative/site-brands.png";
+import keyCreativeSiteContact from "../assets/projects/key-creative/site-contact.png";
+import keyCreativeLighthouse from "../assets/projects/key-creative/lighthouse.png";
+
 import hyperliteHome from "../assets/projects/hyperlite/home.png";
 import hyperliteCategory from "../assets/projects/hyperlite/category.png";
 import hyperliteProduct from "../assets/projects/hyperlite/product.png";
@@ -44,6 +58,17 @@ export type ProjectContentBlock =
   | { type: "text"; html: string }
   | { type: "image"; image: ProjectImage }
   | { type: "gallery"; images: ProjectImage[]; caption?: string }
+  | {
+      type: "video";
+      /** Path under public/, e.g. "/videos/name.webm" */
+      src: string;
+      poster: string;
+      width: number;
+      height: number;
+      /** Describes what the video shows, for screen readers */
+      label: string;
+      caption?: string;
+    }
   | { type: "placeholder"; label: string; caption?: string };
 
 export interface Project {
@@ -62,6 +87,221 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    slug: "key-creative-management",
+    title: "Key Creative Management",
+    summary:
+      "A freelance brand and website build for a creator management agency, taken from a logo to a launched site with custom scroll animations, a CMS the client edits themselves, built-in analytics, and a perfect Lighthouse score.",
+    year: "2026",
+    stack: [
+      "Astro",
+      "Keystatic",
+      "Sugarcube",
+      "CUBE CSS",
+      "Netlify",
+      "Cloudflare Web Analytics",
+    ],
+    responsibilities: [
+      "Freelance engagement, from moodboards to launch",
+      "Brand direction built out from the logo: color, type, and a star motif used across the site",
+      "Home page prototypes in Penpot, signed off by the client before any code was written",
+      "Custom scroll-triggered animations and a draggable brand logo marquee",
+      "Keystatic CMS setup so the client can edit copy and logos without a developer",
+      "Cloudflare Web Analytics and performance work to a perfect Lighthouse score",
+    ],
+    links: {
+      live: "https://keycreativemgmt.com/",
+    },
+    content: [
+      {
+        type: "text",
+        html: "Key Creative Management is an agency that manages creators and influencers and connects them with brand partnerships. They came to me with a logo and needed everything around it: a look for the brand, a website, and a way to keep the site up to date on their own. The site has one job. A creator lands on it, decides whether the agency is credible, and sends an email. Every decision below comes back to that email.",
+      },
+      { type: "heading", text: "Starting from a logo" },
+      {
+        type: "text",
+        html: "The logo was the only fixed piece: a flowing, oversized K in soft blue with a four-point sparkle tucked beside it. Before designing any pages, I pulled the brand out of that mark. The blue of the K and the coral of the sparkle became the palette, and the sparkle turned into a motif I reused all over the site.",
+      },
+      { type: "heading", text: "Vectorizing the logo" },
+      {
+        type: "text",
+        html: "The logo arrived as a PNG, which only holds up at the size it was exported at and has its colors baked in. Scaled up for a hero, it goes soft and blurry. So I rebuilt it as vector shapes in Affinity, with the K and the sparkle as separate paths. As a vector, the logo stays sharp at any size, from a favicon to a crop that fills the top of the page, and each shape’s color can be changed in one click. Most of the brand depends on this. The K gets cropped big into the corner of the site, and the sparkle gets pulled out on its own, recolored, and reused as dividers, bullets, and accents.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeLogoVectorize,
+          alt: "The Key Creative logo rebuilt as a group of vector shapes in Affinity, with the blue K and coral sparkle selected inside a bounding box.",
+          caption: "The logo rebuilt as editable vector shapes in Affinity.",
+        },
+      },
+      { type: "heading", text: "Moodboards" },
+      {
+        type: "text",
+        html: "Next, I put together two moodboards to find a direction with the client. One leaned playful: rounded edges, pastel colors, organic shapes, squiggly lines, and quirky movement. The other leaned bold: harsh color combinations, strong contrast, straight lines, and big type. Talking through what the client liked on each board narrowed things down quickly. They wanted the warmth of the playful board with some of the confidence of the bold one.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeMoodboardPlayful,
+            alt: "Moodboard of playful websites with sticky notes calling out rounded edges, fun pastel colors, organic elements, squiggly lines, and quirky movement.",
+            caption: "Playful",
+          },
+          {
+            src: keyCreativeMoodboardBold,
+            alt: "Moodboard of bold websites with sticky notes calling out harsh color combinations, straight lines, strong contrast, and big type.",
+            caption: "Bold",
+          },
+        ],
+        caption: "Two moodboards used to find the direction with the client.",
+      },
+      { type: "heading", text: "Exploring the home page" },
+      {
+        type: "text",
+        html: "Before writing any code, I prototyped full home page concepts in Penpot. Each one uses the same pieces arranged a different way. The logo is cropped big into the top corner, a row of sparkles divides the sections, a large sparkle pair anchors the intro, logos of the brands they work with scroll in rows, and the contact heading sits half on top of a solid color band. Between concepts I varied the palette, the type, and the details: outlined stars on pink, an earthy slate and sand palette, a vertical wordmark, and a scalloped border around the contact section.",
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeConceptPinkScallop,
+            alt: "Home page concept on light pink with condensed blue and pink type, outlined star dividers, and a scalloped star border around the contact section.",
+          },
+          {
+            src: keyCreativeConceptEarth,
+            alt: "Home page concept in an earthy palette of slate blue, sand, and burnt orange on cream.",
+          },
+          {
+            src: keyCreativeConceptPinkVertical,
+            alt: "Home page concept on pink with the Key Creative wordmark set vertically and a large @ symbol above a rounded contact band.",
+          },
+          {
+            src: keyCreativeConceptChosen,
+            alt: "Home page concept in blue and coral on cream with a solid star divider, large blue and coral sparkles, a brand logo marquee, and a blue contact band.",
+          },
+        ],
+        caption:
+          "Home page prototypes in Penpot. The client chose the last one, blue and coral on cream.",
+      },
+      {
+        type: "text",
+        html: "The client picked the blue and coral on cream. It stays truest to the logo, and the cream background keeps it soft without washing out the colors. I didn’t start building until they signed off on that design in Penpot. Changing a prototype takes minutes, and changing a built page takes a lot longer, so the back and forth happened where it was cheap. Once they approved it, I turned the prototype into design tokens for color, type, and spacing, so the code pulls from the same values as the design.",
+      },
+      { type: "heading", text: "The finished site" },
+      {
+        type: "text",
+        html: "The build matches the approved prototype, with real copy in place of the placeholder lines. The intro leads with the agency’s tagline, “A different kind of management,” and a short list of what creators get, with the sparkle reused as bullet points. Below that, a marquee of real brand logos does the work of proving credibility, and the page ends with one clear way to get in touch.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeHero,
+          alt: "Live site hero on cream with the vector K cropped large into the top left corner, the coral sparkle beside it, and Key Creative Management in coral below.",
+          caption: "The hero, the first thing a visitor sees, with the vector logo cropped big into the corner.",
+        },
+      },
+      {
+        type: "gallery",
+        images: [
+          {
+            src: keyCreativeSiteIntro,
+            alt: "Live site intro with a blue star border, the heading A different kind of management in coral, and a list of what creators get with sparkle bullets beside a large blue sparkle.",
+            caption: "Desktop",
+          },
+          {
+            src: keyCreativeSiteIntroNarrow,
+            alt: "The same intro section at a narrower width, with the large sparkles tucked beside the list.",
+            caption: "Narrower viewport",
+          },
+        ],
+        caption: "The intro section, with the sparkle reused as list bullets.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeSiteBrands,
+          alt: "Brands we work with heading framed by two coral sparkles, a pause logos button, and three rows of brand logos including Amazon, Anthropologie, Birkenstock, Free People, L’Oreal, Macy’s, Nordstrom, Target, and Wayfair.",
+          caption: "Three rows of brand logos, each moving at its own pace.",
+        },
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeSiteContact,
+          alt: "Contact section with the heading Let’s Chat! sitting on top of a blue band that holds the email address, and a footer with social links.",
+          caption: "The contact heading sits half on top of the blue band, straight from the concept.",
+        },
+      },
+      { type: "heading", text: "Animations triggered on scroll" },
+      {
+        type: "text",
+        html: "The playful moodboard called for movement, so the page animates as you scroll. When the page loads, the logo and name rise into place and the sparkle spins in beside the K. The row of sparkles that divides the sections pops in one star at a time when it scrolls into view. The large sparkle pair scales in as you reach it, and the “Let’s Chat!” heading rises up onto the blue band. Every animation is short and eases out, so nobody has to wait for one to finish before reading.",
+      },
+      {
+        type: "video",
+        src: "/videos/key-creative-scroll.webm",
+        poster: "/videos/key-creative-scroll-poster.webp",
+        width: 1280,
+        height: 800,
+        label:
+          "Screen recording of the Key Creative Management home page: the logo sparkle spins in, the star divider appears one star at a time, the large sparkles scale in, the brand logo rows are slowed by hovering and then dragged and flung, and the Let’s Chat heading rises onto the blue band.",
+        caption:
+          "A scroll through the live site: the load animation, scroll-triggered reveals, and dragging the logo marquee.",
+      },
+      {
+        type: "text",
+        html: '<a href="https://keycreativemgmt.com/" target="_blank" rel="noopener noreferrer">Try it yourself on the live site</a>. Scroll down slowly, then grab a row of brand logos and throw it.',
+      },
+      {
+        type: "text",
+        html: "The brand logo marquee is the most involved piece. Instead of a plain CSS loop, it runs on a small physics model. Hovering eases the row to a stop so you can read a logo, and letting go eases it back up to speed. You can grab a row and drag it, and when you let go it keeps the speed of your throw before settling back into its normal pace. Each row moves at its own speed and direction, stops animating when it is off screen, and keeps the loop free of gaps when the window resizes.",
+      },
+      {
+        type: "text",
+        html: "I didn’t want the motion to cost anyone access to the page. Each reveal waits for an IntersectionObserver to see the element on screen, and if JavaScript never runs, everything is simply visible. A pause button stops the logos for anyone who finds the movement distracting. For visitors who have reduced motion turned on in their system settings, the reveals only fade, the logo rows stop moving, and the rows become regions you can scroll through with a keyboard instead.",
+      },
+      { type: "heading", text: "Copy the client can edit" },
+      {
+        type: "text",
+        html: 'I set up <a href="https://keystatic.com/" target="_blank" rel="noopener noreferrer">Keystatic</a> so the client can change the website without me. They sign in at /admin and get a simple editor for the name, tagline, the list of points, headings, contact email, and the site description used by search engines. They can also add, remove, and reorder brand logos by uploading a file and giving it a name.',
+      },
+      {
+        type: "text",
+        html: "Keystatic stores the content as files in the site’s GitHub repository, so every save is a commit and every change has a history. Each commit triggers a fresh build on Netlify, and the change goes live on its own shortly after. The pages are still prerendered static HTML; only the admin runs on demand as serverless functions. This paid off during development too. The client made their own copy changes while I worked on the design and code, instead of sending edits back and forth, and they will keep doing so after launch with no developer in the loop.",
+      },
+      { type: "heading", text: "Built-in analytics" },
+      {
+        type: "text",
+        html: "To show the client how the site is doing, I added Cloudflare Web Analytics. It doesn’t set cookies, so the site needs no cookie banner, and it still reports visits, referrers, and Core Web Vitals measured on visitors’ own devices. It only loads on production builds, so my local testing never shows up in the numbers. The script is also injected after the page loads, during idle time, so a third-party request never sits in the way of the first paint.",
+      },
+      { type: "heading", text: "A perfect Lighthouse score" },
+      {
+        type: "text",
+        html: "The site scores 100 in all four Lighthouse categories: performance, accessibility, best practices, and SEO. Pages are static HTML with only a small script for the animations, fonts are self-hosted, brand logos are almost all lightweight SVGs, and every animation sticks to transform and opacity so nothing triggers layout work while scrolling.",
+      },
+      {
+        type: "image",
+        image: {
+          src: keyCreativeLighthouse,
+          alt: "Lighthouse scores of 100 for performance, accessibility, best practices, and SEO.",
+          caption: "Lighthouse: 100 across performance, accessibility, best practices, and SEO.",
+        },
+      },
+      // TODO: add results section once numbers are in.
+      // { type: "heading", text: "Results: leads and new business" },
+      // {
+      //   type: "placeholder",
+      //   label: "Results coming soon",
+      //   caption:
+      //     "How the site brought in client leads and helped generate new business.",
+      // },
+    ],
+    cover: {
+      src: keyCreativeSiteIntro,
+      alt: "Key Creative Management site intro with a blue star border, the heading A different kind of management, and a large blue sparkle.",
+    },
+  },
   {
     slug: "healthcare-compliance-platform",
     title: "Healthcare Compliance Platform",
@@ -117,7 +357,7 @@ export const projects: Project[] = [
           },
           {
             src: clinicPortalMockup,
-            alt: "Figma mockup of the wellness page showing the employee's current reward level, reward amounts for each level, and three wellness check cards.",
+            alt: "Figma mockup of the wellness page showing the employee’s current reward level, reward amounts for each level, and three wellness check cards.",
             caption: "Wellness page",
           },
         ],
@@ -139,7 +379,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person's own data: what they have completed, and whether they are compliant for their job. Changes are made by the admin team and take effect without a code release.",
+        html: "On the portal, each employee sees only the sections they are allowed to see, which could be one section or all three. The content of each card comes from that person’s own data: what they have completed, and whether they are compliant for their job. Changes are made by the admin team and take effect without a code release.",
       },
       {
         type: "image",
@@ -165,7 +405,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Starting a new year does not mean starting over. The admin team clones the previous year's whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
+        html: "Starting a new year does not mean starting over. The admin team clones the previous year’s whole configuration, then edits the dates, dollar amounts, and anything else that changed. Actions, reward levels, and steps can be added, updated, or deleted as the program evolves. A History tab keeps an audit log of every action taken in the admin app and who took it.",
       },
       {
         type: "heading",
@@ -238,11 +478,11 @@ export const projects: Project[] = [
       { type: "heading", text: "Security and access control" },
       {
         type: "text",
-        html: "This is a healthcare system, so access control is built into the platform instead of added on top. Staff and employees sign in through the organization's existing Microsoft single sign-on, with no separate passwords to manage. Scheduled jobs that call the API use their own authentication scheme, separate from the one people use.",
+        html: "This is a healthcare system, so access control is built into the platform instead of added on top. Staff and employees sign in through the organization’s existing Microsoft single sign-on, with no separate passwords to manage. Scheduled jobs that call the API use their own authentication scheme, separate from the one people use.",
       },
       {
         type: "text",
-        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user's roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens and actions their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
+        html: "Permissions are fine-grained. Each API endpoint declares the one permission it needs, such as reading a particular kind of record, and the API turns the permissions on a user’s roles into authorization policies as they are needed. The Angular apps mirror this with route guards that can be combined, so a staff member only sees and reaches the screens and actions their role allows. Secrets and environment settings live in a managed key vault and configuration service, not in the code.",
       },
       {
         type: "text",
@@ -294,7 +534,7 @@ export const projects: Project[] = [
     slug: "roi-calculator",
     title: "APP Program ROI Calculator",
     summary:
-      "A sales tool for an APP education company that projects the return on enrolling a health system's NPs and PAs in its transition-to-practice program, based on benchmark data from past cohorts.",
+      "A sales tool for an APP education company that projects the return on enrolling a health system’s NPs and PAs in its transition-to-practice program, based on benchmark data from past cohorts.",
     year: "2025",
     stack: [
       "React",
@@ -349,7 +589,7 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "The inputs are kept to the few numbers a practice manager would know offhand: how many APPs they have, average years of experience, average monthly encounters per APP, and current retention rate. Those numbers are matched against historical data from APPs who have already completed the program. The calculator finds providers who look like the client's own, with a similar amount of experience and a similar encounter volume, and projects how the client's APPs would grow based on how those providers actually did, with a 95% confidence range.",
+        html: "The inputs are kept to the few numbers a practice manager would know offhand: how many APPs they have, average years of experience, average monthly encounters per APP, and current retention rate. Those numbers are matched against historical data from APPs who have already completed the program. The calculator finds providers who look like the client’s own, with a similar amount of experience and a similar encounter volume, and projects how the client’s APPs would grow based on how those providers actually did, with a 95% confidence range.",
       },
       {
         type: "image",
@@ -362,12 +602,12 @@ export const projects: Project[] = [
       { type: "heading", text: "One codebase, two audiences" },
       {
         type: "text",
-        html: "It works as a sales tool in two ways. The sales team uses an internal version during conversations with health systems, and an external version is embedded on the client's site so interested prospects can try their own numbers before they ever talk to anyone. Both come from one React codebase with two build processes. The internal build is secured with Azure Entra ID, and the external build is packaged to embed in their marketing site. An ASP.NET Core API on Azure handles the benchmark data and the calculations, and an Azure DevOps CI/CD pipeline deploys it all.",
+        html: "It works as a sales tool in two ways. The sales team uses an internal version during conversations with health systems, and an external version is embedded on the client’s site so interested prospects can try their own numbers before they ever talk to anyone. Both come from one React codebase with two build processes. The internal build is secured with Azure Entra ID, and the external build is packaged to embed in their marketing site. An ASP.NET Core API on Azure handles the benchmark data and the calculations, and an Azure DevOps CI/CD pipeline deploys it all.",
       },
       { type: "heading", text: "Rebuilding the projection logic" },
       {
         type: "text",
-        html: "The projection logic started as a SQL script written by another team member. It produced the right numbers against the database tables, but it was slow, expensive, and didn't fit how the new app needed to use it: once per request, with each prospect's own inputs. I rewrote it as inline table-valued functions built from a chain of CTEs.",
+        html: "The projection logic started as a SQL script written by another team member. It produced the right numbers against the database tables, but it was slow, expensive, and didn’t fit how the new app needed to use it: once per request, with each prospect’s own inputs. I rewrote it as inline table-valued functions built from a chain of CTEs.",
       },
       {
         type: "text",
@@ -375,17 +615,17 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "The functions take the prospect's inputs and run them through the CTE chain. CROSS APPLY and LAG() work out the quartile boundaries on the fly and place the client in the right experience and productivity buckets. From there the function matches comparable historical providers, measures each one's change from their baseline to their first program year (within fixed bounds) and returns a mean projection with a 95% confidence interval, along with its annual dollar value and ROI per provider.",
+        html: "The functions take the prospect’s inputs and run them through the CTE chain. CROSS APPLY and LAG() work out the quartile boundaries on the fly and place the client in the right experience and productivity buckets. From there the function matches comparable historical providers, measures each one’s change from their baseline to their first program year (within fixed bounds) and returns a mean projection with a 95% confidence interval, along with its annual dollar value and ROI per provider.",
       },
       { type: "heading", text: "Why table-valued functions" },
       {
         type: "text",
-        html: "Table-valued functions were a good fit for a few reasons. They take parameters, so each run computes exactly the prospect's scenario instead of precomputing every possible combination. Because they're inline, SQL Server folds the whole CTE chain into the calling query and optimizes it as one, so the filters can use the lookup tables' indexes. They're read-only, so running a projection can't have side effects. And their output can be selected and joined like any table, which made the next step simple.",
+        html: "Table-valued functions were a good fit for a few reasons. They take parameters, so each run computes exactly the prospect’s scenario instead of precomputing every possible combination. Because they’re inline, SQL Server folds the whole CTE chain into the calling query and optimizes it as one, so the filters can use the lookup tables’ indexes. They’re read-only, so running a projection can’t have side effects. And their output can be selected and joined like any table, which made the next step simple.",
       },
-      { type: "heading", text: "Measuring the program's real lift" },
+      { type: "heading", text: "Measuring the program’s real lift" },
       {
         type: "text",
-        html: "That next step keeps the calculator from overstating the program. The API runs the same functions twice, once against APPs who went through the program and once against a benchmark group who didn't, then joins the results to calculate the net lift the program adds beyond normal growth. Dapper reads every result set back in a single round trip. And because the logic is driven by the lookup tables, the benchmarks can be refreshed by loading new data, with no code changes.",
+        html: "That next step keeps the calculator from overstating the program. The API runs the same functions twice, once against APPs who went through the program and once against a benchmark group who didn’t, then joins the results to calculate the net lift the program adds beyond normal growth. Dapper reads every result set back in a single round trip. And because the logic is driven by the lookup tables, the benchmarks can be refreshed by loading new data, with no code changes.",
       },
       { type: "heading", text: "Showing the math" },
       {
@@ -416,13 +656,13 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: "Retention compares the client's current turnover cost to the projected cost at the program's retention rate. Replacing an APP is expensive, so even a few points of retention add up to real savings. Participant testimonials sit underneath, putting a human voice next to the numbers.",
+        html: "Retention compares the client’s current turnover cost to the projected cost at the program’s retention rate. Replacing an APP is expensive, so even a few points of retention add up to real savings. Participant testimonials sit underneath, putting a human voice next to the numbers.",
       },
       {
         type: "image",
         image: {
           src: roiRetention,
-          alt: "Retention tab showing annual retention savings, the program's retention rate, a bar chart of current versus projected retention cost, and participant testimonials.",
+          alt: "Retention tab showing annual retention savings, the program’s retention rate, a bar chart of current versus projected retention cost, and participant testimonials.",
           caption:
             "Retention: turnover cost now versus projected with the program.",
         },
@@ -430,7 +670,7 @@ export const projects: Project[] = [
       { type: "heading", text: "From mockup to shipped app" },
       {
         type: "text",
-        html: "The build stayed close to the approved designs, with a few changes along the way. The mockups had a wRVU tab alongside encounters. The benchmark data supported both, but after talking it through with the client, we dropped wRVUs and focused on encounters, since that's the metric their business model is built around. The specialty input came out too, because the benchmark data covered one main specialty and there was nothing to choose between. The single client name field grew into a lead capture section with name, business email, and organization, so when prospects use the calculator on the company's website, the client knows who's interested.",
+        html: "The build stayed close to the approved designs, with a few changes along the way. The mockups had a wRVU tab alongside encounters. The benchmark data supported both, but after talking it through with the client, we dropped wRVUs and focused on encounters, since that’s the metric their business model is built around. The specialty input came out too, because the benchmark data covered one main specialty and there was nothing to choose between. The single client name field grew into a lead capture section with name, business email, and organization, so when prospects use the calculator on the company’s website, the client knows who’s interested.",
       },
       {
         type: "gallery",
@@ -474,7 +714,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "This is the site you're on. It's an Astro build for photography, a couple of side projects, and a resume. It's mostly static, so pages ship as fast HTML with only the interactive pieces (the contour background, the photo lightbox) shipping their own JS.",
+        html: "This is the site you’re on. It’s an Astro build for photography, a couple of side projects, and a resume. It’s mostly static, so pages ship as fast HTML with only the interactive pieces (the contour background, the photo lightbox) shipping their own JS.",
       },
       {
         type: "image",
@@ -488,7 +728,7 @@ export const projects: Project[] = [
       { type: "heading", text: "A map that reshapes itself" },
       {
         type: "text",
-        html: 'The home page background is a topographic map that never sits still. A value-noise terrain is sampled on a coarse grid, and the contour lines are traced through it with marching squares, so they are smooth vector curves instead of pixels. Every fifth line is drawn heavier like the index contours on a real map, lines fade with elevation so the high ground reads as nearer, and a faint wash deepens toward the peaks. Each noise octave orbits its own slow circle instead of panning, so the land breathes and reshapes in place rather than sliding off the screen. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\'s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it: it pauses when the hero scrolls out of view or the tab is hidden, drops to every other frame if renders run long, caps the canvas size so big displays stay cheap, and draws a single still frame when prefers-reduced-motion is on.',
+        html: 'The home page background is a topographic map that never sits still. A value-noise terrain is sampled on a coarse grid, and the contour lines are traced through it with marching squares, so they are smooth vector curves instead of pixels. Every fifth line is drawn heavier like the index contours on a real map, lines fade with elevation so the high ground reads as nearer, and a faint wash deepens toward the peaks. Each noise octave orbits its own slow circle instead of panning, so the land breathes and reshapes in place rather than sliding off the screen. I leaned on <a href="https://emilkowal.ski/" target="_blank" rel="noopener noreferrer">Emil Kowalski</a>\’s writing on UI feel and his <a href="https://emilkowal.ski/skill" target="_blank" rel="noopener noreferrer">skills</a> to tune it: it pauses when the hero scrolls out of view or the tab is hidden, drops to every other frame if renders run long, caps the canvas size so big displays stay cheap, and draws a single still frame when prefers-reduced-motion is on.',
       },
       { type: "heading", text: "Photo details straight from the file" },
       {
@@ -569,7 +809,7 @@ export const projects: Project[] = [
     content: [
       {
         type: "text",
-        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn't to design a store from scratch; it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
+        html: "Hyperlite is a storefront modeled closely on Hyperlite Mountain Gear, an ultralight backpacking brand. The content and products are a deliberate clone rather than an original brand. The goal wasn’t to design a store from scratch; it was to learn how the pieces of a headless ecommerce stack fit together without also having to invent a catalog.",
       },
       {
         type: "image",
@@ -633,12 +873,12 @@ export const projects: Project[] = [
       },
       {
         type: "text",
-        html: 'Product photography was the biggest single drag on those scores, so I swapped Astro\'s built-in image handling for <a href="https://unpic.pics/img/astro/" target="_blank" rel="noopener noreferrer">@unpic/astro</a>. It detects the CDN an image is served from and generates the right responsive srcset, sizes, and layout for it automatically, so product images pulled from Sanity\'s image CDN get properly optimized variants without hand-rolling breakpoints for every image on the site.',
+        html: 'Product photography was the biggest single drag on those scores, so I swapped Astro\’s built-in image handling for <a href="https://unpic.pics/img/astro/" target="_blank" rel="noopener noreferrer">@unpic/astro</a>. It detects the CDN an image is served from and generates the right responsive srcset, sizes, and layout for it automatically, so product images pulled from Sanity\’s image CDN get properly optimized variants without hand-rolling breakpoints for every image on the site.',
       },
       { type: "heading", text: "Design tokens with Sugarcube" },
       {
         type: "text",
-        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\'s used instead of needing a find-and-replace across stylesheets. This matters exponentially more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
+        html: 'I also used the project as a chance to try <a href="https://sugarcube.sh/" target="_blank" rel="noopener noreferrer">Sugarcube</a> for design tokens instead of hand-writing CSS variables. Colors, spacing, and type scale are defined once as tokens and Sugarcube generates the CSS variables and utility classes from them, so a change to a token (a brand color, a spacing step) propagates everywhere it\’s used instead of needing a find-and-replace across stylesheets. This matters exponentially more as a codebase grows in size and complexity. Category pages, product pages, and cart UI all need to look like the same brand, and tokens keep them from drifting apart as the site grows.',
       },
       { type: "heading", text: "What I learned" },
       {

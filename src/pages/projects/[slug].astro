@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { projects } from "../../data/projects";
 import ExpandButton from "../../components/core/ExpandButton.astro";
+import ZoomStage from "../../components/core/ZoomStage.astro";
 
 export async function getStaticPaths() {
   return projects.map((project) => ({
@@ -19,7 +20,7 @@ const { project } = Astro.props;
   description={project.summary}
 >
   <div class="wrapper region">
-    <a href="/projects/" class="project-detail__back link-underline press">&larr; Back to projects</a>
+    <a href="/projects/" class="project-detail__back link-underline press"><span aria-hidden="true">&larr;</span> Back to projects</a>
 
     <header class="project-detail__header">
       <h1>{project.title}</h1>
@@ -61,11 +62,12 @@ const { project } = Astro.props;
             rel="noopener noreferrer"
           >
             View live site
+            <span class="visually-hidden">(opens in new tab)</span>
           </a>
         )}
         {project.links.repo && (
           <a
-            class="button"
+            class="button project-detail__repo"
             data-button-variant="secondary"
             href={project.links.repo}
             target="_blank"
@@ -82,6 +84,7 @@ const { project } = Astro.props;
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
             </svg>
             View source
+            <span class="visually-hidden">(opens in new tab)</span>
           </a>
         )}
       </div>
@@ -104,7 +107,7 @@ const { project } = Astro.props;
                     <Image
                       src={image.src}
                       widths={[500, 900, 1400, 2000]}
-                      sizes="(min-width: 48rem) 80vw, 100vw"
+                      sizes="(min-width: 48rem) 40vw, 100vw"
                       format="avif"
                       quality={85}
                       alt={image.alt}
@@ -114,15 +117,35 @@ const { project } = Astro.props;
                       onerror="this.dataset.state = 'error'"
                     />
                   </button>
-                  <div class="gallery-meta repel">
+                  <figcaption class="gallery-meta repel">
                     {image.caption && (
-                      <figcaption class="gallery-caption">{image.caption}</figcaption>
+                      <span class="gallery-caption">{image.caption}</span>
                     )}
                     <ExpandButton decorative />
-                  </div>
+                  </figcaption>
                 </figure>
               ))}
             </div>
+            {block.caption && (
+              <figcaption class="gallery-caption">{block.caption}</figcaption>
+            )}
+          </figure>
+        ) : block.type === "video" ? (
+          <figure class="gallery-item project-detail__gallery">
+            <video
+              class="gallery-video"
+              src={block.src}
+              poster={block.poster}
+              width={block.width}
+              height={block.height}
+              style={`aspect-ratio: ${block.width} / ${block.height}`}
+              aria-label={block.label}
+              controls
+              muted
+              loop
+              playsinline
+              preload="none"
+            ></video>
             {block.caption && (
               <figcaption class="gallery-caption">{block.caption}</figcaption>
             )}
@@ -152,12 +175,12 @@ const { project } = Astro.props;
                 onerror="this.dataset.state = 'error'"
               />
             </button>
-            <div class="gallery-meta repel">
+            <figcaption class="gallery-meta repel">
               {block.image.caption && (
-                <figcaption class="gallery-caption">{block.image.caption}</figcaption>
+                <span class="gallery-caption">{block.image.caption}</span>
               )}
               <ExpandButton decorative />
-            </div>
+            </figcaption>
           </figure>
         )
       )}
@@ -168,14 +191,21 @@ const { project } = Astro.props;
   <div class="region"></div>
 
   <dialog class="image-viewer" aria-label="Expanded image view">
-    <button type="button" class="image-viewer__close round-button" aria-label="Close expanded image">&times;</button>
-    <img class="image-viewer__image" alt="" />
+    <ZoomStage closeLabel="Close expanded image" nav />
   </dialog>
 </BaseLayout>
 
 <script>
-  // Delegated on document so it survives ClientRouter page swaps; the dialog
-  // is looked up at click time since it's replaced on each navigation.
+  import { setupZoomStage } from "../../lib/zoom-stage.js";
+
+  type Viewer = ReturnType<typeof setupZoomStage>;
+  const viewers = new WeakMap<HTMLDialogElement, Viewer>();
+
+  // The photos the viewer can step through: the other images in the same
+  // gallery group, never ones further down the page in a different group
+  let group: HTMLImageElement[] = [];
+  let index = 0;
+
   function largestSource(img: HTMLImageElement) {
     const candidates = img.srcset.split(",").map((s) => s.trim().split(/\s+/));
     return candidates.length && candidates[candidates.length - 1][0]
@@ -183,25 +213,82 @@ const { project } = Astro.props;
       : img.currentSrc || img.src;
   }
 
+  // Bumped on every show(), so a slow full-size download for a photo the
+  // reader has already moved past doesn't replace the current one
+  let showing = 0;
+
+  function show(viewer: Viewer, thumb: HTMLImageElement) {
+    const full = viewer.image as HTMLImageElement;
+    const id = ++showing;
+    viewer.reset();
+    viewer.setNav({ prev: index > 0, next: index < group.length - 1 });
+    full.alt = thumb.alt;
+
+    const src = largestSource(thumb);
+    if (full.getAttribute("src") === src && full.complete) return;
+
+    // The browser keeps painting the previous image until the new one
+    // arrives, so hide it until this one has loaded
+    full.dataset.state = "loading";
+    full.onload = full.onerror = () => {
+      full.dataset.state = "loaded";
+      // Zoom bounds depend on the photo's real proportions; keep any zoom
+      // the reader started while it loaded
+      viewer.refresh();
+    };
+
+    // Show the on-page size first: it's already cached, so the viewer is
+    // never blank on a slow connection. The full size replaces it once
+    // decoded; the swap is seamless because the old src paints until then
+    const preview = thumb.complete && thumb.naturalWidth ? thumb.currentSrc : "";
+    full.src = preview || src;
+    if (!preview || preview === src) return;
+
+    const large = new Image();
+    large.src = src;
+    large
+      .decode()
+      .catch(() => {})
+      .then(() => {
+        if (id === showing && large.naturalWidth) full.src = src;
+      });
+  }
+
+  // Set up once per dialog; ClientRouter swaps in a fresh one on each navigation
+  function getViewer(dialog: HTMLDialogElement) {
+    let viewer = viewers.get(dialog);
+    if (viewer) return viewer;
+    const stage = dialog.querySelector<HTMLElement>(".zoom-stage")!;
+    const created = setupZoomStage(stage, {
+      onClose: () => dialog.close(),
+      onNavigate(direction) {
+        const nextIndex = index + (direction === "next" ? 1 : -1);
+        if (!group[nextIndex]) return;
+        index = nextIndex;
+        show(created, group[index]);
+      },
+    });
+    dialog.addEventListener("close", () => created.close());
+    viewers.set(dialog, created);
+    return created;
+  }
+
+  // Delegated on document so it survives ClientRouter page swaps; the dialog
+  // is looked up at click time since it's replaced on each navigation.
   document.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
+    const trigger = (e.target as HTMLElement).closest(".gallery-zoom, .expand-button");
     const dialog = document.querySelector<HTMLDialogElement>(".image-viewer");
-    if (!dialog) return;
+    if (!trigger || !dialog) return;
 
-    const zoom = target.closest<HTMLButtonElement>(".gallery-zoom, .expand-button");
-    if (zoom) {
-      const thumb = zoom.closest("figure")?.querySelector("img");
-      const full = dialog.querySelector<HTMLImageElement>(".image-viewer__image");
-      if (!thumb || !full) return;
-      full.src = largestSource(thumb);
-      full.alt = thumb.alt;
-      dialog.showModal();
-      return;
-    }
+    const thumb = trigger.closest("figure")?.querySelector<HTMLImageElement>(".gallery-image");
+    if (!thumb) return;
+    const grid = thumb.closest(".gallery-grid");
+    group = grid ? [...grid.querySelectorAll<HTMLImageElement>(".gallery-image")] : [thumb];
+    index = Math.max(0, group.indexOf(thumb));
 
-    // Backdrop (the dialog element itself) or close button dismisses
-    if (target === dialog || target.closest(".image-viewer__close")) {
-      dialog.close();
-    }
+    show(getViewer(dialog), thumb);
+    dialog.showModal();
+    // showModal() would focus the stage, the first focusable element
+    dialog.querySelector<HTMLButtonElement>('[data-action="close"]')?.focus();
   });
 </script>

@@ -13,7 +13,6 @@
   font: inherit;
   font-size: var(--size-step--1);
   cursor: pointer;
-  transition: color var(--transition-normal) var(--ease-out), transform var(--transition-fast) var(--ease-out);
 }
 
 /* Grows the hit area to 44px tall and a little wider without changing the visible size */
@@ -33,6 +32,12 @@
 
 /* feedback on press, not release */
 @media (prefers-reduced-motion: no-preference) {
+  .expand-button {
+    transition:
+      color var(--transition-normal) var(--ease-out),
+      transform var(--transition-fast) var(--ease-out);
+  }
+
   .expand-button:active {
     transform: scale(var(--press-scale-md));
   }

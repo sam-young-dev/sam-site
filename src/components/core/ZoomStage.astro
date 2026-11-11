@@ -1,0 +1,54 @@
+---
+import ZoomInIcon from "../../assets/zoom-in.svg?raw";
+import ZoomOutIcon from "../../assets/zoom-out.svg?raw";
+import ExpandIcon from "../../assets/expand.svg?raw";
+import CollapseIcon from "../../assets/collapse.svg?raw";
+import CloseIcon from "../../assets/close.svg?raw";
+import ArrowIcon from "../../assets/arrow-down.svg?raw";
+
+interface Props {
+  /** aria-label for the close button. */
+  closeLabel: string;
+  closeId?: string;
+  imageAlt?: string;
+  /** Adds previous/next buttons; they stay hidden until setupZoomStage is told there is somewhere to go. */
+  nav?: boolean;
+}
+
+const { closeLabel, closeId, imageAlt = "", nav = false } = Astro.props;
+---
+
+{/* tabindex="-1": a click on the photo focuses the stage instead of the page
+    behind, so the keyboard shortcuts (its keydown listener) keep working */}
+<div class="zoom-stage" data-zoomed="false" tabindex="-1">
+  <div class="zoom-stage__frame">
+    <img class="zoom-stage__image" alt={imageAlt} draggable="false" />
+  </div>
+
+  {nav && (
+    <>
+      <button type="button" class="zoom-stage__nav round-button" data-action="prev" aria-label="Previous image" hidden>
+        <span class="zoom-stage__icon" set:html={ArrowIcon} />
+      </button>
+      <button type="button" class="zoom-stage__nav round-button" data-action="next" aria-label="Next image" hidden>
+        <span class="zoom-stage__icon" set:html={ArrowIcon} />
+      </button>
+    </>
+  )}
+
+  <div class="zoom-stage__toolbar cluster">
+    <button type="button" class="round-button" data-action="zoom-out" aria-label="Zoom out" disabled>
+      <span class="zoom-stage__icon" set:html={ZoomOutIcon} />
+    </button>
+    <button type="button" class="round-button" data-action="zoom-in" aria-label="Zoom in">
+      <span class="zoom-stage__icon" set:html={ZoomInIcon} />
+    </button>
+    <button type="button" class="round-button" data-action="fullscreen" aria-label="Enter fullscreen" hidden>
+      <span class="zoom-stage__icon" data-icon="enter" set:html={ExpandIcon} />
+      <span class="zoom-stage__icon" data-icon="exit" set:html={CollapseIcon} />
+    </button>
+    <button type="button" id={closeId} class="round-button" data-action="close" aria-label={closeLabel}>
+      <span class="zoom-stage__icon" set:html={CloseIcon} />
+    </button>
+  </div>
+</div>
