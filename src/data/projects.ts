@@ -288,13 +288,14 @@ export const projects: Project[] = [
           caption: "Lighthouse: 100 across performance, accessibility, best practices, and SEO.",
         },
       },
-      { type: "heading", text: "Results: leads and new business" },
-      {
-        type: "placeholder",
-        label: "Results coming soon",
-        caption:
-          "How the site brought in client leads and helped generate new business.",
-      },
+      // TODO: add results section once numbers are in.
+      // { type: "heading", text: "Results: leads and new business" },
+      // {
+      //   type: "placeholder",
+      //   label: "Results coming soon",
+      //   caption:
+      //     "How the site brought in client leads and helped generate new business.",
+      // },
     ],
     cover: {
       src: keyCreativeSiteIntro,
