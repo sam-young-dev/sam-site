@@ -79,14 +79,14 @@ const featuredPhotos = featuredSlugs
       the stack instead of inventing a catalog from scratch.
     </p>
 
-    <div class="switcher">
+    <div class="about-photos not-prose">
       {
         featuredPhotos.map((photo) => (
           <a href={`/photography/${photo.slug}/`} class="about-photo-link">
             <Image
               src={photo.image}
-              widths={[650, 800, 1400, 2000]}
-              sizes="(min-width: 48rem) 75vw, calc(100vw - 2.75rem)"
+              widths={[400, 650, 800, 1400]}
+              sizes="(min-width: 40rem) 15rem, calc(100vw - 2.75rem)"
               format="avif"
               quality={80}
               alt={photo.blurb || photo.meta.location || "Photograph from the gallery"}
