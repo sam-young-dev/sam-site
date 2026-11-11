@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "../../data/projects";
+
+interface Props {
+  project: Project;
+  /** "feature" puts the cover beside the text on wide screens, for a single highlighted project */
+  layout?: "feature";
+  /** Above-the-fold cards load eagerly and skip the fade-in */
+  priority?: boolean;
+  /** Heading level for the title, so the card fits the page outline */
+  headingLevel?: 2 | 3;
+}
+
+const { project, layout, priority = false, headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}`;
+const sizes =
+  layout === "feature"
+    ? "(min-width: 48rem) 60vw, 100vw"
+    : "(min-width: 60rem) 33vw, (min-width: 40rem) 50vw, 100vw";
+---
+
+<li class="project-card" data-card-layout={layout}>
+  {/* The link sits on the title so its accessible name is just the
+      title; its ::after stretches over the card to make it all clickable */}
+  <div class="project-card__media">
+    <Image
+      src={project.cover.src}
+      widths={[400, 700, 1000]}
+      sizes={sizes}
+      format="avif"
+      quality={70}
+      alt=""
+      loading={priority ? "eager" : "lazy"}
+      data-priority={priority ? "" : undefined}
+      class="project-card__image"
+      onload="this.dataset.state = 'loaded'"
+      onerror="this.dataset.state = 'error'"
+    />
+  </div>
+  <div class="project-card__body">
+    <Heading class="project-card__title">
+      <a href={`/projects/${project.slug}/`} class="project-card__link">{project.title}</a>
+    </Heading>
+    <p class="project-card__summary">{project.summary}</p>
+    <ul class="project-card__stack">
+      {project.stack.map((tech) => (
+        <li>{tech}</li>
+      ))}
+    </ul>
+  </div>
+</li>

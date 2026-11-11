@@ -3,6 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoIconLight from '../assets/logo-amber-large.svg?raw';
 import Contour from '../components/contour/Contour.astro';
 import { siteData } from '../data/site-data';
+import ProjectCard from '../components/core/ProjectCard.astro';
+import PhotoGrid from '../components/photography/PhotoGrid.astro';
+import { getProject } from '../data/projects';
+import { featuredPhotoSlugs } from '../data/photos';
+import { getPhotos } from '../utils/photos';
+
+const featuredProject = getProject('key-creative-management');
+const allPhotos = await getPhotos();
+const featuredPhotos = featuredPhotoSlugs
+  .map((slug) => allPhotos.find((photo) => photo.slug === slug))
+  .filter((photo) => photo !== undefined);
 ---
 
 <BaseLayout
@@ -29,13 +40,25 @@ import { siteData } from '../data/site-data';
       </div>
     </div>
 
-    <div class="region wrapper prose flow">
-      <h2>Explore the Site!</h2>
-      <ul class="explore-list not-prose">
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/photography">Photography</a></li>
-      </ul>
-    </div>
+    <section class="region wrapper flow" aria-labelledby="featured-project">
+      <div class="repel">
+        <h2 id="featured-project">Featured project</h2>
+        <a href="/projects/" class="button" data-button-variant="border">All projects</a>
+      </div>
+      {featuredProject && (
+        <ul class="project-list not-prose" data-list-layout="feature">
+          <ProjectCard project={featuredProject} layout="feature" headingLevel={3} />
+        </ul>
+      )}
+    </section>
+
+    <section class="region wrapper flow" aria-labelledby="featured-photos">
+      <div class="repel">
+        <h2 id="featured-photos">Photography</h2>
+        <a href="/photography/" class="button" data-button-variant="border">All photos</a>
+      </div>
+      <PhotoGrid photos={featuredPhotos} priority={false} />
+    </section>
 
     <div class="region wrapper prose prose-w-sm flow">
       <h2>Contact</h2>
