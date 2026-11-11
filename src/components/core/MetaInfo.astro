@@ -22,4 +22,5 @@ const socialImageURL = socialImage ? new URL(socialImage, Astro.site).href : und
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 {socialImageURL && <meta name="twitter:image" content={socialImageURL} />}
+{socialImageURL && <meta name="twitter:image:alt" content="Sam Young, Developer, Designer, Artist" />}
 <title>{title}</title>
