@@ -56,6 +56,9 @@ const MAX_CELLS = 40000;
 const MAX_PIXELS = 4_000_000;
 // how fast the normalisation range follows the field as it moves, per second
 const RANGE_RATE = 2.5;
+// ms after the first frame before the land starts to drift. It moves a few px
+// a second, so a still start isn't noticeable
+const SETTLE_DELAY = 2500;
 
 function lattice(ix, iy, seed) {
   let h = Math.imul(ix, 374761393) + Math.imul(iy, 668265263) + Math.imul(seed, 2147483647);
@@ -257,6 +260,13 @@ class Contour {
       this.#syncLoop();
     });
     this.inView = true;
+    // the first frame is drawn now, but the drift waits until the page has
+    // settled, so the loop isn't competing with loading for the main thread and GPU
+    this.settled = false;
+    this.settleTimeout = setTimeout(() => {
+      this.settled = true;
+      this.#syncLoop();
+    }, SETTLE_DELAY);
     this.onView.observe(container);
     window.addEventListener("resize", this.onResize);
     document.addEventListener("visibilitychange", this.onVisibility);
@@ -411,7 +421,11 @@ class Contour {
 
   get isAnimated() {
     return (
-      this.settings.speed > 0 && !this.reducedMotion.matches && !document.hidden && this.inView
+      this.settings.speed > 0 &&
+      this.settled &&
+      !this.reducedMotion.matches &&
+      !document.hidden &&
+      this.inView
     );
   }
 
@@ -448,6 +462,7 @@ class Contour {
     document.removeEventListener("visibilitychange", this.onVisibility);
     this.reducedMotion.removeEventListener("change", this.onVisibility);
     clearTimeout(this.resizeTimeout);
+    clearTimeout(this.settleTimeout);
     this.onView.disconnect();
     if (this.loop) cancelAnimationFrame(this.loop);
     this.loop = null;
