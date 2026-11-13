@@ -8,7 +8,7 @@ Blocks use layers 1-3. Layer 4 is the footer only. Never use a primitive or a ra
 
 | Layer | Tokens | Defined in |
 | --- | --- | --- |
-| 1. Page | `--background-light`, `--text-ink`, `--text-quiet`, `--scrim` | `global/variables.css` |
+| 1. Page | `--background-light`, `--text-ink`, `--text-quiet`, `--scrim`, `--image-edge` | `global/variables.css` |
 | 2. Brand | `--color-brand-primary`, `--color-brand-light` | `design-tokens/colors.json` |
 | 3. Neutral semantic | `--color-fill-loud`, `--color-on-loud`, `--color-fill-normal`, `--color-decorative-stroke`, `--color-surface-border`, `--color-text-placeholder` | `design-tokens/colors.json` |
 | 4. Footer surface | `--color-amber-950`, `-200`, `-50`, `-300` | `blocks/site-foot.css` only |
