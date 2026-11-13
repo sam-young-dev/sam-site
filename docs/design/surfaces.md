@@ -14,6 +14,12 @@ Dashed divides, solid encloses. Under `prefers-contrast: more` both become solid
 
 Do not box sections or cards with a border. Cards (`.project-card`) have no border, background or radius.
 
+## Image edges
+
+Project cover frames (`.project-card__media`) carry a 1px inset outline in `--image-edge` (black at 10%). The covers are light screenshots on a cream page, and without an edge they blur into it. Draw it as `outline` with `outline-offset: calc(var(--stroke-width) * -1)` on the frame, not the `<img>`: the image scales on hover and would carry the line out of the clip. Under `prefers-contrast: more` it becomes `currentColor`, like the strokes.
+
+The edge is pure black at low opacity, never amber or a neutral: a tinted line mixes with the page and reads as grime. It marks the image boundary only; the card itself still gets no border.
+
 ## Corners
 
 Corners are square by default. Buttons, cards, images and panels have no radius.

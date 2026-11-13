@@ -438,5 +438,6 @@ details[open] summary {
   :root {
     --stroke: var(--stroke-width) solid currentColor;
     --stroke-solid: var(--stroke-width) solid currentColor;
+    --image-edge: currentColor;
   }
 }

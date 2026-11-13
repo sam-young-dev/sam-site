@@ -55,9 +55,13 @@
   outline-offset: var(--focus-offset, 0.2lh);
 }
 
-/* Clips the image's hover scale to the frame */
+/* Clips the image's hover scale to the frame. The edge sits on the frame, not
+   the image, so it stays put while the image scales; outlines paint above
+   children, and the negative offset keeps it inside the box */
 .project-card__media {
   overflow: hidden;
+  outline: var(--stroke-width) solid var(--image-edge);
+  outline-offset: calc(var(--stroke-width) * -1);
 }
 
 /* Only the image scales on hover and focus, so the text stays crisp */

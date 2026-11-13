@@ -33,6 +33,9 @@
      contrast is a known ~5:1 on the page colour instead of 3.5-4.4:1 */
   --text-quiet: color-mix(in srgb, var(--text-ink) 85%, var(--background-light));
   --scrim: rgb(0 0 0 / 0.92);
+  /* edge drawn inside image frames so light screenshots don't melt into the
+     cream page. Pure black: a tinted line mixes with the page and looks dirty */
+  --image-edge: rgb(0 0 0 / 0.1);
 }
 
 @media (prefers-reduced-transparency: reduce) {
